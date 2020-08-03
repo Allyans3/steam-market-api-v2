@@ -3,10 +3,16 @@
 namespace SteamApi;
 
 use Psy\Exception\RuntimeException;
+use SteamApi\Config\Config;
 
 class SteamApi
 {
     const CLASS_PREFIX = '\\SteamApi\\Requests\\';
+
+    public function getCurrencyList()
+    {
+        return Config::CURRENCY;
+    }
 
     public function getItemPricing(int $appId = null, array $options = [])
     {
@@ -22,6 +28,12 @@ class SteamApi
         return $this->request($type, $appId, $options)->call($options)->response();
     }
 
+    public function getSaleHistory(int $appId = null, array $options = [])
+    {
+        $type = 'SaleHistory';
+
+        return $this->request($type, $appId, $options)->call($options)->response();
+    }
 
 
     private function request($type, $appId, array $options)

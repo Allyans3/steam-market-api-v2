@@ -12,8 +12,8 @@ class MarketListings extends Request implements RequestInterface
     private int $appId;
     private int $start = 0;
     private int $count = 100;
-    private string $sort_column = 'price';
-    private string $sort_dir = 'asc';
+    private ?string $sort_column = null;
+    private ?string $sort_dir = null;
     private string $method = 'GET';
 
     public function __construct($appId, $options = [])

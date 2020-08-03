@@ -19,6 +19,11 @@ abstract class Request
         return $this->ch = curl_init();
     }
 
+    public function closeCurl()
+    {
+        return curl_close($this->ch);
+    }
+
     public function steamHttpRequest()
     {
         if (!isset($this->ch)) {
@@ -35,6 +40,8 @@ abstract class Request
 
     public function response($data)
     {
+        $this->closeCurl();
+
         $class = self::RESPONSE_PREFIX . strrev(explode('\\', strrev(get_called_class()), 2)[0]);
 
         if (!class_exists($class)) {
