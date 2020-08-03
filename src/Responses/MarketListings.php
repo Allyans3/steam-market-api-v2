@@ -2,9 +2,9 @@
 
 namespace SteamApi\Responses;
 
+use SteamApi\Config\Config;
 use SteamApi\Engine\XmlStringStreamerAbstract;
 use SteamApi\Interfaces\ResponseInterface;
-use const SteamApi\Config\CURRENCY;
 
 class MarketListings extends XmlStringStreamerAbstract implements ResponseInterface
 {
@@ -22,7 +22,7 @@ class MarketListings extends XmlStringStreamerAbstract implements ResponseInterf
 
     private function decodeResponse($response)
     {
-        $data = json_decode($response);
+        $data = json_decode($response, true);
 
         if (!$data) {
             return false;
@@ -43,7 +43,7 @@ class MarketListings extends XmlStringStreamerAbstract implements ResponseInterf
             'name'       => $data['hash_name'],
             'image'      => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
             'curr_price' => $data['sell_price_text'],
-            'currency'   => CURRENCY[$data['asset_description']['currency']],
+            'currency'   => Config::CURRENCY[$data['asset_description']['currency']],
             'price'      => bcdiv($data['sell_price'], 100, 2),
             'volume'     => $data['sell_listings'],
             'type'       => $data['asset_description']['type']

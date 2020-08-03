@@ -6,7 +6,7 @@ use Psy\Exception\RuntimeException;
 
 abstract class Request
 {
-    const RESPONSE_PREFIX = '\\Steam\\Responses\\';
+    const RESPONSE_PREFIX = '\\SteamApi\\Responses\\';
 
     private $ch;
     private $curlOpts = [
