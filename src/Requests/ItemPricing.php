@@ -2,6 +2,7 @@
 
 namespace SteamApi\Requests;
 
+use Psy\Exception\RuntimeException;
 use SteamApi\Engine\Request;
 use SteamApi\Interfaces\RequestInterface;
 
@@ -11,7 +12,7 @@ class ItemPricing extends Request implements RequestInterface
 
     private int $appId;
     private int $currency = 1;
-    private string $itemName = '';
+    private string $market_hash_name = '';
     private string $method = 'GET';
 
     public function __construct($appId, $options = [])
@@ -22,7 +23,7 @@ class ItemPricing extends Request implements RequestInterface
 
     public function getUrl()
     {
-        return sprintf(self::URL, $this->appId, $this->currency, $this->itemName);
+        return sprintf(self::URL, $this->appId, $this->currency, $this->market_hash_name);
     }
 
     public function call($options = [])
@@ -37,8 +38,13 @@ class ItemPricing extends Request implements RequestInterface
 
     private function setOptions($options)
     {
+        if (isset($options['market_hash_name'])) {
+            $this->market_hash_name = rawurlencode($options['market_hash_name']);
+        } else {
+            throw new RuntimeException("Option 'market_hash_name' must be filled");
+        }
+
         $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
-        $this->itemName = isset($options['itemName']) ? $options['itemName'] : $this->itemName;
 
         return $this;
     }

@@ -1,22 +1,23 @@
 {
-  "name": "allyans3/steam-market-api-v2",
-  "description": "Steam market API v2",
-  "minimum-stability": "stable",
-  "license": "MIT",
-  "authors": [
-      {
-          "name": "Allyans3",
-          "email": "a.sylenok@gmail.com"
-      }
-  ],
-  "require": {
-      "ext-json": "*",
-      "ext-curl": "*",
-      "prewk/xml-string-streamer": "^0.14.0"
-  },
-  "autoload": {
-      "psr-4": {
-          "SteamApi\\": "src/"
-      }
-  }
+    "name": "allyans3/steam-market-api-v2",
+    "description": "Steam market API v2",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Allyans3",
+            "email": "a.sylenok@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "ext-curl": "*",
+        "ext-bcmath": "*",
+        "prewk/xml-string-streamer": "^0.14.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SteamApi\\": "src/"
+        }
+    }
 }
