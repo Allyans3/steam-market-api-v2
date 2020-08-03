@@ -46,4 +46,12 @@ class Config
         40 => 'CRC',
         41 => 'UYU',
     ];
+
+    const CONDITIONS = [
+        "(Factory New)" => "Factory New",
+        "(Minimal Wear)" => "Minimal Wear",
+        "(Field-Tested)" => "Field-Tested",
+        "(Well-Worn)" => "Well-Worn",
+        "(Battle-Scarred)" => "Battle-Scarred"
+    ];
 }

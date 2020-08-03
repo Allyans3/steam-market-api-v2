@@ -37,6 +37,17 @@ class MarketListings extends XmlStringStreamerAbstract implements ResponseInterf
         return $listings;
     }
 
+    private function getCondition($market_name)
+    {
+        foreach (Config::CONDITIONS as $key => $value) {
+            if (strpos($market_name, $key)) {
+                return Config::CONDITIONS[$key];
+            }
+        }
+
+        return '';
+    }
+
     private function completeData($data)
     {
         return [
@@ -46,7 +57,8 @@ class MarketListings extends XmlStringStreamerAbstract implements ResponseInterf
             'currency'   => Config::CURRENCY[$data['asset_description']['currency']],
             'price'      => bcdiv($data['sell_price'], 100, 2),
             'volume'     => $data['sell_listings'],
-            'type'       => $data['asset_description']['type']
+            'type'       => $data['asset_description']['type'],
+            'condition'  => $this->getCondition($data['hash_name'])
         ];
     }
 }
