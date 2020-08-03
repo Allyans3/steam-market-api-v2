@@ -5,6 +5,7 @@ namespace SteamApi\Config;
 class Config
 {
     const CURRENCY = [
+        0 => 'USD',
         1 => 'USD',
         2 => 'GBP',
         3 => 'EUR',

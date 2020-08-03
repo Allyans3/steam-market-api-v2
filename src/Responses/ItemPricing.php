@@ -10,7 +10,6 @@ class ItemPricing implements ResponseInterface
 
     public function __construct($response)
     {
-        $this->raw = $response;
         $this->data = $this->decodeResponse($response);
     }
 
