@@ -109,3 +109,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+/example
+/example/*

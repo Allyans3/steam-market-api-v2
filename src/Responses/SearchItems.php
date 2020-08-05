@@ -2,11 +2,10 @@
 
 namespace SteamApi\Responses;
 
-use SteamApi\Config\Config;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 
-class MarketListings implements ResponseInterface
+class SearchItems implements ResponseInterface
 {
     private $data;
 
@@ -43,7 +42,6 @@ class MarketListings implements ResponseInterface
             'name'       => $data['hash_name'],
             'image'      => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
             'curr_price' => $data['sell_price_text'],
-            'currency'   => Config::CURRENCY[$data['asset_description']['currency']],
             'price'      => bcdiv($data['sell_price'], 100, 2),
             'volume'     => $data['sell_listings'],
             'type'       => $data['asset_description']['type'],
