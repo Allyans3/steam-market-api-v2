@@ -13,8 +13,6 @@
         "ext-json": "*",
         "ext-curl": "*",
         "ext-bcmath": "*",
-        "ext-simplexml": "*",
-        "ext-dom": "*",
         "prewk/xml-string-streamer": "^0.14.0",
         "psy/psysh": "^0.10.4",
         "imangazaliev/didom": "^1.16"
