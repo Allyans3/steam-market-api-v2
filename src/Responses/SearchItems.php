@@ -39,13 +39,13 @@ class SearchItems implements ResponseInterface
     private function completeData($data)
     {
         return [
-            'name'       => $data['hash_name'],
-            'image'      => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
-            'curr_price' => $data['sell_price_text'],
-            'price'      => bcdiv($data['sell_price'], 100, 2),
-            'volume'     => $data['sell_listings'],
-            'type'       => $data['asset_description']['type'],
-            'condition'  => Mixins::getCondition($data['hash_name'])
+            'name'           => $data['hash_name'],
+            'image'          => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
+            'price'          => bcdiv($data['sell_price'], 100, 2),
+            'currency_price' => $data['sell_price_text'],
+            'volume'         => $data['sell_listings'],
+            'type'           => $data['asset_description']['type'],
+            'condition'      => Mixins::getCondition($data['hash_name'])
         ];
     }
 }

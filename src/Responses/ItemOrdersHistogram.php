@@ -67,8 +67,8 @@ class ItemOrdersHistogram implements ResponseInterface
     private function completeData($data)
     {
         return [
-            'highest_buy_order' => $data['highest_buy_order'],
-            'lowest_sell_order' => $data['lowest_sell_order'],
+            'highest_buy_order' => (int) $data['highest_buy_order'],
+            'lowest_sell_order' => (int) $data['lowest_sell_order'],
             'buy_order_summary' => $this->parseOrderSummary($data['buy_order_summary']),
             'sell_order_summary' => $this->parseOrderSummary($data['sell_order_summary']),
             'buy_order_graph' =>  $this->setFields($data['buy_order_graph']),
