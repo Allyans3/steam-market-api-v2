@@ -20,7 +20,6 @@ class InspectItem implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $data = json_decode($response, true);
-        return $data['iteminfo'];
+        return json_decode($response, true);
     }
 }

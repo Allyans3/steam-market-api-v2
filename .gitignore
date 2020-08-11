@@ -111,3 +111,5 @@ $RECYCLE.BIN/
 
 /example
 /example/*
+
+composer.lock

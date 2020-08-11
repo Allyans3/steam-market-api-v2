@@ -13,6 +13,7 @@ class SearchItems extends Request implements RequestInterface
     private int $start = 0;
     private int $count = 100;
     private string $query = '';
+    private bool $exact = false;
     private string $method = 'GET';
 
     public function __construct($appId, $options = [])
@@ -40,7 +41,11 @@ class SearchItems extends Request implements RequestInterface
     {
         $this->start = isset($options['start']) ? $options['start'] : $this->start;
         $this->count = isset($options['count']) ? $options['count'] : $this->count;
-        $this->query = isset($options['query']) ? rawurlencode($options['query']) : $this->query;
+        $this->exact = isset($options['exact']) ? $options['exact'] : $this->exact;
+
+        $this->query = isset($options['query']) ?
+            ($this->exact ? sprintf('"%s"', rawurlencode($options['query'])) : rawurlencode($options['query'])) :
+            $this->query;
 
         return $this;
     }

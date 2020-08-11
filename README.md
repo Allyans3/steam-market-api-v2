@@ -113,7 +113,8 @@ This will return the lowest and median price for an item.
 $options = [
     'start' => 0,
     'count' => 100,
-    'query' => 'AK-47 | The Empress'
+    'query' => 'AK-47 | The Empress',
+    'exact' => true
 ];
 
 $response = $api->searchItems(730, $options);
@@ -155,44 +156,46 @@ You'll get this response:
 
 ```
 [
-    "origin" => 8
-    "quality" => 4
-    "rarity" => 6
-    "a" => "18217556235"
-    "d" => "11973598228597186897"
-    "paintseed" => 725
-    "defindex" => 7
-    "paintindex" => 675
-    "stickers" => [
-        0 => [
-            "stickerId" => 4217
-            "slot" => 0
-            "codename" => "berlin2019_signature_golden_foil"
-            "material" => "berlin2019/sig_golden_foil"
-            "name" => "Golden (Foil) | Berlin 2019"
+    "iteminfo" => [
+        "origin" => 8
+        "quality" => 4
+        "rarity" => 6
+        "a" => "18217556235"
+        "d" => "11973598228597186897"
+        "paintseed" => 725
+        "defindex" => 7
+        "paintindex" => 675
+        "stickers" => [
+            0 => [
+                "stickerId" => 4217
+                "slot" => 0
+                "codename" => "berlin2019_signature_golden_foil"
+                "material" => "berlin2019/sig_golden_foil"
+                "name" => "Golden (Foil) | Berlin 2019"
+            ]
+            1 => [
+                "stickerId" => 260
+                "slot" => 2
+                "codename" => "drugwarveteran"
+                "material" => "community02/drugwarveteran"
+                "name" => "Drug War Veteran"
+            ]
         ]
-        1 => [
-            "stickerId" => 260
-            "slot" => 2
-            "codename" => "drugwarveteran"
-            "material" => "community02/drugwarveteran"
-            "name" => "Drug War Veteran"
-        ]
+        "floatid" => "18035389401"
+        "floatvalue" => 0.35344177484512
+        "s" => "76561198096112563"
+        "m" => "0"
+        "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
+        "min" => 0
+        "max" => 1
+        "weapon_type" => "AK-47"
+        "item_name" => "The Empress"
+        "rarity_name" => "Covert"
+        "quality_name" => "Unique"
+        "origin_name" => "Found in Crate"
+        "wear_name" => "Field-Tested"
+        "full_item_name" => "AK-47 | The Empress (Field-Tested)"
     ]
-    "floatid" => "18035389401"
-    "floatvalue" => 0.35344177484512
-    "s" => "76561198096112563"
-    "m" => "0"
-    "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
-    "min" => 0
-    "max" => 1
-    "weapon_type" => "AK-47"
-    "item_name" => "The Empress"
-    "rarity_name" => "Covert"
-    "quality_name" => "Unique"
-    "origin_name" => "Found in Crate"
-    "wear_name" => "Field-Tested"
-    "full_item_name" => "AK-47 | The Empress (Field-Tested)"
 ]
 ```
 
