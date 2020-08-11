@@ -15,6 +15,15 @@ composer require allyans3/steam-market-api-v2
 
 This package currently offers 7 API calls you can make to Steam, 1 API to CSGOFloat-API and 2 technical methods.
 
+Note
+----
+
+All methods don't have delays. If you are using some method in cycle, please use this in-built php function to prevent steam block for a few minutes:
+```
+sleep(2);
+```
+Recommended 2 and more seconds.
+
 Creating new object
 -------------------
 
