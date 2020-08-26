@@ -7,9 +7,20 @@ Menu
 ---
 
 - [Installation](#installation)
+    - [With composer](#with-composer)
 - [Note](#note)
 - [Creating new object](#creating-new-object)
 - [Usage](#usage)
+    - [Market Listings](#market-listings)
+    - [Item Sale History](#item-sale-history)
+    - [Item Current Price](#item-current-price)
+    - [Search Items](#search-items)
+    - [Inspect Item](#inspect-item)
+    - [Item Listings](#item-listings)
+    - [Item Orders Histogram](#item-orders-histogram)
+    - [Item Name ID](#item-name-id)
+    - [Currency List](#currency-list)
+    - [Condition List](#condition-list)
 - [Proxy](#proxy)
 
 ---
