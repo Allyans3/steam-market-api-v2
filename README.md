@@ -20,9 +20,9 @@ Note
 
 All methods don't have delays. If you are using some method in cycle, please use this in-built php function to prevent steam block for a few minutes:
 ```
-sleep(2);
+sleep(rand(8,12));
 ```
-Recommended 2 and more seconds.
+Recommended 8 and more seconds.
 
 Creating new object
 -------------------
@@ -341,4 +341,22 @@ You'll receive condition list:
     "(Well-Worn)" => "Well-Worn"
     "(Battle-Scarred)" => "Battle-Scarred"
 ]
+```
+
+Proxy
+-----
+
+In 2.2 release added second optional parameter `$proxy` where can you pass cURL parameters as in example:
+
+```
+$proxy = [
+    CURLOPT_PROXY => '81.201.60.130:80',
+    CURLOPT_PROXYTYPE => CURLPROXY_HTTP,
+    CURLOPT_TIMEOUT => 9,
+    CURLOPT_CONNECTTIMEOUT => 6,
+    CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+    ...
+];
+
+$response = $api->getMarketListings(730, $options, $proxy);
 ```
