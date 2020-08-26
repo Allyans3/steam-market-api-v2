@@ -2,6 +2,18 @@
 
 Source: https://github.com/JaxWilko/steam-market-api
 
+Menu
+----
+---
+
+- [Installation](#installation)
+- [Note](#note)
+- [Creating new object](#creating-new-object)
+- [Usage](#usage)
+- [Proxy](#proxy)
+
+---
+
 Installation
 ------------
 
