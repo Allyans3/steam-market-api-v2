@@ -25,9 +25,9 @@ class ItemNameId extends Request implements RequestInterface
         return sprintf(self::URL, $this->appId, $this->market_hash_name);
     }
 
-    public function call($options = [])
+    public function call($options = [], $proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest();
+        return $this->setOptions($options)->steamHttpRequest($proxy);
     }
 
     public function getRequestMethod()

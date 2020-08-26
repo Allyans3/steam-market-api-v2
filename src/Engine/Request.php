@@ -12,6 +12,8 @@ abstract class Request
     private $curlOpts = [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_SSL_VERIFYPEER => false
     ];
 
     public function initCurl()
@@ -24,16 +26,17 @@ abstract class Request
         return curl_close($this->ch);
     }
 
-    public function steamHttpRequest()
+    public function steamHttpRequest($proxy = [])
     {
         if (!isset($this->ch)) {
             $this->initCurl();
         }
 
-        curl_setopt_array($this->ch, $this->curlOpts + [
+        curl_setopt_array($this->ch, $this->curlOpts + $proxy + [
                 CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
-                CURLOPT_URL => $this->getUrl()
-            ]);
+                CURLOPT_URL => $this->getUrl(),
+            ]
+        );
 
         return $this->response(curl_exec($this->ch));
     }

@@ -32,49 +32,49 @@ class SteamApi
         return (new $class($inspectLink))->call()->response();
     }
 
-    public function getItemPricing(int $appId = null, array $options = [])
+    public function getItemPricing(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'ItemPricing';
 
-        return $this->request($type, $appId, $options)->call($options)->response();
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
-    public function getMarketListings(int $appId = null, array $options = [])
+    public function getMarketListings(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'MarketListings';
 
-        return $this->request($type, $appId, $options)->call($options)->response();
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
-    public function getSaleHistory(int $appId = null, array $options = [])
+    public function getSaleHistory(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'SaleHistory';
 
-        return $this->request($type, $appId, $options)->call($options)->response();
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
-    public function searchItems(int $appId = null, array $options = [])
+    public function searchItems(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'SearchItems';
 
-        return $this->request($type, $appId, $options)->call($options)->response();
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
-    public function getItemListings(int $appId = null, array $options = [])
+    public function getItemListings(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'ItemListings';
 
-        return $this->request($type, $appId, $options)->call($options)->response();
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
-    public function getItemNameId(int $appId = null, array $options = [])
+    public function getItemNameId(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'ItemNameId';
 
-        return $this->request($type, $appId, $options)->call($options)->response();
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
-    public function getItemOrdersHistogram(array $options = [])
+    public function getItemOrdersHistogram(array $options = [], $proxy = [])
     {
         $type = 'ItemOrdersHistogram';
 
@@ -84,7 +84,7 @@ class SteamApi
             throw new RuntimeException('Call to undefined request type');
         }
 
-        return (new $class($options))->call()->response();
+        return (new $class($options))->call($proxy)->response();
     }
 
 

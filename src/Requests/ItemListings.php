@@ -28,9 +28,9 @@ class ItemListings extends Request implements RequestInterface
         return sprintf(self::URL, $this->appId, $this->market_hash_name, $this->start, $this->count, $this->currency);
     }
 
-    public function call($options = [])
+    public function call($options = [], $proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest();
+        return $this->setOptions($options)->steamHttpRequest($proxy);
     }
 
     public function getRequestMethod()

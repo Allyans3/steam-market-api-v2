@@ -27,9 +27,9 @@ class SearchItems extends Request implements RequestInterface
         return sprintf(self::URL, $this->appId, $this->start, $this->count, $this->query);
     }
 
-    public function call($options = [])
+    public function call($options = [], $proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest();
+        return $this->setOptions($options)->steamHttpRequest($proxy);
     }
 
     public function getRequestMethod()
