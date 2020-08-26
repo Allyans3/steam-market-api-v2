@@ -345,8 +345,7 @@ You'll receive condition list:
 
 Proxy
 -----
-
-In 2.2 release added second optional parameter `$proxy` where can you pass cURL parameters as in example:
+In release `v2.2` added a second optional `$proxy` parameter where you can pass cURL parameters as in the example:
 
 ```
 $proxy = [
