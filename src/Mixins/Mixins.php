@@ -28,14 +28,20 @@ class Mixins
 
     public static function generateInspectLink($item)
     {
-        $listing_id = $item['listingid'];
-        $asset_id = $item['asset']['id'];
+        $asset = $item['asset'];
 
-        $inspect_link = $item['asset']['market_actions'][0]['link'];
+        if (array_key_exists('market_actions', $asset)) {
+            $listing_id = $item['listingid'];
+            $asset_id = $asset['id'];
 
-        $inspect_link = str_replace("%listingid%", $listing_id, $inspect_link);
-        $inspect_link = str_replace("%assetid%", $asset_id, $inspect_link);
+            $inspect_link = $asset['market_actions'][0]['link'];
 
-        return $inspect_link;
+            $inspect_link = str_replace("%listingid%", $listing_id, $inspect_link);
+            $inspect_link = str_replace("%assetid%", $asset_id, $inspect_link);
+
+            return $inspect_link;
+        }
+
+        return "";
     }
 }
