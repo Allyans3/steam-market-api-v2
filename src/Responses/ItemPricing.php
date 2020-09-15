@@ -6,7 +6,7 @@ use SteamApi\Interfaces\ResponseInterface;
 
 class ItemPricing implements ResponseInterface
 {
-    private array $data;
+    private $data;
 
     public function __construct($response)
     {
@@ -20,6 +20,10 @@ class ItemPricing implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        return json_decode($response, true);
+        $data = json_decode($response, true);
+
+        if (!$data) {
+            return false;
+        }
     }
 }

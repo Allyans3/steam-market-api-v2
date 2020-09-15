@@ -11,7 +11,7 @@ class ItemOrdersHistogram implements ResponseInterface
     const DELIMITER_START = '<span class="market_commodity_orders_header_promote">';
     const DELIMITER_END = '</span>';
 
-    private array $data;
+    private $data;
 
     public function __construct($response)
     {
