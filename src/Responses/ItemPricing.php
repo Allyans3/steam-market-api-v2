@@ -20,10 +20,6 @@ class ItemPricing implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $data = json_decode($response, true);
-
-        if (!$data) {
-            return false;
-        }
+        return json_decode($response, true);
     }
 }
