@@ -239,6 +239,7 @@ $options = [
     'count' => 100,
     'currency' => 1,
     'market_hash_name' => "AK-47 | The Empress (Field-Tested)"
+    'filter' => ''
 ];
 
 $response = $api->getItemListings(730, $options);

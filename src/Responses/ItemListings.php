@@ -35,6 +35,8 @@ class ItemListings implements ResponseInterface
 
         foreach ($rawNode as $node) {
 
+            dd($data);
+
             $item = $this->parseNode($node);
 
             foreach ($data['listinginfo'] as $key => $value) {
