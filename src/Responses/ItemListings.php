@@ -34,9 +34,6 @@ class ItemListings implements ResponseInterface
         $rawNode = $document->find('.market_listing_row, market_recent_listing_row');
 
         foreach ($rawNode as $node) {
-
-            dd($data);
-
             $item = $this->parseNode($node);
 
             foreach ($data['listinginfo'] as $key => $value) {
