@@ -45,15 +45,24 @@ class Mixins
         return "";
     }
 
-    public static function toFloat($price)
+    public static function toFloat($str)
     {
-        // convert "," to "."
-        $price = str_replace(',', '.', $price);
+        if(preg_match("/([0-9\.,-]+)/", $str, $match)){
+            $value = $match[0];
+            if( preg_match("/(\.\d{1,2})$/", $value, $dot_delim) ){
+                $value = (float)str_replace(',', '', $value);
+            }
+            else if( preg_match("/(,\d{1,2})$/", $value, $comma_delim) ){
+                $value = str_replace('.', '', $value);
+                $value = (float)str_replace(',', '.', $value);
+            }
+            else
+                $value = (int)$value;
+        }
+        else {
+            $value = 0;
+        }
 
-        // remove everything except numbers and dot "."
-        $price = preg_replace("/[^0-9\.]/", "", $price);
-
-        // return float
-        return (float) $price;
+        return $value;
     }
 }
