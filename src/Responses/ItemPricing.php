@@ -33,10 +33,10 @@ class ItemPricing implements ResponseInterface
             'volume' => $data['volume'],
 
             'lowest_price' => Mixins::toFloat($data['lowest_price']),
-            'lowest_price_str' => $data['lowest_price'],
+            'lowest_price_text' => $data['lowest_price'],
 
             'median_price' => Mixins::toFloat($data['median_price']),
-            'median_price_str' => $data['median_price']
+            'median_price_text' => $data['median_price']
         ];
     }
 }

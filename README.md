@@ -135,9 +135,9 @@ This will return the lowest and median price for an item.
     "success"          => true
     "volume"           => "121"
     "lowest_price"     => 36.66
-    "lowest_price_str" => "$36.66"
+    "lowest_price_text" => "$36.66"
     "median_price"     => 34.56
-    "median_price_str" => "$34.56"
+    "median_price_text" => "$34.56"
 ]
 ```
 
