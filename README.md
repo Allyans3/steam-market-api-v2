@@ -43,9 +43,9 @@ Note
 
 All methods don't have delays. If you are using some method in cycle, please use this in-built php function to prevent steam block for a few minutes:
 ```
-sleep(rand(8,12));
+sleep(rand(10,16));
 ```
-Recommended 8 and more seconds.
+Recommended 10 and more seconds.
 
 Creating new object
 -------------------
@@ -81,14 +81,14 @@ You'll get 3 technical fields and array of items:
     "total_count" => 14941
     "items" => [
         0 => [
-            "name"       => "AK-47 | The Empress (Field-Tested)"
-            "image"      => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV09m7hJKOhOTLPr7Vn35cppMh2L2VrN-h2geyqhc-MD3xJYecIANrMwvZ8wK8wr3nhJC6vJ2dy3B9-n51Yx1fd-M"
-            "curr_price" => "$41.92"
-            "currency"   => "USD"
-            "price"      => "41.92"
-            "volume"     => 174
-            "type"       => "Covert Rifle"
-            "condition"  => "Field-Tested"
+            "name"          => "AK-47 | The Empress (Field-Tested)"
+            "image"         => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV09m7hJKOhOTLPr7Vn35cppMh2L2VrN-h2geyqhc-MD3xJYecIANrMwvZ8wK8wr3nhJC6vJ2dy3B9-n51Yx1fd-M"           
+            "currency"      => "USD"
+            "price"         => 37.37
+            "price_text"    => "$37.37"
+            "sell_listings" => 246
+            "type"          => "Covert Rifle"
+            "condition"     => "Field-Tested"
         },
         ...
     ]
@@ -132,10 +132,12 @@ This will return the lowest and median price for an item.
 
 ```
 [ 
-    "success" => true
-    "lowest_price" => "$41.88"
-    "volume" => "94"
-    "median_price" => "$40.51"
+    "success"          => true
+    "volume"           => "121"
+    "lowest_price"     => 36.66
+    "lowest_price_str" => "$36.66"
+    "median_price"     => 34.56
+    "median_price_str" => "$34.56"
 ]
 ```
 
@@ -161,13 +163,13 @@ You'll get 3 technical fields and array of items:
     "total_count" => 10
     "items" => [
         0 => [
-            "name" => "AK-47 | The Empress (Minimal Wear)"
-            "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhn ▶"
-            "price" => "58.32"
-            "currency_price" => "$58.32"
-            "volume" => 94
-            "type" => "Covert Rifle"
-            "condition" => "Minimal Wear"
+            "name"          => "AK-47 | The Empress (Field-Tested)"
+            "image"         => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV09m7hJKOhOTLPr7Vn35cppMh2L2VrN-h2geyqhc-MD3xJYecIANrMwvZ8wK8wr3nhJC6vJ2dy3B9-n51Yx1fd-M"           
+            "price"         => 37.37
+            "price_text"    => "$37.37"
+            "sell_listings" => 246
+            "type"          => "Covert Rifle"
+            "condition"     => "Field-Tested"
         ],
         ...
     ]
@@ -257,9 +259,12 @@ You'll get 3 technical fields and array of items:
             "listingId" => "3136147247424375927"
             "name" => "AK-47 | The Empress (Field-Tested)"
             "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhn ▶"
-            "price_with_fee" => "$41.89"
-            "price_with_publisher_fee_only" => "$40.07"
-            "price_without_fee" => "$36.43"
+            "price_with_fee" => 37.37
+            "price_with_fee_str" => "$37.37"
+            "price_with_publisher_fee_only" => 35.75
+            "price_with_publisher_fee_only_str" => "$35.75"
+            "price_without_fee" => 32.5
+            "price_without_fee_str" => "$32.50"
             "inspectLink" => "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3136147247424375927A19190892996D9387202219111148413"
         ],
         ...    

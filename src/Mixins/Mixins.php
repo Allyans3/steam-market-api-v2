@@ -44,4 +44,16 @@ class Mixins
 
         return "";
     }
+
+    public static function toFloat($price)
+    {
+        // convert "," to "."
+        $price = str_replace(',', '.', $price);
+
+        // remove everything except numbers and dot "."
+        $price = preg_replace("/[^0-9\.]/", "", $price);
+
+        // return float
+        return (float) $price;
+    }
 }

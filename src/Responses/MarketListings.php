@@ -40,14 +40,14 @@ class MarketListings implements ResponseInterface
     private function completeData($data)
     {
         return [
-            'name'       => $data['hash_name'],
-            'image'      => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
-            'curr_price' => $data['sell_price_text'],
-            'currency'   => Config::CURRENCY[$data['asset_description']['currency']],
-            'price'      => bcdiv($data['sell_price'], 100, 2),
-            'volume'     => $data['sell_listings'],
-            'type'       => $data['asset_description']['type'],
-            'condition'  => Mixins::getCondition($data['hash_name'])
+            'name'          => $data['hash_name'],
+            'image'         => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
+            'currency'      => Config::CURRENCY[$data['asset_description']['currency']],
+            'price'         => Mixins::toFloat($data['sell_price_text']),
+            'price_text'    => $data['sell_price_text'],
+            'sell_listings' => $data['sell_listings'],
+            'type'          => $data['asset_description']['type'],
+            'condition'     => Mixins::getCondition($data['hash_name'])
         ];
     }
 }

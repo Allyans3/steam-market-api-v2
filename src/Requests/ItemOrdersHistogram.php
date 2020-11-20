@@ -2,6 +2,7 @@
 
 namespace SteamApi\Requests;
 
+use Psy\Exception\RuntimeException;
 use SteamApi\Engine\Request;
 use SteamApi\Interfaces\RequestInterface;
 
@@ -37,10 +38,15 @@ class ItemOrdersHistogram extends Request implements RequestInterface
 
     private function setOptions($options)
     {
+        if (isset($options['item_nameid'])) {
+            $this->item_nameid = $options['item_nameid'];
+        } else {
+            throw new RuntimeException("Option 'item_nameid' must be filled");
+        }
+
         $this->country = isset($options['country']) ? $options['country'] : $this->country;
         $this->language = isset($options['language']) ? $options['language'] : $this->language;
         $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
-        $this->item_nameid = isset($options['item_nameid']) ? $options['item_nameid'] : $this->item_nameid;
 
         return $this;
     }

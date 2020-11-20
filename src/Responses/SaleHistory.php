@@ -32,11 +32,16 @@ class SaleHistory implements ResponseInterface
             return [];
         }
 
+        return $this->completeData($data);
+    }
+
+    private function completeData($data)
+    {
         return array_map(function ($item) {
             $date = explode(' ', $item[0]);
             return [
                 'sale_date' => date('Y-m-d', strtotime($date[1] . ' ' . $date[0] . ' ' . $date[2])),
-                'sale_price' => (float) $item[1],
+                'sale_price' => $item[1],
                 'quantity' => (int) $item[2]
             ];
         }, $data);

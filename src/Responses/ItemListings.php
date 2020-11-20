@@ -51,13 +51,23 @@ class ItemListings implements ResponseInterface
 
     private function parseNode($node)
     {
+        $price_with_fee = trim($node->find('.market_listing_price_with_fee')[0]->text());
+        $price_with_publisher_fee_only = trim($node->find('.market_listing_price_with_publisher_fee_only')[0]->text());
+        $price_without_fee = trim($node->find('.market_listing_price_without_fee')[0]->text());
+
         return [
             'listingId' => substr($node->attr('id'), 8),
             'name' => $node->find('.market_listing_item_name')[0]->text(),
             'image' => $node->find('img')[0]->attr('src'),
-            'price_with_fee' => trim($node->find('.market_listing_price_with_fee')[0]->text()),
-            'price_with_publisher_fee_only' => trim($node->find('.market_listing_price_with_publisher_fee_only')[0]->text()),
-            'price_without_fee' => trim($node->find('.market_listing_price_without_fee')[0]->text()),
+
+            'price_with_fee' => Mixins::toFloat($price_with_fee),
+            'price_with_fee_str' => $price_with_fee,
+
+            'price_with_publisher_fee_only' => Mixins::toFloat($price_with_publisher_fee_only),
+            'price_with_publisher_fee_only_str' => $price_with_publisher_fee_only,
+
+            'price_without_fee' => Mixins::toFloat($price_without_fee),
+            'price_without_fee_str' => $price_without_fee
         ];
     }
 }
