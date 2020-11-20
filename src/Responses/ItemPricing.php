@@ -28,15 +28,16 @@ class ItemPricing implements ResponseInterface
 
     private function completeData($data)
     {
-        return [
-            'success' => $data['success'],
-            'volume' => $data['volume'],
+        if (array_key_exists('lowest_price', $data)) {
+            $data['lowest_price_text'] = $data['lowest_price'];
+            $data['lowest_price'] = Mixins::toFloat($data['lowest_price']);
+        }
 
-            'lowest_price' => Mixins::toFloat($data['lowest_price']),
-            'lowest_price_text' => $data['lowest_price'],
+        if (array_key_exists('median_price', $data)) {
+            $data['median_price_text'] = $data['median_price'];
+            $data['median_price'] = Mixins::toFloat($data['median_price']);
+        }
 
-            'median_price' => Mixins::toFloat($data['median_price']),
-            'median_price_text' => $data['median_price']
-        ];
+        return $data;
     }
 }
