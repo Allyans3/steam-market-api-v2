@@ -4,6 +4,7 @@ namespace SteamApi;
 
 use Psy\Exception\RuntimeException;
 use SteamApi\Config\Config;
+use SteamApi\Mixins\Mixins;
 
 class SteamApi
 {
@@ -17,6 +18,16 @@ class SteamApi
     public function getConditionList()
     {
         return Config::CONDITIONS;
+    }
+
+    public function getUserAgents($browser = 'Chrome')
+    {
+        return Mixins::getUserAgents($browser);
+    }
+
+    public function getNextIp(&$proxyList)
+    {
+        return Mixins::getNextIp($proxyList);
     }
 
     public function inspectItem($inspectLink)

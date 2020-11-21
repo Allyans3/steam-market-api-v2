@@ -65,4 +65,25 @@ class Mixins
 
         return $value;
     }
+
+    public static function getUserAgents($browser = 'Chrome')
+    {
+        $thisDir = dirname(__FILE__);
+        $parent_dir = realpath($thisDir . '/..');
+        $path = $parent_dir . '/UserAgents/' . $browser . '.txt';
+        $handle = @file_get_contents($path);
+
+        return $handle ? explode("\n", $handle) : [];
+    }
+
+    public static function getNextIp(&$proxyList)
+    {
+        $current = current($proxyList);
+
+        if ($current === false)
+            $current = reset($proxyList);
+
+        next($proxyList);
+        return $current;
+    }
 }

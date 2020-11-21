@@ -21,6 +21,8 @@ Menu
     - [Item Name ID](#item-name-id)
     - [Currency List](#currency-list)
     - [Condition List](#condition-list)
+    - [User Agents List](#user-agents-list)
+    - [Next IP](#next-ip)
 - [Proxy](#proxy)
 
 ---
@@ -370,6 +372,56 @@ You'll receive condition list:
     "(Well-Worn)" => "Well-Worn"
     "(Battle-Scarred)" => "Battle-Scarred"
 ]
+```
+
+### User Agents List
+
+This method return User Agents List for this browsers: Chrome, Edge, Firefox, IE, Opera, Safari
+
+```
+$response = $api->getUserAgents('Chrome');
+```
+
+You'll receive user agents list:
+
+```
+[
+    0 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    1 => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
+    2 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
+    3 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
+    4 => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
+    5 => "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
+    6 => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    7 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+    8 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36",
+    9 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+    10 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+    ...
+]
+```
+
+### Next IP
+
+If you are using for the first time you will get the first item. If you have reached the last item then the first item will be returned to you.
+
+```
+$proxyList = [
+    "46.218.155.194:3128",
+    "1.32.41.37:8080",
+    "114.5.35.98:38554",
+    "175.103.46.161:3888",
+    "203.210.84.59:80",
+    "113.53.60.255:8080",
+];
+
+$response = $api->getNextIp($proxyList);
+```
+
+You'll receive next ip:
+
+```
+"46.218.155.194:3128"
 ```
 
 Proxy
