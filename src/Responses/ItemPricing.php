@@ -23,6 +23,10 @@ class ItemPricing implements ResponseInterface
     {
         $data = json_decode($response, true);
 
+        if (!$data) {
+            return false;
+        }
+
         return $this->completeData($data);
     }
 
