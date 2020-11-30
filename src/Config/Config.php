@@ -54,4 +54,213 @@ class Config
         "(Well-Worn)" => "Well-Worn",
         "(Battle-Scarred)" => "Battle-Scarred"
     ];
+
+    const STICKERS_POS = [
+        "AK-47 |" => [
+            4 => 'Top',
+            3 => 'Almost top',
+            2 => 'Normal',
+            1 => 'Bad'
+        ],
+        "AUG |" => [
+            4 => 'Top',
+            3 => 'Almost top',
+            2 => 'Normal',
+            1 => 'Bad'
+        ],
+        "AWP |" => [
+            4 => 'Top',
+            3 => 'Almost top',
+            2 => 'Normal',
+            1 => 'Bad'
+        ],
+        "CZ75-Auto |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "Desert Eagle |" => [
+            2 => 'Top',
+            3 => 'Top',
+            4 => 'Top',
+            1 => 'Bad'
+        ],
+        "Dual Berettas |" => [
+            4 => 'Top',
+            2 => 'Top',
+            3 => 'Almost top',
+            1 => 'Almost top'
+        ],
+        "FAMAS |" => [
+            2 => 'Top',
+            3 => 'Almost top',
+            4 => 'Normal',
+            1 => 'Bad'
+        ],
+        "Five-SeveN |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "G3SG1 |" => [
+            5 => 'Top',
+            4 => 'Almost top',
+            3 => 'Normal',
+            2 => 'Bad',
+            1 => 'Bad'
+        ],
+        "Galil AR |" => [
+            2 => 'Top',
+            3 => 'Almost top',
+            1 => 'Normal',
+            4 => 'Bad',
+        ],
+        "Glock-18 |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "M249 |" => [
+            4 => 'Top',
+            3 => 'Normal',
+            2 => 'Normal',
+            1 => 'Normal'
+        ],
+        "M4A1-S |" => [
+            2 => 'Top',
+            3 => 'Almost top',
+            4 => 'Almost top',
+            1 => 'Bad'
+        ],
+        "M4A4 |" => [
+            2 => 'Top',
+            3 => 'Almost top',
+            4 => 'Almost top',
+            1 => 'Bad'
+        ],
+        "MAC-10 |" => [
+            4 => 'Top',
+            1 => 'Top',
+            3 => 'Almost top',
+            2 => 'Bad'
+        ],
+        "MAG-7 |" => [
+            4 => 'Top',
+            2 => 'Top',
+            3 => 'Almost top',
+            1 => 'Bad'
+        ],
+        "MP5-SD |" => [
+            4 => 'Top',
+            2 => 'Top',
+            3 => 'Almost top',
+            1 => 'Bad'
+        ],
+        "MP7 |" => [
+            2 => 'Top',
+            1 => 'Almost top',
+            3 => 'Bad',
+            4 => 'Bad'
+        ],
+        "MP9 |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "Negev |" => [
+            2 => 'Top',
+            1 => 'Almost top',
+            4 => 'Normal',
+            3 => 'Bad'
+        ],
+        "Nova |" => [
+            4 => 'Top',
+            1 => 'Top',
+            3 => 'Almost top',
+            2 => 'Almost top'
+        ],
+        "P2000 |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "P250 |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "P90 |" => [
+            2 => 'Top',
+            4 => 'Normal',
+            3 => 'Bad',
+            1 => 'Bad'
+        ],
+        "PP-Bizon |" => [
+            1 => 'Top',
+            3 => 'Top',
+            5 => 'Top',
+            2 => 'Almost top'
+        ],
+        "R8 Revolver |" => [
+            3 => 'Top',
+            5 => 'Top',
+            1 => 'Almost top',
+            2 => 'Normal',
+            4 => 'Bad'
+        ],
+        "Sawed-Off |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Bad'
+        ],
+        "SCAR-20 |" => [
+            4 => 'Top',
+            2 => 'Almost top',
+            3 => 'Normal',
+            1 => 'Bad'
+        ],
+        "SG 553 |" => [
+            1 => 'Top',
+            3 => 'Top',
+            2 => 'Almost top',
+            4 => 'Normal'
+        ],
+        "SSG 08 |" => [
+            2 => 'Top',
+            4 => 'Top',
+            3 => 'Almost top',
+            1 => 'Normal'
+        ],
+        "Tec-9 |" => [
+            1 => 'Top',
+            3 => 'Top',
+            4 => 'Top',
+            2 => 'Almost top'
+        ],
+        "UMP-45 |" => [
+            4 => 'Top',
+            3 => 'Almost top',
+            2 => 'Almost top',
+            1 => 'Bad'
+        ],
+        "USP-S |" => [
+            4 => 'Top',
+            1 => 'Top',
+            3 => 'Almost top',
+            2 => 'Almost top'
+        ],
+        "XM1014 |" => [
+            1 => 'Top',
+            2 => 'Top',
+            3 => 'Top',
+            4 => 'Top'
+        ]
+    ];
 }

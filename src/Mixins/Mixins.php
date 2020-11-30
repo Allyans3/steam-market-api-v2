@@ -86,4 +86,39 @@ class Mixins
         next($proxyList);
         return $current;
     }
+
+    public static function createSteamLink($asset, $description)
+    {
+        $typeList = [
+            "Base Grade Tool",
+            "Agent",
+            "Graffiti",
+            "Sticker",
+            "Collectible",
+            "Music Kit"
+        ];
+
+        foreach ($typeList as $value) {
+            if (str_contains($description['type'], $value))
+                return [];
+        }
+
+        if (array_key_exists('actions', $description)) {
+            $link = $description['actions'][0]['link'];
+            $steamId = explode('/', $link)[4];
+            $link = str_replace("%assetid%", $asset['assetid'], $link);
+            $link = str_replace("%owner_steamid%", $steamId, $link);
+
+            return $link;
+        }
+
+        return [];
+    }
+
+    public static function parseNameTag($nameTag)
+    {
+        $matches = explode("''", $nameTag);
+
+        return $matches[1];
+    }
 }

@@ -23,6 +23,8 @@ Menu
     - [Condition List](#condition-list)
     - [User Agents List](#user-agents-list)
     - [Next IP](#next-ip)
+    - [Stickers Position List](#stickers-position-list)
+    - [User Inventory](#user-inventory)
 - [Proxy](#proxy)
 
 ---
@@ -422,6 +424,70 @@ You'll receive next ip:
 
 ```
 "46.218.155.194:3128"
+```
+
+### Stickers Position List
+
+This method return stickers position list of guns. Positions taken from CSGOFloat Api.
+
+```
+$response = $api->getStickersPosition();
+```
+
+You'll receive stickers position list:
+
+```
+[
+    "AK-47 |" => [
+        4 => "Top"
+        3 => "Almost top"
+        2 => "Normal"
+        1 => "Bad"
+    ],
+    ...
+]
+```
+
+### User Inventory
+
+This method return user inventory by SteamID64.
+
+```
+$options = [
+    'steamId' => '76561197986603983',
+    'contextId' => 2,
+    'count'   => 50,
+    'language' => 'english',
+    'startAssetId' => ''
+];
+
+$response = $api->getUserInventory(730, $options);
+```
+
+You'll receive inventory items:
+
+```
+[
+    0 => [
+        "assetid" => "16743778990",
+        "classid" => "2127752602",
+        "instanceid" => "188530139",
+        "amount" => "1",
+        "name" => "★ Karambit | Gamma Doppler (Factory New)",
+        "type" => "★ Covert Knife",
+        "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf2PLacDBA5ciJlY20kPb5PrrukmRB-Ml0mNbR_Y3mjQaLpxo7Oy3tcYKVcQRsZF_Q-FTow-zs0Jft7czNmiNluyV35nrbyR2_1UlPaOFp1uveFwtI0RP3qg",
+        "withdrawable_at" => 7,
+        "marketable" => 1,
+        "tradable" => 1,
+        "nameTag" => "StrikeR's PricK",
+        "condition" => "Factory New",
+        "float" => 0.060837019234896,
+        "paintseed" => 905,
+        "paintindex" => 570,
+        "stickers" => []
+    ],
+    ...
+]
 ```
 
 Proxy

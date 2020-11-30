@@ -20,6 +20,11 @@ class SteamApi
         return Config::CONDITIONS;
     }
 
+    public function getStickersPosition()
+    {
+        return Config::STICKERS_POS;
+    }
+
     public function getUserAgents($browser = 'Chrome')
     {
         return Mixins::getUserAgents($browser);
@@ -96,6 +101,13 @@ class SteamApi
         }
 
         return (new $class($options))->call($proxy)->response();
+    }
+
+    public function getUserInventory(int $appId = null, array $options = [], $proxy = [])
+    {
+        $type = 'UserInventory';
+
+        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
     }
 
 
