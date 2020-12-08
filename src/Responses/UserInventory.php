@@ -27,8 +27,8 @@ class UserInventory implements ResponseInterface
     {
         $data = json_decode($response, true);
 
-        if (array_key_exists('error', $data)) {
-            return $data;
+        if (is_null($data) || array_key_exists('error', $data)) {
+            return false;
         }
 
         $returnData = [];
