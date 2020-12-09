@@ -15,7 +15,7 @@ class UserInventory extends Request implements RequestInterface
     private string $steamId;
     private int $contextId = 2;
     private string $language = 'english';
-    private int $count = 100;
+    private int $count = 75;
     private string $startAssetId = '';
     private string $method = 'GET';
 
