@@ -2,7 +2,6 @@
 
 namespace SteamApi\Responses;
 
-use Curl\MultiCurl;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 use SteamApi\SteamApi;
@@ -74,7 +73,7 @@ class UserInventory implements ResponseInterface
             $baseInfo['nameTag'] = Mixins::parseNameTag($description['fraudwarnings'][0]);
         }
 
-        if (array_key_exists('iteminfo', $inspectItem)) {
+        if ($inspectItem && array_key_exists('iteminfo', $inspectItem)) {
             $addInfo = [
                 'condition'  => $inspectItem['iteminfo']['wear_name'],
                 'float'      => $inspectItem['iteminfo']['floatvalue'],

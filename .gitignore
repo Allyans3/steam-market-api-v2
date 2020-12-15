@@ -113,3 +113,6 @@ $RECYCLE.BIN/
 /example/*
 
 composer.lock
+
+/tmp
+/tmp/*
