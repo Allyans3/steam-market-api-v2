@@ -55,14 +55,14 @@ class ItemListings implements ResponseInterface
         $price_with_publisher_fee_only = trim($node->find('.market_listing_price_with_publisher_fee_only')[0]->text());
         $price_without_fee = trim($node->find('.market_listing_price_without_fee')[0]->text());
 
-        $img = $node->find('img')[0]->attr('src');
-        $imgBig = str_replace('/62fx62f', '', $img);
+        $image = $node->find('img')[0]->attr('src');
+        $imageLarge = str_replace('/62fx62f', '', $image);
 
         return [
             'listingId' => substr($node->attr('id'), 8),
             'name' => $node->find('.market_listing_item_name')[0]->text(),
-            'image' => $img,
-            'imageBig' => $imgBig,
+            'image' => $image,
+            'imageLarge' => $imageLarge,
 
             'price_with_fee' => Mixins::toFloat($price_with_fee),
             'price_with_fee_str' => $price_with_fee,
