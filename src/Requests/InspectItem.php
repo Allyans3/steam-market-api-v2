@@ -17,7 +17,7 @@ class InspectItem extends Request implements RequestInterface
         $this->inspectLink = $inspectLink;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return sprintf(self::URL, $this->inspectLink);
     }
@@ -27,7 +27,7 @@ class InspectItem extends Request implements RequestInterface
         return $this->steamHttpRequest();
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return $this->method;
     }

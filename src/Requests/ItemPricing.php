@@ -21,31 +21,28 @@ class ItemPricing extends Request implements RequestInterface
         $this->setOptions($options);
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return sprintf(self::URL, $this->appId, $this->currency, $this->market_hash_name);
     }
 
     public function call($options = [], $proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy);
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return $this->method;
     }
 
     private function setOptions($options)
     {
-        if (isset($options['market_hash_name'])) {
+        if (isset($options['market_hash_name']))
             $this->market_hash_name = rawurlencode($options['market_hash_name']);
-        } else {
+        else
             throw new RuntimeException("Option 'market_hash_name' must be filled");
-        }
 
         $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
-
-        return $this;
     }
 }

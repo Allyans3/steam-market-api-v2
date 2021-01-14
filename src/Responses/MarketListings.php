@@ -37,7 +37,7 @@ class MarketListings implements ResponseInterface
         return $returnData;
     }
 
-    private function completeData($data)
+    private function completeData($data): array
     {
         return [
             'name'          => $data['hash_name'],

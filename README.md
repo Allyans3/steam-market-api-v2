@@ -40,16 +40,16 @@ Run this text in console to install this package:
 composer require allyans3/steam-market-api-v2
 ```
 
-This package currently offers 7 API calls you can make to Steam, 1 API to CSGOFloat-API and 2 technical methods.
+This package currently offers 8 API calls you can make to Steam, 1 API to CSGOFloat-API and 5 technical methods.
 
 Note
 ----
 
-All methods don't have delays. If you are using some method in cycle, please use this in-built php function to prevent steam block for a few minutes:
+All methods don't have delays. If you are using some method in a cycle, please use this in-built php function to prevent steam block for a few minutes:
 ```
-sleep(rand(10,16));
+sleep(rand(15,20));
 ```
-Recommended 10 and more seconds.
+Recommended 15 and more seconds.
 
 Creating new object
 -------------------
@@ -262,7 +262,8 @@ You'll get 3 technical fields and array of items:
         0 => [
             "listingId" => "3136147247424375927"
             "name" => "AK-47 | The Empress (Field-Tested)"
-            "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhn ▶"
+            "image" => "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV09m7hJKOhOTLPr7Vn35cppMh2L2VrN-h2geyqhc-MD3xJYecIANrMwvZ8wK8wr3nhJC6vJ2dy3B9-n51Yx1fd-M/62fx62f"
+            "imageBig" => "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV09m7hJKOhOTLPr7Vn35cppMh2L2VrN-h2geyqhc-MD3xJYecIANrMwvZ8wK8wr3nhJC6vJ2dy3B9-n51Yx1fd-M"
             "price_with_fee" => 37.37
             "price_with_fee_str" => "$37.37"
             "price_with_publisher_fee_only" => 35.75

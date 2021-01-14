@@ -64,7 +64,7 @@ class ItemOrdersHistogram implements ResponseInterface
         return $data;
     }
 
-    private function completeData($data)
+    private function completeData($data): array
     {
         return [
             'highest_buy_order' => (int) $data['highest_buy_order'],

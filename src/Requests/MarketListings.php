@@ -22,17 +22,17 @@ class MarketListings extends Request implements RequestInterface
         $this->setOptions($options);
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return sprintf(self::URL, $this->start, $this->count, $this->sort_column, $this->sort_dir, $this->appId);
     }
 
     public function call($options = [], $proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy);
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return $this->method;
     }
@@ -43,7 +43,5 @@ class MarketListings extends Request implements RequestInterface
         $this->count = isset($options['count']) ? $options['count'] : $this->count;
         $this->sort_column = isset($options['sort_column']) ? $options['sort_column'] : $this->sort_column;
         $this->sort_dir = isset($options['sort_dir']) ? $options['sort_dir'] : $this->sort_dir;
-
-        return $this;
     }
 }

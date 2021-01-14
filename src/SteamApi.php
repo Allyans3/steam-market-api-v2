@@ -10,17 +10,17 @@ class SteamApi
 {
     const CLASS_PREFIX = '\\SteamApi\\Requests\\';
 
-    public function getCurrencyList()
+    public function getCurrencyList(): array
     {
         return Config::CURRENCY;
     }
 
-    public function getConditionList()
+    public function getConditionList(): array
     {
         return Config::CONDITIONS;
     }
 
-    public function getStickersPosition()
+    public function getStickersPosition(): array
     {
         return Config::STICKERS_POS;
     }
@@ -52,42 +52,42 @@ class SteamApi
     {
         $type = 'ItemPricing';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
     public function getMarketListings(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'MarketListings';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
     public function getSaleHistory(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'SaleHistory';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
     public function searchItems(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'SearchItems';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
     public function getItemListings(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'ItemListings';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
     public function getItemNameId(int $appId = null, array $options = [], $proxy = [])
     {
         $type = 'ItemNameId';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
     public function getItemOrdersHistogram(array $options = [], $proxy = [])
@@ -107,7 +107,7 @@ class SteamApi
     {
         $type = 'UserInventory';
 
-        return $this->request($type, $appId, $options)->call($options, $proxy)->response();
+        return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
 

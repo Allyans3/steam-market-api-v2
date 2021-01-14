@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SteamApi\Requests;
 
 use Psy\Exception\RuntimeException;
@@ -25,34 +24,31 @@ class UserInventory extends Request implements RequestInterface
         $this->setOptions($options);
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return sprintf(self::URL, $this->steamId, $this->appId, $this->contextId, $this->language, $this->count, $this->startAssetId);
     }
 
-    public function call($options = [], $proxy = [])
+    public function call($proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy);
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return $this->method;
     }
 
     private function setOptions($options)
     {
-        if (isset($options['steamId'])) {
+        if (isset($options['steamId']))
             $this->steamId = rawurlencode($options['steamId']);
-        } else {
+        else
             throw new RuntimeException("Option 'steamId' must be filled");
-        }
 
         $this->contextId = isset($options['contextId']) ? $options['contextId'] : $this->contextId;
         $this->language = isset($options['language']) ? $options['language'] : $this->language;
         $this->count = isset($options['count']) ? $options['count'] : $this->count;
         $this->startAssetId = isset($options['startAssetId']) ? $options['startAssetId'] : $this->startAssetId;
-
-        return $this;
     }
 }

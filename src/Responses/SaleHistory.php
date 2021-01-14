@@ -35,7 +35,7 @@ class SaleHistory implements ResponseInterface
         return $this->completeData($data);
     }
 
-    private function completeData($data)
+    private function completeData($data): array
     {
         return array_map(function ($item) {
             $date = explode(' ', $item[0]);

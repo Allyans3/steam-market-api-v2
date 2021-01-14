@@ -22,17 +22,17 @@ class SearchItems extends Request implements RequestInterface
         $this->setOptions($options);
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return sprintf(self::URL, $this->appId, $this->start, $this->count, $this->query);
     }
 
-    public function call($options = [], $proxy = [])
+    public function call($proxy = [])
     {
-        return $this->setOptions($options)->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy);
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return $this->method;
     }
@@ -46,7 +46,5 @@ class SearchItems extends Request implements RequestInterface
         $this->query = isset($options['query']) ?
             ($this->exact ? sprintf('"%s"', rawurlencode($options['query'])) : rawurlencode($options['query'])) :
             $this->query;
-
-        return $this;
     }
 }
