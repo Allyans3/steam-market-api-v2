@@ -6,7 +6,7 @@ use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 use SteamApi\SteamApi;
 
-class UserInventory implements ResponseInterface
+class UserInventoryV2 implements ResponseInterface
 {
     private $steamApi;
     private $data;
@@ -32,29 +32,26 @@ class UserInventory implements ResponseInterface
 
         $returnData = [];
 
-        foreach ($data['assets'] as $asset) {
-            foreach ($data['descriptions'] as $description) {
-                if ($asset['classid'] === $description['classid']) {
+        foreach ($data['rgInventory'] as $asset) {
 
-                    $inspectLink = Mixins::createSteamLink($asset, $description);
-                    $inspectItem = [];
+            $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
+            $inspectLink = Mixins::createSteamLink($asset['id'], $description);
 
-                    if ($inspectLink)
-                        $inspectItem = $this->steamApi->inspectItem($inspectLink);
+            $inspectItem = [];
 
-                    $returnData[] = $this->completeData($asset, $description, $inspectItem);
-                    break;
-                }
-            }
+            if ($inspectLink)
+                $inspectItem = $this->steamApi->inspectItem($inspectLink);
+
+            $returnData[] = $this->completeData($asset, $description, $inspectItem);
         }
 
         return $returnData;
     }
 
-    private function completeData($asset, $description, $inspectItem)
+    private function completeData($asset, $description, $inspectItem): array
     {
         $baseInfo =  [
-            'assetid'         => $asset['assetid'],
+            'assetid'         => $asset['id'],
             'classid'         => $asset['classid'],
             'instanceid'      => $asset['instanceid'],
             'amount'          => $asset['amount'],
@@ -62,9 +59,9 @@ class UserInventory implements ResponseInterface
             'name'            => $description['market_hash_name'],
             'type'            => $description['type'],
             'image'           => "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url'],
-            'imageLarge'      => "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url_large'],
+            'imageLarge'      => isset($description['icon_url_large']) ? "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url_large'] : '',
             'image_cf'        => "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url'],
-            'imageLarge_cf'   => "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url_large'],
+            'imageLarge_cf'   => isset($description['icon_url_large']) ? "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url_large'] : '',
             'withdrawable_at' => $description['market_tradable_restriction'],
             'marketable'      => $description['marketable'],
             'tradable'        => $description['tradable'],

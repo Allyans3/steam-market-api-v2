@@ -110,6 +110,13 @@ class SteamApi
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
+    public function getUserInventoryV2(int $appId = null, array $options = [], $proxy = [])
+    {
+        $type = 'UserInventoryV2';
+
+        return $this->request($type, $appId, $options)->call($proxy)->response();
+    }
+
 
 
     private function request($type, $appId, array $options)

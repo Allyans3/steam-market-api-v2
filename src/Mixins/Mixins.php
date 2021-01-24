@@ -6,7 +6,7 @@ use SteamApi\Config\Config;
 
 class Mixins
 {
-    public static function getCondition($market_name)
+    public static function getCondition($market_name): string
     {
         foreach (Config::CONDITIONS as $key => $value) {
             if (strpos($market_name, $key)) {
@@ -17,7 +17,7 @@ class Mixins
         return '';
     }
 
-    public static function fillBaseData($data)
+    public static function fillBaseData($data): array
     {
         return [
             'start'       => $data['start'],
@@ -98,6 +98,11 @@ class Mixins
             "Music Kit"
         ];
 
+        if (is_array($asset))
+            $assetId = $asset['assetid'];
+        else
+            $assetId = $asset;
+
         foreach ($typeList as $value) {
             if (str_contains($description['type'], $value))
                 return [];
@@ -106,7 +111,7 @@ class Mixins
         if (array_key_exists('actions', $description)) {
             $link = $description['actions'][0]['link'];
             $steamId = explode('/', $link)[4];
-            $link = str_replace("%assetid%", $asset['assetid'], $link);
+            $link = str_replace("%assetid%", $assetId, $link);
             $link = str_replace("%owner_steamid%", $steamId, $link);
 
             return $link;

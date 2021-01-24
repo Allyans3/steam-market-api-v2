@@ -25,6 +25,7 @@ Menu
     - [Next IP](#next-ip)
     - [Stickers Position List](#stickers-position-list)
     - [User Inventory](#user-inventory)
+    - [User Inventory V2](#user-inventory-v2)
 - [Proxy](#proxy)
 
 ---
@@ -34,22 +35,22 @@ Installation
 
 ### With composer
 
-Run this text in console to install this package:
+Run this text in a console to install this package:
 
 ```
 composer require allyans3/steam-market-api-v2
 ```
 
-This package currently offers 8 API calls you can make to Steam, 1 API to CSGOFloat-API and 5 technical methods.
+This package currently offers 9 API calls you can make to Steam, 1 API to CSGOFloat-API and 5 technical methods.
 
 Note
 ----
 
 All methods don't have delays. If you are using some method in a cycle, please use this in-built php function to prevent steam block for a few minutes:
 ```
-sleep(rand(15,20));
+sleep(rand(8,12));
 ```
-Recommended 15 and more seconds.
+Recommended 8 and more seconds.
 
 Creating new object
 -------------------
@@ -463,6 +464,45 @@ $options = [
 ];
 
 $response = $api->getUserInventory(730, $options);
+```
+
+You'll receive inventory items:
+
+```
+[
+    0 => [
+        "assetid" => "16743778990",
+        "classid" => "2127752602",
+        "instanceid" => "188530139",
+        "amount" => "1",
+        "name" => "★ Karambit | Gamma Doppler (Factory New)",
+        "type" => "★ Covert Knife",
+        "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf2PLacDBA5ciJlY20kPb5PrrukmRB-Ml0mNbR_Y3mjQaLpxo7Oy3tcYKVcQRsZF_Q-FTow-zs0Jft7czNmiNluyV35nrbyR2_1UlPaOFp1uveFwtI0RP3qg",
+        "withdrawable_at" => 7,
+        "marketable" => 1,
+        "tradable" => 1,
+        "nameTag" => "StrikeR's PricK",
+        "condition" => "Factory New",
+        "float" => 0.060837019234896,
+        "paintseed" => 905,
+        "paintindex" => 570,
+        "stickers" => []
+    ],
+    ...
+]
+```
+
+### User Inventory V2
+
+This method return FULL user inventory by SteamID64.
+
+```
+$options = [
+    'steamId' => '76561197986603983',
+    'contextId' => 2,
+];
+
+$response = $api->getUserInventoryV2(730, $options);
 ```
 
 You'll receive inventory items:
