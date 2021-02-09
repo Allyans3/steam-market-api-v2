@@ -50,18 +50,21 @@ class UserInventoryV2 implements ResponseInterface
 
     private function completeData($asset, $description, $inspectItem): array
     {
+        $steamImgUrl = "https://steamcommunity-a.akamaihd.net/economy/image/";
+        $cloudFlareUmgUrl = "https://community.cloudflare.steamstatic.com/economy/image/";
+
         $baseInfo =  [
-            'assetid'         => $asset['id'],
+            'assetid'         => $asset['assetid'],
             'classid'         => $asset['classid'],
             'instanceid'      => $asset['instanceid'],
             'amount'          => $asset['amount'],
 
             'name'            => $description['market_hash_name'],
             'type'            => $description['type'],
-            'image'           => "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url'],
-            'imageLarge'      => isset($description['icon_url_large']) ? "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url_large'] : '',
-            'image_cf'        => "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url'],
-            'imageLarge_cf'   => isset($description['icon_url_large']) ? "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url_large'] : '',
+            'image'           => $steamImgUrl . $description['icon_url'],
+            'imageLarge'      => isset($description['icon_url_large']) ? $steamImgUrl . $description['icon_url_large'] : null,
+            'image_cf'        => $cloudFlareUmgUrl . $description['icon_url'],
+            'imageLarge_cf'   => isset($description['icon_url_large']) ? $cloudFlareUmgUrl . $description['icon_url_large'] : null,
             'withdrawable_at' => $description['market_tradable_restriction'],
             'marketable'      => $description['marketable'],
             'tradable'        => $description['tradable'],

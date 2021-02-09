@@ -2,6 +2,7 @@
 
 namespace SteamApi\Responses;
 
+use Curl\MultiCurl;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 use SteamApi\SteamApi;
@@ -24,6 +25,9 @@ class UserInventory implements ResponseInterface
 
     private function decodeResponse($response)
     {
+        $multi_curl = new MultiCurl();
+        $multi_curl->setConcurrency(100);
+
         $data = json_decode($response, true);
 
         if (is_null($data) || array_key_exists('error', $data)) {
@@ -33,26 +37,54 @@ class UserInventory implements ResponseInterface
         $returnData = [];
 
         foreach ($data['assets'] as $asset) {
-            foreach ($data['descriptions'] as $description) {
+            foreach ($data['descriptions'] as &$description) {
                 if ($asset['classid'] === $description['classid']) {
 
                     $inspectLink = Mixins::createSteamLink($asset, $description);
-                    $inspectItem = [];
+                    $description['inspectLink'] = $inspectLink;
 
                     if ($inspectLink)
-                        $inspectItem = $this->steamApi->inspectItem($inspectLink);
+                        $multi_curl->addGet('https://api.csgofloat.com/', array(
+                            'url' => $inspectLink
+                        ));
+                    else
+                        $returnData[] = $this->completeData($asset, $description, []);
 
-                    $returnData[] = $this->completeData($asset, $description, $inspectItem);
                     break;
                 }
             }
         }
+
+        $multi_curl->success(function($instance) use(&$returnData, $data) {
+
+            $parts = parse_url($instance->url);
+            parse_str($parts['query'], $query);
+
+            $itemInfo = json_decode(json_encode($instance->response->iteminfo), true);
+
+            foreach ($data['assets'] as $asset) {
+                foreach ($data['descriptions'] as $description) {
+                    if ($asset['classid'] === $description['classid'] &&
+                        $description['inspectLink'] === $query['url'])
+                    {
+
+                        $returnData[] = $this->completeData($asset, $description, $itemInfo);
+                        break;
+                    }
+                }
+            }
+        });
+
+        $multi_curl->start();
 
         return $returnData;
     }
 
     private function completeData($asset, $description, $inspectItem)
     {
+        $steamImgUrl = "https://steamcommunity-a.akamaihd.net/economy/image/";
+        $cloudFlareUmgUrl = "https://community.cloudflare.steamstatic.com/economy/image/";
+
         $baseInfo =  [
             'assetid'         => $asset['assetid'],
             'classid'         => $asset['classid'],
@@ -61,10 +93,10 @@ class UserInventory implements ResponseInterface
 
             'name'            => $description['market_hash_name'],
             'type'            => $description['type'],
-            'image'           => "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url'],
-            'imageLarge'      => "https://steamcommunity-a.akamaihd.net/economy/image/" . $description['icon_url_large'],
-            'image_cf'        => "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url'],
-            'imageLarge_cf'   => "https://community.cloudflare.steamstatic.com/economy/image/" . $description['icon_url_large'],
+            'image'           => $steamImgUrl . $description['icon_url'],
+            'imageLarge'      => isset($description['icon_url_large']) ? $steamImgUrl . $description['icon_url_large'] : null,
+            'image_cf'        => $cloudFlareUmgUrl . $description['icon_url'],
+            'imageLarge_cf'   => isset($description['icon_url_large']) ? $cloudFlareUmgUrl . $description['icon_url_large'] : null,
             'withdrawable_at' => $description['market_tradable_restriction'],
             'marketable'      => $description['marketable'],
             'tradable'        => $description['tradable'],
