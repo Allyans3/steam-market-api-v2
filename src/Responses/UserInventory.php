@@ -60,14 +60,13 @@ class UserInventory implements ResponseInterface
             $parts = parse_url($instance->url);
             parse_str($parts['query'], $query);
 
-            $itemInfo = json_decode(json_encode($instance->response->iteminfo), true);
+            $itemInfo = json_decode(json_encode($instance->response), true);
 
             foreach ($data['assets'] as $asset) {
                 foreach ($data['descriptions'] as $description) {
                     if ($asset['classid'] === $description['classid'] &&
                         $description['inspectLink'] === $query['url'])
                     {
-
                         $returnData[] = $this->completeData($asset, $description, $itemInfo);
                         break;
                     }
