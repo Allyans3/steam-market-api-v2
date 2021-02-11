@@ -10,13 +10,13 @@ class UserInventory extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/inventory/%s/%s/%s?l=%s&count=%s&start_assetid=%s";
 
-    private int $appId;
-    private string $steamId;
-    private int $contextId = 2;
-    private string $language = 'english';
-    private int $count = 75;
-    private string $startAssetId = '';
-    private string $method = 'GET';
+    private $appId;
+    private $steamId;
+    private $contextId = 2;
+    private $language = 'english';
+    private $count = 75;
+    private $startAssetId = '';
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

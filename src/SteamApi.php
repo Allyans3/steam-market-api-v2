@@ -25,7 +25,7 @@ class SteamApi
         return Config::STICKERS_POS;
     }
 
-    public function getUserAgents($browser = 'Chrome')
+    public function getUserAgents(string $browser = 'Chrome')
     {
         return Mixins::getUserAgents($browser);
     }
@@ -35,7 +35,7 @@ class SteamApi
         return Mixins::getNextIp($proxyList);
     }
 
-    public function inspectItem($inspectLink)
+    public function inspectItem(string $inspectLink)
     {
         $type = 'InspectItem';
 
@@ -48,49 +48,49 @@ class SteamApi
         return (new $class($inspectLink))->call()->response();
     }
 
-    public function getItemPricing(int $appId = null, array $options = [], $proxy = [])
+    public function getItemPricing(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'ItemPricing';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function getMarketListings(int $appId = null, array $options = [], $proxy = [])
+    public function getMarketListings(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'MarketListings';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function getSaleHistory(int $appId = null, array $options = [], $proxy = [])
+    public function getSaleHistory(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'SaleHistory';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function searchItems(int $appId = null, array $options = [], $proxy = [])
+    public function searchItems(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'SearchItems';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function getItemListings(int $appId = null, array $options = [], $proxy = [])
+    public function getItemListings(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'ItemListings';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function getItemNameId(int $appId = null, array $options = [], $proxy = [])
+    public function getItemNameId(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'ItemNameId';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function getItemOrdersHistogram(array $options = [], $proxy = [])
+    public function getItemOrdersHistogram(array $options = [], array $proxy = [])
     {
         $type = 'ItemOrdersHistogram';
 
@@ -103,14 +103,14 @@ class SteamApi
         return (new $class($options))->call($proxy)->response();
     }
 
-    public function getUserInventory(int $appId = null, array $options = [], $proxy = [])
+    public function getUserInventory(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'UserInventory';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
     }
 
-    public function getUserInventoryV2(int $appId = null, array $options = [], $proxy = [])
+    public function getUserInventoryV2(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'UserInventoryV2';
 
@@ -119,12 +119,8 @@ class SteamApi
 
 
 
-    private function request($type, $appId, array $options)
+    private function request(string $type, int $appId, array $options = [])
     {
-        if (!$appId) {
-            throw new RuntimeException('Application ID not defined');
-        }
-
         $class = self::CLASS_PREFIX . $type;
 
         if (!class_exists($class)) {

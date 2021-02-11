@@ -10,13 +10,13 @@ class ItemListings extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/market/listings/%s/%s/render?start=%s&count=%s&currency=%s&filter=%s";
 
-    private int $appId;
-    private int $start = 0;
-    private int $count = 100;
-    private int $currency = 1;
-    private string $filter = '';
-    private string $market_hash_name = '';
-    private string $method = 'GET';
+    private $appId;
+    private $start = 0;
+    private $count = 100;
+    private $currency = 1;
+    private $filter = '';
+    private $market_hash_name = '';
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

@@ -9,12 +9,12 @@ class MarketListings extends Request implements RequestInterface
 {
     const URL = 'https://steamcommunity.com/market/search/render/?start=%s&count=%s&sort_column=%s&sort_dir=%s&appid=%s&norender=1';
 
-    private int $appId;
-    private int $start = 0;
-    private int $count = 100;
-    private ?string $sort_column = null;
-    private ?string $sort_dir = null;
-    private string $method = 'GET';
+    private $appId;
+    private $start = 0;
+    private $count = 100;
+    private $sort_column = null;
+    private $sort_dir = null;
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

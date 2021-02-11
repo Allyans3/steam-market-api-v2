@@ -10,11 +10,11 @@ class ItemOrdersHistogram extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/market/itemordershistogram?country=%s&language=%s&currency=%s&item_nameid=%s&two_factor=0";
 
-    private string $country = 'US';
-    private string $language = 'english';
-    private int $currency = 1;
-    private ?int $item_nameid = null;
-    private string $method = 'GET';
+    private $country = 'US';
+    private $language = 'english';
+    private $currency = 1;
+    private $item_nameid = null;
+    private $method = 'GET';
 
     public function __construct($options = [])
     {

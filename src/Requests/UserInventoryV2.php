@@ -10,10 +10,10 @@ class UserInventoryV2 extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/profiles/%s/inventory/json/%s/%s";
 
-    private int $appId;
-    private string $steamId;
-    private int $contextId = 2;
-    private string $method = 'GET';
+    private $appId;
+    private $steamId;
+    private $contextId = 2;
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

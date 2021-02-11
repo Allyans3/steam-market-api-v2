@@ -9,12 +9,12 @@ class SearchItems extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/market/search/render?appid=%s&start=%s&count=%s&query=%s&norender=1";
 
-    private ?int $appId = null;
-    private int $start = 0;
-    private int $count = 100;
-    private string $query = '';
-    private bool $exact = false;
-    private string $method = 'GET';
+    private $appId;
+    private $start = 0;
+    private $count = 100;
+    private $query = '';
+    private $exact = false;
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

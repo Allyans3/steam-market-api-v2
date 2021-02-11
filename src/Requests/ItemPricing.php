@@ -10,10 +10,10 @@ class ItemPricing extends Request implements RequestInterface
 {
     const URL = 'https://steamcommunity.com/market/priceoverview/?appid=%s&currency=%s&market_hash_name=%s';
 
-    private int $appId;
-    private int $currency = 1;
-    private string $market_hash_name = '';
-    private string $method = 'GET';
+    private $appId;
+    private $currency = 1;
+    private $market_hash_name = '';
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

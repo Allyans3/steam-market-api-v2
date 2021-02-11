@@ -9,8 +9,8 @@ class InspectItem extends Request implements RequestInterface
 {
     const URL = 'https://api.csgofloat.com/?url=%s';
 
-    private string $inspectLink = '';
-    private string $method = 'GET';
+    private $inspectLink = '';
+    private $method = 'GET';
 
     public function __construct($inspectLink)
     {

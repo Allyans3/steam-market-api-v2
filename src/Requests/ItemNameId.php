@@ -10,9 +10,9 @@ class ItemNameId extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/market/listings/%s/%s";
 
-    private int $appId;
-    private string $market_hash_name = '';
-    private string $method = 'GET';
+    private $appId;
+    private $market_hash_name = '';
+    private $method = 'GET';
 
     public function __construct($appId, $options = [])
     {

@@ -9,7 +9,7 @@ abstract class Request
     const RESPONSE_PREFIX = '\\SteamApi\\Responses\\';
 
     private $ch;
-    private array $curlOpts = [
+    private $curlOpts = [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_SSL_VERIFYHOST => false,

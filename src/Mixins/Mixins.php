@@ -120,7 +120,7 @@ class Mixins
         return [];
     }
 
-    public static function parseNameTag($nameTag)
+    public static function parseNameTag($nameTag): string
     {
         $matches = explode("''", $nameTag);
 
