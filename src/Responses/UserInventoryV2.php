@@ -26,7 +26,7 @@ class UserInventoryV2 implements ResponseInterface
     private function decodeResponse($response)
     {
         $multi_curl = new MultiCurl();
-        $multi_curl->setConcurrency(100);
+        $multi_curl->setConcurrency(200);
 
         $data = json_decode($response, true);
 
@@ -47,7 +47,7 @@ class UserInventoryV2 implements ResponseInterface
                     'url' => $inspectData['inspectLink']
                 ));
             else
-                $returnData[] = $this->completeData($asset, $description, []);;
+                $returnData[] = $this->completeData($asset, $description, []);
         }
 
         $multi_curl->success(function($instance) use(&$returnData, $data) {
@@ -61,10 +61,22 @@ class UserInventoryV2 implements ResponseInterface
 
                 $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
 
-                if ($description['inspectLink'] === $query['url']) {
+                if ($description['inspectLink'] === $query['url'])
                     $returnData[] = $this->completeData($asset, $description, $itemInfo);
-                    break;
-                }
+            }
+        });
+
+        $multi_curl->error(function ($instance) use (&$returnData, $data) {
+
+            $parts = parse_url($instance->url);
+            parse_str($parts['query'], $query);
+
+            foreach ($data['rgInventory'] as $asset) {
+
+                $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
+
+                if ($description['inspectLink'] === $query['url'])
+                    $returnData[] = $this->completeData($asset, $description, []);
             }
         });
 

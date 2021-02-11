@@ -24,7 +24,7 @@ class UserInventory implements ResponseInterface
     private function decodeResponse($response)
     {
         $multi_curl = new MultiCurl();
-        $multi_curl->setConcurrency(100);
+        $multi_curl->setConcurrency(200);
 
         $data = json_decode($response, true);
 
@@ -38,7 +38,8 @@ class UserInventory implements ResponseInterface
 
         foreach ($data['assets'] as &$asset) {
             foreach ($data['descriptions'] as &$description) {
-                if ($asset['classid'] === $description['classid']) {
+                if ($asset['classid'] === $description['classid'] &&
+                    $asset['instanceid'] === $description['instanceid']) {
 
                     $inspectData = Mixins::createSteamLink($asset, $description);
                     $description['inspectLink'] = $inspectData['inspectLink'];
@@ -67,11 +68,24 @@ class UserInventory implements ResponseInterface
             foreach ($data['assets'] as $asset) {
                 foreach ($data['descriptions'] as $description) {
                     if ($asset['classid'] === $description['classid'] &&
+                        $asset['instanceid'] === $description['instanceid'] &&
                         $description['inspectLink'] === $query['url'])
-                    {
                         $returnData[] = $this->completeData($asset, $description, $itemInfo);
-                        break;
-                    }
+                }
+            }
+        });
+
+        $multi_curl->error(function ($instance) use (&$returnData, $data) {
+
+            $parts = parse_url($instance->url);
+            parse_str($parts['query'], $query);
+
+            foreach ($data['assets'] as $asset) {
+                foreach ($data['descriptions'] as $description) {
+                    if ($asset['classid'] === $description['classid'] &&
+                        $asset['instanceid'] === $description['instanceid'] &&
+                        $description['inspectLink'] === $query['url'])
+                        $returnData[] = $this->completeData($asset, $description, []);
                 }
             }
         });

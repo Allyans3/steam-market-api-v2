@@ -91,17 +91,19 @@ class Mixins
     {
         $returnData = [
             'inspectLink' => '',
-            'inspectable' => true
+            'inspectable' => false
         ];
 
         $typeList = [
-            "Base Grade Tool",
-            "Agent",
-            "Graffiti",
-            "Sticker",
-            "Collectible",
-            "Music Kit",
-            "Container"
+            "Pistol",
+            "SMG",
+            "Rifle",
+            "Sniper Rifle",
+            "Shotgun",
+            "Machinegun",
+            "Knife",
+            "Gloves",
+            "Agent"
         ];
 
         if (is_array($asset))
@@ -111,7 +113,7 @@ class Mixins
 
         foreach ($typeList as $value) {
             if (str_contains($description['type'], $value))
-                $returnData['inspectable'] = false;
+                $returnData['inspectable'] = true;
         }
 
         if (array_key_exists('actions', $description)) {
