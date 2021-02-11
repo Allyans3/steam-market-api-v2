@@ -2,6 +2,7 @@
 
 namespace SteamApi\Responses;
 
+use Curl\MultiCurl;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 use SteamApi\SteamApi;
@@ -24,6 +25,9 @@ class UserInventoryV2 implements ResponseInterface
 
     private function decodeResponse($response)
     {
+        $multi_curl = new MultiCurl();
+        $multi_curl->setConcurrency(100);
+
         $data = json_decode($response, true);
 
         if (is_null($data) || array_key_exists('error', $data)) {
@@ -34,16 +38,41 @@ class UserInventoryV2 implements ResponseInterface
 
         foreach ($data['rgInventory'] as $asset) {
 
-            $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
-            $inspectLink = Mixins::createSteamLink($asset['id'], $description);
+            $description = &$data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
+            $inspectData = Mixins::createSteamLink($asset['id'], $description);
+            $description['inspectLink'] = $inspectData['inspectLink'];
 
-            $inspectItem = [];
-
-            if ($inspectLink)
-                $inspectItem = $this->steamApi->inspectItem($inspectLink);
-
-            $returnData[] = $this->completeData($asset, $description, $inspectItem);
+            if ($inspectData['inspectable'])
+                $multi_curl->addGet('https://api.csgofloat.com/', array(
+                    'url' => $inspectData['inspectLink']
+                ));
+            else
+                $returnData[] = $this->completeData($asset, $description, []);;
         }
+
+        $multi_curl->success(function($instance) use(&$returnData, $data) {
+
+            $parts = parse_url($instance->url);
+            parse_str($parts['query'], $query);
+
+            $itemInfo = json_decode(json_encode($instance->response), true);
+
+            foreach ($data['rgInventory'] as $asset) {
+
+                $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
+
+                if ($description['inspectLink'] === $query['url']) {
+                    $returnData[] = $this->completeData($asset, $description, $itemInfo);
+                    break;
+                }
+            }
+        });
+
+        $multi_curl->start();
+
+        usort($returnData, function($a, $b) {
+            return $a['slot'] <=> $b['slot'];
+        });
 
         return $returnData;
     }
@@ -54,20 +83,25 @@ class UserInventoryV2 implements ResponseInterface
         $cloudFlareUmgUrl = "https://community.cloudflare.steamstatic.com/economy/image/";
 
         $baseInfo =  [
-            'assetid'         => $asset['assetid'],
+            'assetid'         => $asset['id'],
             'classid'         => $asset['classid'],
             'instanceid'      => $asset['instanceid'],
             'amount'          => $asset['amount'],
+            'hide_in_china'   => !!$asset['hide_in_china'],
+            'slot'            => $asset['pos'],
 
             'name'            => $description['market_hash_name'],
+            'nameColor'       => $description['name_color'],
             'type'            => $description['type'],
             'image'           => $steamImgUrl . $description['icon_url'],
             'imageLarge'      => isset($description['icon_url_large']) ? $steamImgUrl . $description['icon_url_large'] : null,
             'image_cf'        => $cloudFlareUmgUrl . $description['icon_url'],
             'imageLarge_cf'   => isset($description['icon_url_large']) ? $cloudFlareUmgUrl . $description['icon_url_large'] : null,
             'withdrawable_at' => $description['market_tradable_restriction'],
-            'marketable'      => $description['marketable'],
-            'tradable'        => $description['tradable'],
+            'marketable'      => !!$description['marketable'],
+            'tradable'        => !!$description['tradable'],
+            'commodity'       => !!$description['commodity'],
+            'inspectLink'     => $description['inspectLink'] ?: ''
         ];
 
         $addInfo = [];

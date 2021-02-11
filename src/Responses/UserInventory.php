@@ -9,12 +9,10 @@ use SteamApi\SteamApi;
 
 class UserInventory implements ResponseInterface
 {
-    private $steamApi;
     private $data;
 
     public function __construct($response)
     {
-        $this->steamApi = new SteamApi();
         $this->data = $this->decodeResponse($response);
     }
 
@@ -36,16 +34,20 @@ class UserInventory implements ResponseInterface
 
         $returnData = [];
 
-        foreach ($data['assets'] as $asset) {
+        $slot = 1;
+
+        foreach ($data['assets'] as &$asset) {
             foreach ($data['descriptions'] as &$description) {
                 if ($asset['classid'] === $description['classid']) {
 
-                    $inspectLink = Mixins::createSteamLink($asset, $description);
-                    $description['inspectLink'] = $inspectLink;
+                    $inspectData = Mixins::createSteamLink($asset, $description);
+                    $description['inspectLink'] = $inspectData['inspectLink'];
 
-                    if ($inspectLink)
+                    $asset['slot'] = $slot++;
+
+                    if ($inspectData['inspectable'])
                         $multi_curl->addGet('https://api.csgofloat.com/', array(
-                            'url' => $inspectLink
+                            'url' => $inspectData['inspectLink']
                         ));
                     else
                         $returnData[] = $this->completeData($asset, $description, []);
@@ -76,6 +78,10 @@ class UserInventory implements ResponseInterface
 
         $multi_curl->start();
 
+        usort($returnData, function($a, $b) {
+            return $a['slot'] <=> $b['slot'];
+        });
+
         return $returnData;
     }
 
@@ -89,16 +95,20 @@ class UserInventory implements ResponseInterface
             'classid'         => $asset['classid'],
             'instanceid'      => $asset['instanceid'],
             'amount'          => $asset['amount'],
+            'slot'            => $asset['slot'],
 
             'name'            => $description['market_hash_name'],
+            'nameColor'       => $description['name_color'],
             'type'            => $description['type'],
             'image'           => $steamImgUrl . $description['icon_url'],
             'imageLarge'      => isset($description['icon_url_large']) ? $steamImgUrl . $description['icon_url_large'] : null,
             'image_cf'        => $cloudFlareUmgUrl . $description['icon_url'],
             'imageLarge_cf'   => isset($description['icon_url_large']) ? $cloudFlareUmgUrl . $description['icon_url_large'] : null,
             'withdrawable_at' => $description['market_tradable_restriction'],
-            'marketable'      => $description['marketable'],
-            'tradable'        => $description['tradable'],
+            'marketable'      => !!$description['marketable'],
+            'tradable'        => !!$description['tradable'],
+            'commodity'       => !!$description['commodity'],
+            'inspectLink'     => $description['inspectLink'] ?: ''
         ];
 
         $addInfo = [];

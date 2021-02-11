@@ -87,15 +87,21 @@ class Mixins
         return $current;
     }
 
-    public static function createSteamLink($asset, $description)
+    public static function createSteamLink($asset, $description): array
     {
+        $returnData = [
+            'inspectLink' => '',
+            'inspectable' => true
+        ];
+
         $typeList = [
             "Base Grade Tool",
             "Agent",
             "Graffiti",
             "Sticker",
             "Collectible",
-            "Music Kit"
+            "Music Kit",
+            "Container"
         ];
 
         if (is_array($asset))
@@ -105,7 +111,7 @@ class Mixins
 
         foreach ($typeList as $value) {
             if (str_contains($description['type'], $value))
-                return [];
+                $returnData['inspectable'] = false;
         }
 
         if (array_key_exists('actions', $description)) {
@@ -114,10 +120,10 @@ class Mixins
             $link = str_replace("%assetid%", $assetId, $link);
             $link = str_replace("%owner_steamid%", $steamId, $link);
 
-            return $link;
+            $returnData['inspectLink'] = $link;
         }
 
-        return [];
+        return $returnData;
     }
 
     public static function parseNameTag($nameTag): string
