@@ -98,6 +98,7 @@ class UserInventoryV2 implements ResponseInterface
             'image_cf'        => $cloudFlareUmgUrl . $description['icon_url'],
             'imageLarge_cf'   => isset($description['icon_url_large']) ? $cloudFlareUmgUrl . $description['icon_url_large'] : null,
             'withdrawable_at' => $description['market_tradable_restriction'],
+            'cacheExpiration' => $description['cache_expiration'] ?? '',
             'marketable'      => !!$description['marketable'],
             'tradable'        => !!$description['tradable'],
             'commodity'       => !!$description['commodity'],

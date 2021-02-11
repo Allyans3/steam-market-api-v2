@@ -510,23 +510,31 @@ You'll receive inventory items:
 ```
 [
     0 => [
-        "assetid" => "16743778990",
-        "classid" => "2127752602",
-        "instanceid" => "188530139",
-        "amount" => "1",
-        "name" => "★ Karambit | Gamma Doppler (Factory New)",
-        "type" => "★ Covert Knife",
-        "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf2PLacDBA5ciJlY20kPb5PrrukmRB-Ml0mNbR_Y3mjQaLpxo7Oy3tcYKVcQRsZF_Q-FTow-zs0Jft7czNmiNluyV35nrbyR2_1UlPaOFp1uveFwtI0RP3qg",
-        "withdrawable_at" => 7,
-        "marketable" => 1,
-        "tradable" => 1,
-        "nameTag" => "StrikeR's PricK",
-        "condition" => "Factory New",
-        "float" => 0.060837019234896,
-        "paintseed" => 905,
-        "paintindex" => 570,
+        "assetid" => "20213922670"
+        "classid" => "1815180002"
+        "instanceid" => "188530139"
+        "amount" => "1"
+        "hide_in_china" => false
+        "slot" => 1
+        "name" => "★ Karambit | Gamma Doppler (Factory New)"
+        "nameColor" => "8650AC"
+        "type" => "★ Covert Knife"
+        "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf ▶"
+        "imageLarge" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf ▶"
+        "image_cf" => "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpov ▶"
+        "imageLarge_cf" => "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpov ▶"
+        "withdrawable_at" => "7"
+        "cacheExpiration" => ""
+        "marketable" => true
+        "tradable" => true
+        "commodity" => false
+        "inspectLink" => "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20S76561202255233023A20213922670D7506381567363227325"
+        "condition" => "Factory New"
+        "float" => 0.060837019234896
+        "paintseed" => 905
+        "paintindex" => 570
         "stickers" => []
-    ],
+    ]
     ...
 ]
 ```
