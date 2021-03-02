@@ -40,14 +40,14 @@ class UserInventoryV2 implements ResponseInterface
 
             $description = &$data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
             $inspectData = Mixins::createSteamLink($asset['id'], $description);
-            $description['inspectLink'] = $inspectData['inspectLink'];
+            $description['inspectLink'][$asset['id']] = $inspectData['inspectLink'];
 
             if ($inspectData['inspectable'])
                 $multi_curl->addGet('https://api.csgofloat.com/', array(
                     'url' => $inspectData['inspectLink']
                 ));
             else
-                $returnData[] = $this->completeData($asset, $description, []);
+                $returnData[] = $this->completeData($asset, $description);
         }
 
         $multi_curl->success(function($instance) use(&$returnData, $data) {
@@ -61,8 +61,9 @@ class UserInventoryV2 implements ResponseInterface
 
                 $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
 
-                if ($description['inspectLink'] === $query['url'])
-                    $returnData[] = $this->completeData($asset, $description, $itemInfo);
+                if (array_key_exists($asset['id'], $description['inspectLink']) &&
+                    $description['inspectLink'][$asset['id']] === $query['url'])
+                    $returnData[] = $this->completeData($asset, $description, $query['url'], $itemInfo);
             }
         });
 
@@ -75,8 +76,9 @@ class UserInventoryV2 implements ResponseInterface
 
                 $description = $data['rgDescriptions'][$asset['classid'] . '_' . $asset['instanceid']];
 
-                if ($description['inspectLink'] === $query['url'])
-                    $returnData[] = $this->completeData($asset, $description, []);
+                if (array_key_exists($asset['id'], $description['inspectLink']) &&
+                    $description['inspectLink'][$asset['id']] === $query['url'])
+                    $returnData[] = $this->completeData($asset, $description, $query['url']);
             }
         });
 
@@ -89,7 +91,7 @@ class UserInventoryV2 implements ResponseInterface
         return $returnData;
     }
 
-    private function completeData($asset, $description, $inspectItem): array
+    private function completeData($asset, $description, $inspectLink = '', $inspectItem = []): array
     {
         $steamImgUrl = "https://steamcommunity-a.akamaihd.net/economy/image/";
         $cloudFlareUmgUrl = "https://community.cloudflare.steamstatic.com/economy/image/";
@@ -114,7 +116,7 @@ class UserInventoryV2 implements ResponseInterface
             'marketable'      => !!$description['marketable'],
             'tradable'        => !!$description['tradable'],
             'commodity'       => !!$description['commodity'],
-            'inspectLink'     => $description['inspectLink'] ?: ''
+            'inspectLink'     => $inspectLink
         ];
 
         $addInfo = [];

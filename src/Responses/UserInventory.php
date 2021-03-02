@@ -34,24 +34,25 @@ class UserInventory implements ResponseInterface
 
         $returnData = [];
 
-        $slot = 1;
+        $slot = 0;
 
         foreach ($data['assets'] as &$asset) {
             foreach ($data['descriptions'] as &$description) {
                 if ($asset['classid'] === $description['classid'] &&
-                    $asset['instanceid'] === $description['instanceid']) {
+                    $asset['instanceid'] === $description['instanceid'])
+                {
 
                     $inspectData = Mixins::createSteamLink($asset, $description);
-                    $description['inspectLink'] = $inspectData['inspectLink'];
+                    $description['inspectLink'][$asset['assetid']] = $inspectData['inspectLink'];
 
-                    $asset['slot'] = $slot++;
+                    $asset['slot'] = ++$slot;
 
                     if ($inspectData['inspectable'])
                         $multi_curl->addGet('https://api.csgofloat.com/', array(
                             'url' => $inspectData['inspectLink']
                         ));
                     else
-                        $returnData[] = $this->completeData($asset, $description, []);
+                        $returnData[] = $this->completeData($asset, $description);
 
                     break;
                 }
@@ -69,8 +70,9 @@ class UserInventory implements ResponseInterface
                 foreach ($data['descriptions'] as $description) {
                     if ($asset['classid'] === $description['classid'] &&
                         $asset['instanceid'] === $description['instanceid'] &&
-                        $description['inspectLink'] === $query['url'])
-                        $returnData[] = $this->completeData($asset, $description, $itemInfo);
+                        array_key_exists($asset['assetid'], $description['inspectLink']) &&
+                        $description['inspectLink'][$asset['assetid']] === $query['url'])
+                        $returnData[] = $this->completeData($asset, $description, $query['url'], $itemInfo);
                 }
             }
         });
@@ -84,8 +86,9 @@ class UserInventory implements ResponseInterface
                 foreach ($data['descriptions'] as $description) {
                     if ($asset['classid'] === $description['classid'] &&
                         $asset['instanceid'] === $description['instanceid'] &&
-                        $description['inspectLink'] === $query['url'])
-                        $returnData[] = $this->completeData($asset, $description, []);
+                        array_key_exists($asset['assetid'], $description['inspectLink']) &&
+                        $description['inspectLink'][$asset['assetid']] === $query['url'])
+                        $returnData[] = $this->completeData($asset, $description, $query['url']);
                 }
             }
         });
@@ -99,7 +102,7 @@ class UserInventory implements ResponseInterface
         return $returnData;
     }
 
-    private function completeData($asset, $description, $inspectItem)
+    private function completeData($asset, $description, $inspectLink = '', $inspectItem = []): array
     {
         $steamImgUrl = "https://steamcommunity-a.akamaihd.net/economy/image/";
         $cloudFlareUmgUrl = "https://community.cloudflare.steamstatic.com/economy/image/";
@@ -122,7 +125,7 @@ class UserInventory implements ResponseInterface
             'marketable'      => !!$description['marketable'],
             'tradable'        => !!$description['tradable'],
             'commodity'       => !!$description['commodity'],
-            'inspectLink'     => $description['inspectLink'] ?: ''
+            'inspectLink'     => $inspectLink
         ];
 
         $addInfo = [];

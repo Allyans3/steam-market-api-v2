@@ -48,9 +48,9 @@ Note
 
 All methods don't have delays. If you are using some method in a cycle, please use this in-built php function to prevent steam block for a few minutes:
 ```
-sleep(rand(8,12));
+sleep(rand(12,16));
 ```
-Recommended 8 and more seconds.
+Recommended 12 (5 req/min) and more seconds.
 
 Creating new object
 -------------------
