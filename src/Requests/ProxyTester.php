@@ -5,21 +5,15 @@ namespace SteamApi\Requests;
 use SteamApi\Engine\Request;
 use SteamApi\Interfaces\RequestInterface;
 
-class InspectItem extends Request implements RequestInterface
+class ProxyTester extends Request implements RequestInterface
 {
-    const URL = 'https://api.csgofloat.com/?url=%s';
+    const URL = 'http://httpbin.org/ip';
 
-    private $inspectLink = '';
     private $method = 'GET';
-
-    public function __construct($inspectLink)
-    {
-        $this->inspectLink = $inspectLink;
-    }
 
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->inspectLink);
+        return self::URL;
     }
 
     public function call($proxy = [])

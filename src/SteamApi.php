@@ -35,7 +35,7 @@ class SteamApi
         return Mixins::getNextIp($proxyList);
     }
 
-    public function inspectItem(string $inspectLink)
+    public function inspectItem(string $inspectLink, $proxy = [])
     {
         $type = 'InspectItem';
 
@@ -45,7 +45,7 @@ class SteamApi
             throw new RuntimeException('Call to undefined request type');
         }
 
-        return (new $class($inspectLink))->call()->response();
+        return (new $class($inspectLink))->call($proxy)->response();
     }
 
     public function getItemPricing(int $appId, array $options = [], array $proxy = [])
@@ -80,7 +80,9 @@ class SteamApi
     {
         $type = 'ItemListings';
 
-        return $this->request($type, $appId, $options)->call($proxy)->response();
+        $detailed = $options['detailed'] ?? false;
+
+        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
     }
 
     public function getItemNameId(int $appId, array $options = [], array $proxy = [])
@@ -115,6 +117,19 @@ class SteamApi
         $type = 'UserInventoryV2';
 
         return $this->request($type, $appId, $options)->call($proxy)->response();
+    }
+
+    public function testProxy(array $proxy)
+    {
+        $type = 'ProxyTester';
+
+        $class = self::CLASS_PREFIX . $type;
+
+        if (!class_exists($class)) {
+            throw new RuntimeException('Call to undefined request type');
+        }
+
+        return (new $class())->call($proxy)->response();
     }
 
 

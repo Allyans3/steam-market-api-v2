@@ -22,12 +22,31 @@ class ItemListings implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $data = json_decode($response, true);
+        if (!is_array($response)) {
+            $data = json_decode($response, true);
 
-        if (!$data) {
-            return false;
+            if (!$data)
+                return false;
+
+            return $this->parseItems($data);
+        } else {
+            $returnData = $response;
+
+            $data = json_decode($response['response'], true);
+
+            if (!$data) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = $this->parseItems($data);
+
+            return $returnData;
         }
+    }
 
+    private function parseItems($data): array
+    {
         $returnData = Mixins::fillBaseData($data);
 
         $document = new Document($data['results_html']);

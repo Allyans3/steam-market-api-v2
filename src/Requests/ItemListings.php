@@ -8,13 +8,14 @@ use SteamApi\Interfaces\RequestInterface;
 
 class ItemListings extends Request implements RequestInterface
 {
-    const URL = "https://steamcommunity.com/market/listings/%s/%s/render?start=%s&count=%s&currency=%s&filter=%s";
+    const URL = "https://steamcommunity.com/market/listings/%s/%s/render?start=%s&count=%s&currency=%s&language=%s&filter=%s";
 
     private $appId;
     private $start = 0;
     private $count = 100;
     private $currency = 1;
     private $filter = '';
+    private $language = 'english';
     private $market_hash_name = '';
     private $method = 'GET';
 
@@ -26,12 +27,13 @@ class ItemListings extends Request implements RequestInterface
 
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->appId, $this->market_hash_name, $this->start, $this->count, $this->currency, $this->filter);
+        return sprintf(self::URL, $this->appId, $this->market_hash_name, $this->start, $this->count,
+                        $this->currency, $this->language, $this->filter);
     }
 
-    public function call($proxy = [])
+    public function call($proxy = [], $detailed = false)
     {
-        return $this->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy, $detailed);
     }
 
     public function getRequestMethod(): string

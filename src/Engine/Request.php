@@ -13,7 +13,7 @@ abstract class Request
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_SSL_VERIFYPEER => false
+        CURLOPT_SSL_VERIFYPEER => false,
     ];
 
     public function initCurl()
@@ -21,7 +21,7 @@ abstract class Request
         return $this->ch = curl_init();
     }
 
-    public function steamHttpRequest($proxy = [])
+    public function steamHttpRequest($proxy = [], $detailed = false)
     {
         if (!isset($this->ch)) {
             $this->initCurl();
@@ -30,10 +30,57 @@ abstract class Request
         curl_setopt_array($this->ch, $this->curlOpts + $proxy + [
                 CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
                 CURLOPT_URL => $this->getUrl(),
+                CURLOPT_HEADER => $detailed
             ]
         );
 
-        return $this->response(curl_exec($this->ch));
+        return $this->response($detailed ? $this->exec() : curl_exec($this->ch));
+    }
+
+    public function exec()
+    {
+        $response = curl_exec($this->ch);
+        $error = curl_error($this->ch);
+        $result = [
+            'headers' => '',
+            'response' => '',
+            'error' => '',
+            'remote_ip' => '',
+            'code' => '',
+            'url' => ''
+        ];
+
+        if ($error !== "") {
+            $result['error'] = $error;
+            return $result;
+        }
+
+        $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $result['headers'] = $this->get_headers_from_curl_response($header);
+        $result['response'] = substr($response, $header_size);
+        $result['remote_ip'] = curl_getinfo($this->ch,CURLINFO_PRIMARY_IP);
+        $result['code'] = curl_getinfo($this->ch,CURLINFO_HTTP_CODE);
+        $result['url'] = curl_getinfo($this->ch,CURLINFO_EFFECTIVE_URL);
+
+        return $result;
+    }
+
+    private function get_headers_from_curl_response($response): array
+    {
+        $headers = [];
+
+        $header_text = substr($response, 0, strpos($response, "\r\n\r\n"));
+
+        foreach (explode("\r\n", $header_text) as $i => $line)
+            if ($i === 0)
+                $headers['http_code'] = $line;
+            else {
+                list ($key, $value) = explode(': ', $line);
+                $headers[$key] = trim($value);
+            }
+
+        return $headers;
     }
 
     public function response($data)
