@@ -16,6 +16,7 @@ Menu
     - [Item Current Price](#item-current-price)
     - [Search Items](#search-items)
     - [Inspect Item](#inspect-item)
+    - [Inspect Item V2](#inspect-item-v2)
     - [Item Listings](#item-listings)
     - [Item Orders Histogram](#item-orders-histogram)
     - [Item Name ID](#item-name-id)
