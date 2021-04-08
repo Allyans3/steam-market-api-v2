@@ -4,7 +4,7 @@ namespace SteamApi\Responses;
 
 use SteamApi\Interfaces\ResponseInterface;
 
-class InspectItem implements ResponseInterface
+class InspectItemV2 implements ResponseInterface
 {
     private $data;
 

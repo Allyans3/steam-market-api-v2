@@ -6,12 +6,11 @@ use Psy\Exception\RuntimeException;
 use SteamApi\Engine\Request;
 use SteamApi\Interfaces\RequestInterface;
 
-class InspectItem extends Request implements RequestInterface
+class InspectItemV2 extends Request implements RequestInterface
 {
-    const URL = 'https://api.csgofloat.com/?url=%s&minimal=%s';
+    const URL = 'https://floats.gainskins.com/?url=%s';
 
     private $inspect_link = '';
-    private $minimal = false;
     private $method = 'GET';
 
     public function __construct($options = [])
@@ -21,7 +20,7 @@ class InspectItem extends Request implements RequestInterface
 
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->inspect_link, $this->minimal);
+        return sprintf(self::URL, $this->inspect_link);
     }
 
     public function call($proxy = [], $detailed = false)
@@ -40,7 +39,5 @@ class InspectItem extends Request implements RequestInterface
             $this->inspect_link = $options['inspect_link'];
         else
             throw new RuntimeException("Option 'inspect_link' must be filled");
-
-        $this->minimal = isset($options['minimal']) ? $options['minimal'] : $this->minimal;
     }
 }

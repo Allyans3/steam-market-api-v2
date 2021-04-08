@@ -186,9 +186,14 @@ You'll get 3 technical fields and array of items:
 Source API: https://github.com/csgofloat/CSGOFloat-Inspect
 
 ```
-$inspectLink = "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969";
 
-$response = $api->inspectItem($inspectLink);
+$options = [
+    'inspect_link' => 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969',
+    'detailed'     => false,
+    'minimal'      => false
+];
+
+$response = $api->inspectItem($options);
 ```
 
 You'll get this response:
@@ -235,6 +240,80 @@ You'll get this response:
         "wear_name" => "Field-Tested"
         "full_item_name" => "AK-47 | The Empress (Field-Tested)"
     ]
+]
+```
+
+### Inspect Item V2
+
+```
+
+$options = [
+    'inspect_link' => 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969',
+    'detailed'     => false,
+];
+
+$response = $api->inspectItemV2($options);
+```
+
+You'll get this response:
+
+```
+[
+    "iteminfo" => [
+        "accountid" => null
+        "itemid" => "18217556235"
+        "defindex" => 7
+        "paintindex" => 675
+        "rarity" => 6
+        "quality" => 4
+        "paintseed" => 725
+        "killeaterscoretype" => null
+        "killeatervalue" => null
+        "customname" => null
+        "stickers" => [
+            0 => [
+                "slot" => 0
+                "stickerId" => 4217
+                "wear" => null
+                "scale" => null
+                "rotation" => null
+                "tintId" => null
+                "codename" => "berlin2019_signature_golden_foil"
+                "name" => "Golden (Foil) | Berlin 2019"
+            ]
+            1 => [
+                "slot" => 2
+                "stickerId" => 260
+                "wear" => null
+                "scale" => null
+                "rotation" => null
+                "tintId" => null
+                "codename" => "drugwarveteran"
+                "name" => "Drug War Veteran"
+            ]
+        ]
+        "inventory" => 75
+        "origin" => 8
+        "questid" => null
+        "dropreason" => null
+        "musicindex" => null
+        "s" => "0"
+        "a" => "18217556235"
+        "d" => "3377922844091506969"
+        "m" => "3130517023148833575"
+        "floatvalue" => 0.35344177484512
+        "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
+        "min" => 0
+        "max" => 1
+        "weapon_type" => "AK-47"
+        "item_name" => "The Empress"
+        "rarity_name" => "Covert"
+        "quality_name" => "Unique"
+        "origin_name" => "Found in Crate"
+        "wear_name" => "Field-Tested"
+        "full_item_name" => "AK-47 | The Empress (Field-Tested)"
+    ]
+    "success" => true
 ]
 ```
 
