@@ -30,7 +30,7 @@ class UserInventoryV2 implements ResponseInterface
 
         $data = json_decode($response, true);
 
-        if (is_null($data) || array_key_exists('error', $data)) {
+        if (is_null($data) || array_key_exists('error', $data) || !array_key_exists('rgInventory', $data)) {
             return false;
         }
 
