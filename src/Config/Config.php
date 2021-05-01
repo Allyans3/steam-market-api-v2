@@ -252,9 +252,9 @@ class Config
         ],
         "USP-S |" => [
             4 => 'Top',
-            1 => 'Top',
+            2 => 'Top',
             3 => 'Almost top',
-            2 => 'Almost top'
+            1 => 'Bad',
         ],
         "XM1014 |" => [
             1 => 'Top',
