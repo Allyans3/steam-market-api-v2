@@ -21,13 +21,27 @@ class ItemPricing implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $data = json_decode($response, true);
+        if (!is_array($response)) {
+            $data = json_decode($response, true);
 
-        if (!$data) {
-            return false;
+            if (!$data)
+                return false;
+
+            return $this->completeData($data);
+        } else {
+            $returnData = $response;
+
+            $data = json_decode($response['response'], true);
+
+            if (!$data) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = $this->completeData($data);
+
+            return $returnData;
         }
-
-        return $this->completeData($data);
     }
 
     private function completeData($data)

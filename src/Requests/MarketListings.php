@@ -27,9 +27,9 @@ class MarketListings extends Request implements RequestInterface
         return sprintf(self::URL, $this->start, $this->count, $this->sort_column, $this->sort_dir, $this->appId);
     }
 
-    public function call($options = [], $proxy = [])
+    public function call($proxy = [], $detailed = false)
     {
-        return $this->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy, $detailed);
     }
 
     public function getRequestMethod(): string

@@ -23,16 +23,33 @@ class SaleHistory implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
-        $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
+        if (!is_array($response)) {
+            $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
+            $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
 
-        $data = json_decode($dataString);
+            $data = json_decode($dataString, true);
 
-        if (!$data || empty($data)) {
-            return [];
+            if (!$data || empty($data))
+                return false;
+
+            return $this->completeData($data);
+        } else {
+            $returnData = $response;
+
+            $dataString = substr($response['response'], strpos($response['response'], self::DELIMITER_START) + strlen(self::DELIMITER_START));
+            $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
+
+            $data = json_decode($dataString, true);
+
+            if (!$data || empty($data)) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = $this->completeData($data);
+
+            return $returnData;
         }
-
-        return $this->completeData($data);
     }
 
     private function completeData($data): array

@@ -22,19 +22,37 @@ class MarketListings implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $data = json_decode($response, true);
+        if (!is_array($response)) {
+            $data = json_decode($response, true);
 
-        if (!$data) {
-            return false;
+            if (!$data)
+                return false;
+
+            $returnData = Mixins::fillBaseData($data);
+
+            foreach ($data['results'] as $result) {
+                $returnData['items'][] = $this->completeData($result);
+            }
+
+            return $returnData;
+        } else {
+            $returnData = $response;
+
+            $data = json_decode($response['response'], true);
+
+            if (!$data) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = Mixins::fillBaseData($data);
+
+            foreach ($data['results'] as $result) {
+                $returnData['response']['items'][] = $this->completeData($result);
+            }
+
+            return $returnData;
         }
-
-        $returnData = Mixins::fillBaseData($data);
-
-        foreach ($data['results'] as $result) {
-            $returnData['items'][] = $this->completeData($result);
-        }
-
-        return $returnData;
     }
 
     private function completeData($data): array

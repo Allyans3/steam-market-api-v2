@@ -69,28 +69,36 @@ class SteamApi
     {
         $type = 'ItemPricing';
 
-        return $this->request($type, $appId, $options)->call($proxy)->response();
+        $detailed = $options['detailed'] ?? false;
+
+        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
     }
 
     public function getMarketListings(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'MarketListings';
 
-        return $this->request($type, $appId, $options)->call($proxy)->response();
+        $detailed = $options['detailed'] ?? false;
+
+        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
     }
 
     public function getSaleHistory(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'SaleHistory';
 
-        return $this->request($type, $appId, $options)->call($proxy)->response();
+        $detailed = $options['detailed'] ?? false;
+
+        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
     }
 
     public function searchItems(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'SearchItems';
 
-        return $this->request($type, $appId, $options)->call($proxy)->response();
+        $detailed = $options['detailed'] ?? false;
+
+        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
     }
 
     public function getItemListings(int $appId, array $options = [], array $proxy = [])
