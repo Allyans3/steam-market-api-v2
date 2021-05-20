@@ -160,8 +160,8 @@ class Config
             1 => 'Normal'
         ],
         "MP7 |" => [
-            2 => 'Bad',
             1 => 'Bad',
+            2 => 'Bad',
             3 => 'Bad',
             4 => 'Bad'
         ],
@@ -172,16 +172,16 @@ class Config
             4 => 'Bad'
         ],
         "Negev |" => [
-            2 => 'Bad',
             1 => 'Bad',
-            4 => 'Bad',
-            3 => 'Bad'
+            2 => 'Bad',
+            3 => 'Bad',
+            4 => 'Bad'
         ],
         "Nova |" => [
-            4 => 'Bad',
             1 => 'Bad',
+            2 => 'Bad',
             3 => 'Bad',
-            2 => 'Bad'
+            4 => 'Bad'
         ],
         "P2000 |" => [
             1 => 'Top',
@@ -196,40 +196,40 @@ class Config
             4 => 'Bad'
         ],
         "P90 |" => [
+            1 => 'Bad',
             2 => 'Bad',
-            4 => 'Bad',
             3 => 'Bad',
-            1 => 'Bad'
+            4 => 'Bad'
         ],
         "PP-Bizon |" => [
             1 => 'Bad',
+            2 => 'Bad',
             3 => 'Bad',
-            5 => 'Bad',
-            2 => 'Bad'
+            4 => 'Bad'
         ],
         "R8 Revolver |" => [
-            3 => 'Normal',
-            5 => 'Normal',
             1 => 'Normal',
             2 => 'Normal',
-            4 => 'Normal'
+            3 => 'Normal',
+            4 => 'Normal',
+            5 => 'Normal'
         ],
         "Sawed-Off |" => [
             1 => 'Bad',
-            3 => 'Bad',
             2 => 'Bad',
+            3 => 'Bad',
             4 => 'Bad'
         ],
         "SCAR-20 |" => [
-            4 => 'Bad',
+            1 => 'Bad',
             2 => 'Bad',
             3 => 'Bad',
-            1 => 'Bad'
+            4 => 'Bad'
         ],
         "SG 553 |" => [
             1 => 'Bad',
-            3 => 'Bad',
             2 => 'Bad',
+            3 => 'Bad',
             4 => 'Bad'
         ],
         "SSG 08 |" => [
