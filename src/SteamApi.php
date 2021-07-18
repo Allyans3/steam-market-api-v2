@@ -157,6 +157,21 @@ class SteamApi
         return (new $class())->call($proxy)->response();
     }
 
+    public function getNewlyListed(array $options = [], array $proxy = [])
+    {
+        $type = 'NewlyListed';
+
+        $class = self::CLASS_PREFIX . $type;
+
+        if (!class_exists($class)) {
+            throw new RuntimeException('Call to undefined request type');
+        }
+
+        $detailed = $options['detailed'] ?? false;
+
+        return (new $class($options))->call($proxy, $detailed)->response();
+    }
+
 
 
     private function request(string $type, int $appId, array $options = [])

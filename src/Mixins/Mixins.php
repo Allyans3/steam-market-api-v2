@@ -2,6 +2,7 @@
 
 namespace SteamApi\Mixins;
 
+use DiDom\Document;
 use SteamApi\Config\Config;
 
 class Mixins
@@ -126,6 +127,63 @@ class Mixins
         }
 
         return $returnData;
+    }
+
+    public static function createNewlyListedInspectLink($asset): array
+    {
+        $returnData = [
+            'inspectLink' => '',
+            'inspectable' => false
+        ];
+
+        $typeList = [
+            "Pistol",
+            "SMG",
+            "Rifle",
+            "Sniper Rifle",
+            "Shotgun",
+            "Machinegun",
+            "Knife",
+            "Gloves",
+            "Agent"
+        ];
+
+        foreach ($typeList as $value) {
+            if (str_contains($asset['type'], $value))
+                $returnData['inspectable'] = true;
+        }
+
+        if (array_key_exists('market_actions', $asset)) {
+            $link = $asset['market_actions'][0]['link'];
+            $link = str_replace("%assetid%", $asset['id'], $link);
+
+            $returnData['inspectLink'] = $link;
+        }
+
+        return $returnData;
+    }
+
+    public static function parseStickers($descriptions)
+    {
+        $stickers = [];
+
+        foreach ($descriptions as $description) {
+            if (!trim($description['value']))
+                continue;
+
+            $document = new Document($description['value']);
+            $rawNode = $document->find('#sticker_info');
+
+            foreach ($rawNode as $node) {
+                $stickersText = trim($node->text());
+                $stickersStr = str_replace('Sticker: ', '', $stickersText);
+                $stickersStr = str_replace('Patch: ', '', $stickersStr);
+
+                $stickers = explode(', ', $stickersStr);
+            }
+        }
+
+        return $stickers;
     }
 
     public static function parseNameTag($nameTag): string

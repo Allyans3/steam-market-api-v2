@@ -62,6 +62,7 @@ abstract class Request
         $result['remote_ip'] = curl_getinfo($this->ch,CURLINFO_PRIMARY_IP);
         $result['code'] = curl_getinfo($this->ch,CURLINFO_HTTP_CODE);
         $result['url'] = curl_getinfo($this->ch,CURLINFO_EFFECTIVE_URL);
+        $result['total_time'] = bcdiv(curl_getinfo($this->ch,CURLINFO_TOTAL_TIME_T), 1000);
 
         return $result;
     }

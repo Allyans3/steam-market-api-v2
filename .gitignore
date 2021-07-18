@@ -114,6 +114,5 @@ $RECYCLE.BIN/
 
 composer.lock
 
-/tmp
-/tmp/*
 /tmp/
+/tmp/*
