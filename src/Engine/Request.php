@@ -30,7 +30,8 @@ abstract class Request
         curl_setopt_array($this->ch, $this->curlOpts + $proxy + [
                 CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
                 CURLOPT_URL => $this->getUrl(),
-                CURLOPT_HEADER => $detailed
+                CURLOPT_HEADER => $detailed,
+                CURLINFO_HEADER_OUT => true
             ]
         );
 
@@ -42,12 +43,14 @@ abstract class Request
         $response = curl_exec($this->ch);
         $error = curl_error($this->ch);
         $result = [
+            'request_headers' => '',
             'headers' => '',
             'response' => '',
             'error' => '',
             'remote_ip' => '',
             'code' => '',
-            'url' => ''
+            'url' => '',
+            'total_time' => ''
         ];
 
         if ($error !== "") {
@@ -55,8 +58,11 @@ abstract class Request
             return $result;
         }
 
+        $request_headers = curl_getinfo($this->ch,CURLINFO_HEADER_OUT);
         $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
         $header = substr($response, 0, $header_size);
+
+        $result['request_headers'] = $this->get_headers_from_curl_response($request_headers);
         $result['headers'] = $this->get_headers_from_curl_response($header);
         $result['response'] = substr($response, $header_size);
         $result['remote_ip'] = curl_getinfo($this->ch,CURLINFO_PRIMARY_IP);
