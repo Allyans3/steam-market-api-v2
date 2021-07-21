@@ -7,7 +7,7 @@ use SteamApi\Interfaces\RequestInterface;
 
 class NewlyListed extends Request implements RequestInterface
 {
-    const URL = 'https://steamcommunity.com/market/recent?country=%s&language=%s&currency=%s&norender=1';
+    const URL = 'https://steamcommunity.com/market/recent?country=%s&language=%s&currency=%s';
 
     private $country = 'US';
     private $language = 'english';
