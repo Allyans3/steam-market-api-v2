@@ -42,15 +42,20 @@ abstract class Request
     {
         $response = curl_exec($this->ch);
         $error = curl_error($this->ch);
+
+        $request_headers = curl_getinfo($this->ch,CURLINFO_HEADER_OUT);
+        $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+
         $result = [
-            'request_headers' => '',
-            'headers' => '',
-            'response' => '',
+            'request_headers' => $this->get_headers_from_curl_response($request_headers),
+            'headers' => $this->get_headers_from_curl_response($header),
+            'response' => substr($response, $header_size),
             'error' => '',
-            'remote_ip' => '',
-            'code' => '',
-            'url' => '',
-            'total_time' => ''
+            'remote_ip' => curl_getinfo($this->ch,CURLINFO_PRIMARY_IP),
+            'code' => curl_getinfo($this->ch,CURLINFO_HTTP_CODE),
+            'url' => curl_getinfo($this->ch,CURLINFO_EFFECTIVE_URL),
+            'total_time' => bcdiv(curl_getinfo($this->ch,CURLINFO_TOTAL_TIME_T), 1000)
         ];
 
         if ($error !== "") {
@@ -58,24 +63,15 @@ abstract class Request
             return $result;
         }
 
-        $request_headers = curl_getinfo($this->ch,CURLINFO_HEADER_OUT);
-        $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
-        $header = substr($response, 0, $header_size);
-
-        $result['request_headers'] = $this->get_headers_from_curl_response($request_headers);
-        $result['headers'] = $this->get_headers_from_curl_response($header);
-        $result['response'] = substr($response, $header_size);
-        $result['remote_ip'] = curl_getinfo($this->ch,CURLINFO_PRIMARY_IP);
-        $result['code'] = curl_getinfo($this->ch,CURLINFO_HTTP_CODE);
-        $result['url'] = curl_getinfo($this->ch,CURLINFO_EFFECTIVE_URL);
-        $result['total_time'] = bcdiv(curl_getinfo($this->ch,CURLINFO_TOTAL_TIME_T), 1000);
-
         return $result;
     }
 
     private function get_headers_from_curl_response($response): array
     {
         $headers = [];
+
+        if (!$response)
+            return $headers;
 
         $header_text = substr($response, 0, strpos($response, "\r\n\r\n"));
 
