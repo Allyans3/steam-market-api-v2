@@ -53,7 +53,7 @@ abstract class Request
             'response' => substr($response, $header_size),
             'error' => '',
             'remote_ip' => curl_getinfo($this->ch,CURLINFO_PRIMARY_IP),
-            'code' => curl_getinfo($this->ch,CURLINFO_HTTP_CODE),
+            'code' => '',
             'url' => curl_getinfo($this->ch,CURLINFO_EFFECTIVE_URL),
             'total_time' => bcdiv(curl_getinfo($this->ch,CURLINFO_TOTAL_TIME_T), 1000)
         ];
@@ -62,6 +62,8 @@ abstract class Request
             $result['error'] = $error;
             return $result;
         }
+
+        $result['code'] = curl_getinfo($this->ch,CURLINFO_HTTP_CODE);
 
         return $result;
     }
