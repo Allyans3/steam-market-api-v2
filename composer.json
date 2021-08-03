@@ -17,7 +17,8 @@
         "psy/psysh": "^0.10.5",
         "imangazaliev/didom": "^1.16",
         "php-curl-class/php-curl-class": "^8.9.0",
-      "ext-intl": "*"
+        "ext-intl": "*",
+        "nesbot/carbon": "^2.46"
     },
     "autoload": {
         "psr-4": {

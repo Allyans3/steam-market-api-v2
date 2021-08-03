@@ -2,6 +2,7 @@
 
 namespace SteamApi\Responses;
 
+use Carbon\Carbon;
 use SteamApi\Interfaces\ResponseInterface;
 
 class SaleHistory implements ResponseInterface
@@ -55,11 +56,14 @@ class SaleHistory implements ResponseInterface
     private function completeData($data): array
     {
         return array_map(function ($item) {
-            $date = explode(' ', $item[0]);
+            $datePieces = explode(' ', $item[0]);
+            $date = date('Y-m-d', strtotime($datePieces[1] . ' ' . $datePieces[0] . ' ' . $datePieces[2]));
+            $timestamp = Carbon::parse($date, 'Etc/GMT+0')->timestamp;
+
             return [
-                'sale_date' => date('Y-m-d', strtotime($date[1] . ' ' . $date[0] . ' ' . $date[2])),
-                'sale_price' => $item[1],
-                'quantity' => (int) $item[2]
+                'time' => $timestamp,
+                'price' => $item[1],
+                'volume' => (int) $item[2]
             ];
         }, $data);
     }

@@ -111,14 +111,13 @@ $options = [
 $response = $api->getSaleHistory(730, $options);
 ```
 
-This will return the lifetime sales history for an item by date.
-
+This will return the lifetime sales history for an item by date. Price in USD. Timestamp GMT+0.
 
 ```
 [ 
-    "sale_date"  => "2017-09-15"
-    "sale_price" => 150.858
-    "quantity"   => 35
+    "time"   => 1505433600
+    "price"  => 150.858
+    "volume" => 35
 ]
 ```
 
