@@ -11,7 +11,7 @@ Menu
 - [Note](#note)
 - [Creating new object](#creating-new-object)
 - [Usage](#usage)
-  - [Steam methods](#steam methods)
+  - [Steam methods](#steam-methods)
     - [Market Listings](#market-listings)
     - [Item Sale History](#item-sale-history)
     - [Item Pricing](#item-pricing)
