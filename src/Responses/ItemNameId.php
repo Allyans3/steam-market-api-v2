@@ -25,15 +25,34 @@ class ItemNameId implements ResponseInterface
 
     private function decodeResponse($response)
     {
+        if (!is_array($response)) {
+            $data = self::completeData($response);
+
+            if (!$data || empty($data))
+                return false;
+
+            return $data;
+        } else {
+            $returnData = $response;
+
+            $data = self::completeData($response['response']);
+
+            if (!$data || empty($data)) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = $data;
+
+            return $returnData;
+        }
+    }
+
+    private function completeData($response)
+    {
         $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
         $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
 
-        $data = json_decode($dataString);
-
-        if (!$data || empty($data)) {
-            return "Not found item_nameId";
-        }
-
-        return $data;
+        return json_decode($dataString);
     }
 }

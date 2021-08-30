@@ -11,23 +11,28 @@ Menu
 - [Note](#note)
 - [Creating new object](#creating-new-object)
 - [Usage](#usage)
+  - [Steam methods](#steam methods)
     - [Market Listings](#market-listings)
     - [Item Sale History](#item-sale-history)
-    - [Item Current Price](#item-current-price)
+    - [Item Pricing](#item-pricing)
     - [Search Items](#search-items)
-    - [Inspect Item](#inspect-item)
-    - [Inspect Item V2](#inspect-item-v2)
     - [Item Listings](#item-listings)
+    - [Newly Listed](#newly-listed)
     - [Item Orders Histogram](#item-orders-histogram)
     - [Item Name ID](#item-name-id)
+    - [User Inventory](#user-inventory)
+    - [User Inventory V2](#user-inventory-v2)
+  - [Inspect methods](#inspect-methods)
+    - [Inspect Item](#inspect-item)
+    - [Inspect Item V2](#inspect-item-v2)
+  - [Technical methods](#technical-methods)
     - [Currency List](#currency-list)
     - [Condition List](#condition-list)
     - [User Agents List](#user-agents-list)
     - [Next IP](#next-ip)
     - [Stickers Position List](#stickers-position-list)
-    - [User Inventory](#user-inventory)
-    - [User Inventory V2](#user-inventory-v2)
 - [Proxy](#proxy)
+- [Detailed response](#detailed-response)
 
 ---
 
@@ -42,7 +47,7 @@ Run this text in a console to install this package:
 composer require allyans3/steam-market-api-v2
 ```
 
-This package currently offers 9 API calls you can make to Steam, 1 API to CSGOFloat-API and 5 technical methods.
+This package currently offers 10 API calls you can make to Steam, 2 APIs to for inspecting items and 5 technical methods.
 
 Note
 ----
@@ -63,7 +68,10 @@ $api = new SteamApi();
 Usage
 -----
 
-### Market Listings
+### Steam methods
+
+---
+#### Market Listings
 
 ```
 $options = [
@@ -101,7 +109,7 @@ You'll get 3 technical fields and array of items:
 ]
 ```
 
-### Item Sale History
+#### Item Sale History
 
 ```
 $options = [
@@ -121,7 +129,7 @@ This will return the lifetime sales history for an item by timestamp. Price in U
 ]
 ```
 
-### Item Current Price
+#### Item Pricing
 
 
 ```
@@ -146,7 +154,7 @@ This will return the lowest and median price for an item.
 ]
 ```
 
-### Search Items
+#### Search Items
 
 ```
 $options = [
@@ -181,143 +189,7 @@ You'll get 3 technical fields and array of items:
 ]
 ```
 
-### Inspect Item
-
-Source API: https://github.com/csgofloat/CSGOFloat-Inspect
-
-```
-
-$options = [
-    'inspect_link' => 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969',
-    'detailed'     => false,
-    'minimal'      => false
-];
-
-$response = $api->inspectItem($options);
-```
-
-You'll get this response:
-
-```
-[
-    "iteminfo" => [
-        "origin" => 8
-        "quality" => 4
-        "rarity" => 6
-        "a" => "18217556235"
-        "d" => "11973598228597186897"
-        "paintseed" => 725
-        "defindex" => 7
-        "paintindex" => 675
-        "stickers" => [
-            0 => [
-                "stickerId" => 4217
-                "slot" => 0
-                "codename" => "berlin2019_signature_golden_foil"
-                "material" => "berlin2019/sig_golden_foil"
-                "name" => "Golden (Foil) | Berlin 2019"
-            ]
-            1 => [
-                "stickerId" => 260
-                "slot" => 2
-                "codename" => "drugwarveteran"
-                "material" => "community02/drugwarveteran"
-                "name" => "Drug War Veteran"
-            ]
-        ]
-        "floatid" => "18035389401"
-        "floatvalue" => 0.35344177484512
-        "s" => "76561198096112563"
-        "m" => "0"
-        "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
-        "min" => 0
-        "max" => 1
-        "weapon_type" => "AK-47"
-        "item_name" => "The Empress"
-        "rarity_name" => "Covert"
-        "quality_name" => "Unique"
-        "origin_name" => "Found in Crate"
-        "wear_name" => "Field-Tested"
-        "full_item_name" => "AK-47 | The Empress (Field-Tested)"
-    ]
-]
-```
-
-### Inspect Item V2
-
-```
-
-$options = [
-    'inspect_link' => 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969',
-    'detailed'     => false,
-];
-
-$response = $api->inspectItemV2($options);
-```
-
-You'll get this response:
-
-```
-[
-    "iteminfo" => [
-        "accountid" => null
-        "itemid" => "18217556235"
-        "defindex" => 7
-        "paintindex" => 675
-        "rarity" => 6
-        "quality" => 4
-        "paintseed" => 725
-        "killeaterscoretype" => null
-        "killeatervalue" => null
-        "customname" => null
-        "stickers" => [
-            0 => [
-                "slot" => 0
-                "stickerId" => 4217
-                "wear" => null
-                "scale" => null
-                "rotation" => null
-                "tintId" => null
-                "codename" => "berlin2019_signature_golden_foil"
-                "name" => "Golden (Foil) | Berlin 2019"
-            ]
-            1 => [
-                "slot" => 2
-                "stickerId" => 260
-                "wear" => null
-                "scale" => null
-                "rotation" => null
-                "tintId" => null
-                "codename" => "drugwarveteran"
-                "name" => "Drug War Veteran"
-            ]
-        ]
-        "inventory" => 75
-        "origin" => 8
-        "questid" => null
-        "dropreason" => null
-        "musicindex" => null
-        "s" => "0"
-        "a" => "18217556235"
-        "d" => "3377922844091506969"
-        "m" => "3130517023148833575"
-        "floatvalue" => 0.35344177484512
-        "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
-        "min" => 0
-        "max" => 1
-        "weapon_type" => "AK-47"
-        "item_name" => "The Empress"
-        "rarity_name" => "Covert"
-        "quality_name" => "Unique"
-        "origin_name" => "Found in Crate"
-        "wear_name" => "Field-Tested"
-        "full_item_name" => "AK-47 | The Empress (Field-Tested)"
-    ]
-    "success" => true
-]
-```
-
-### Item Listings
+#### Item Listings
 
 ```
 $options = [
@@ -357,7 +229,44 @@ You'll get 3 technical fields and array of items:
 ]
 ```
 
-### Item Orders Histogram
+#### Newly Listed
+
+This method show only CS:GO items.
+
+```
+$options = [
+    'country' => 'US',
+    'language' => 'english',
+    'currency' => 1,
+];
+
+$response = $api->getNewlyListed($options);
+```
+
+You'll get this response:
+
+```
+[
+    0 => [
+        "listing_id" => "3370369307670557422",
+        "name" => "AWP | Acheron (Field-Tested)",
+        "image" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FA957P3dcjFH7c6Jh4uem_vnDKnUkmld_cBOh-zF_Jn4xlHm-0U6ZGv1coGTIwRsZAnY_lLvkuq-18To6JnPn3E26HMq7X7YzEGpwUYbDS-LXA0",
+        "image_large" => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FA957P3dcjFH7c6Jh4uem_vnDKnUkmld_cBOh-zF_Jn4t1i1uRQ5fTzxJIDDdQQ4N1_Wq1PsxL_ngZXt75mYmyA37iQks3yIzUa_iRlJPbFxxavJcvYnYZs",
+        "inspectable" => true,
+        "inspect_link" => "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3370369307670557422A23189662357D28759705069335587",
+        "stickers" => [],
+        "type" => "Mil-Spec Grade Sniper Rifle",
+        "status" => 2,
+        "price_with_fee" => 1.01,
+        "publisher_fee" => 0.08,
+        "steam_fee" => 0.04,
+        "price_without_fee" => 0.89
+    ],
+    ...
+]
+```
+
+#### Item Orders Histogram
 
 ```
 $options = [
@@ -402,7 +311,7 @@ You'll get this response:
 ]
 ```
 
-### Item Name ID
+#### Item Name ID
 
 This method needs in order to get the `item_nameid` for the method above (Item Orders Histogram).
 
@@ -418,115 +327,6 @@ You'll get the `item_nameid` number:
 
 ```
 175917356
-```
-
-### Currency List
-
-```
-$response = $api->getCurrencyList();
-```
-
-You'll receive currency list:
-
-```
-    0 => "USD"
-    1 => "USD"
-    2 => "GBP"
-    3 => "EUR"
-    4 => "CHF"
-    5 => "RUB"
-    6 => "PLN"
-    ...
-```
-
-### Condition List
-
-```
-$response = $api->getConditionList();
-```
-
-You'll receive condition list:
-
-```
-[
-    "(Factory New)" => "Factory New"
-    "(Minimal Wear)" => "Minimal Wear"
-    "(Field-Tested)" => "Field-Tested"
-    "(Well-Worn)" => "Well-Worn"
-    "(Battle-Scarred)" => "Battle-Scarred"
-]
-```
-
-### User Agents List
-
-This method return User Agents List for this browsers: Chrome, Edge, Firefox, IE, Opera, Safari
-
-```
-$response = $api->getUserAgents('Chrome');
-```
-
-You'll receive user agents list:
-
-```
-[
-    0 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
-    1 => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
-    2 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
-    3 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
-    4 => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
-    5 => "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
-    6 => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
-    7 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
-    8 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36",
-    9 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
-    10 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
-    ...
-]
-```
-
-### Next IP
-
-If you are using for the first time you will get the first item. If you have reached the last item then the first item will be returned to you.
-
-```
-$proxyList = [
-    "46.218.155.194:3128",
-    "1.32.41.37:8080",
-    "114.5.35.98:38554",
-    "175.103.46.161:3888",
-    "203.210.84.59:80",
-    "113.53.60.255:8080",
-];
-
-$response = $api->getNextIp($proxyList);
-```
-
-You'll receive next ip:
-
-```
-"46.218.155.194:3128"
-```
-
-### Stickers Position List
-
-This method return stickers position list of guns. Positions taken from CSGOFloat Api.
-
-```
-$response = $api->getStickersPosition();
-```
-
-You'll receive stickers position list:
-
-```
-[
-    "AK-47 |" => [
-        4 => "Top"
-        3 => "Almost top"
-        2 => "Normal"
-        1 => "Bad"
-    ],
-    ...
-]
 ```
 
 ### User Inventory
@@ -626,9 +426,262 @@ You'll receive inventory items:
 ]
 ```
 
+### Inspect methods
+
+---
+
+#### Inspect Item
+
+Source API: https://github.com/csgofloat/CSGOFloat-Inspect
+
+```
+
+$options = [
+    'inspect_link' => 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969',
+    'detailed'     => false,
+    'minimal'      => false
+];
+
+$response = $api->inspectItem($options);
+```
+
+You'll get this response:
+
+```
+[
+    "iteminfo" => [
+        "origin" => 8
+        "quality" => 4
+        "rarity" => 6
+        "a" => "18217556235"
+        "d" => "11973598228597186897"
+        "paintseed" => 725
+        "defindex" => 7
+        "paintindex" => 675
+        "stickers" => [
+            0 => [
+                "stickerId" => 4217
+                "slot" => 0
+                "codename" => "berlin2019_signature_golden_foil"
+                "material" => "berlin2019/sig_golden_foil"
+                "name" => "Golden (Foil) | Berlin 2019"
+            ]
+            1 => [
+                "stickerId" => 260
+                "slot" => 2
+                "codename" => "drugwarveteran"
+                "material" => "community02/drugwarveteran"
+                "name" => "Drug War Veteran"
+            ]
+        ]
+        "floatid" => "18035389401"
+        "floatvalue" => 0.35344177484512
+        "s" => "76561198096112563"
+        "m" => "0"
+        "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
+        "min" => 0
+        "max" => 1
+        "weapon_type" => "AK-47"
+        "item_name" => "The Empress"
+        "rarity_name" => "Covert"
+        "quality_name" => "Unique"
+        "origin_name" => "Found in Crate"
+        "wear_name" => "Field-Tested"
+        "full_item_name" => "AK-47 | The Empress (Field-Tested)"
+    ]
+]
+```
+
+#### Inspect Item V2
+
+```
+
+$options = [
+    'inspect_link' => 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M3130517023148833575A18217556235D3377922844091506969',
+    'detailed'     => false,
+];
+
+$response = $api->inspectItemV2($options);
+```
+
+You'll get this response:
+
+```
+[
+    "iteminfo" => [
+        "accountid" => null
+        "itemid" => "18217556235"
+        "defindex" => 7
+        "paintindex" => 675
+        "rarity" => 6
+        "quality" => 4
+        "paintseed" => 725
+        "killeaterscoretype" => null
+        "killeatervalue" => null
+        "customname" => null
+        "stickers" => [
+            0 => [
+                "slot" => 0
+                "stickerId" => 4217
+                "wear" => null
+                "scale" => null
+                "rotation" => null
+                "tintId" => null
+                "codename" => "berlin2019_signature_golden_foil"
+                "name" => "Golden (Foil) | Berlin 2019"
+            ]
+            1 => [
+                "slot" => 2
+                "stickerId" => 260
+                "wear" => null
+                "scale" => null
+                "rotation" => null
+                "tintId" => null
+                "codename" => "drugwarveteran"
+                "name" => "Drug War Veteran"
+            ]
+        ]
+        "inventory" => 75
+        "origin" => 8
+        "questid" => null
+        "dropreason" => null
+        "musicindex" => null
+        "s" => "0"
+        "a" => "18217556235"
+        "d" => "3377922844091506969"
+        "m" => "3130517023148833575"
+        "floatvalue" => 0.35344177484512
+        "imageurl" => "http://media.steampowered.com/apps/730/icons/econ/default_generated/weapon_ak47_gs_ak47_empress_light_large.f81d0b07dca381635c89f74bcdb6b64a6da6e81c.png"
+        "min" => 0
+        "max" => 1
+        "weapon_type" => "AK-47"
+        "item_name" => "The Empress"
+        "rarity_name" => "Covert"
+        "quality_name" => "Unique"
+        "origin_name" => "Found in Crate"
+        "wear_name" => "Field-Tested"
+        "full_item_name" => "AK-47 | The Empress (Field-Tested)"
+    ]
+    "success" => true
+]
+```
+
+### Technical methods
+
+---
+
+#### Currency List
+
+```
+$response = $api->getCurrencyList();
+```
+
+You'll receive currency list:
+
+```
+    0 => "USD"
+    1 => "USD"
+    2 => "GBP"
+    3 => "EUR"
+    4 => "CHF"
+    5 => "RUB"
+    6 => "PLN"
+    ...
+```
+
+#### Condition List
+
+```
+$response = $api->getConditionList();
+```
+
+You'll receive condition list:
+
+```
+[
+    "(Factory New)" => "Factory New"
+    "(Minimal Wear)" => "Minimal Wear"
+    "(Field-Tested)" => "Field-Tested"
+    "(Well-Worn)" => "Well-Worn"
+    "(Battle-Scarred)" => "Battle-Scarred"
+]
+```
+
+#### User Agents List
+
+This method return User Agents List for this browsers: Chrome, Edge, Firefox, IE, Opera, Safari
+
+```
+$response = $api->getUserAgents('Chrome');
+```
+
+You'll receive user agents list:
+
+```
+[
+    0 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    1 => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
+    2 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
+    3 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
+    4 => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
+    5 => "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
+    6 => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    7 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+    8 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36",
+    9 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+    10 => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+    ...
+]
+```
+
+#### Next Ip
+
+If you are using for the first time you will get the first item. If you have reached the last item then the first item will be returned to you.
+
+```
+$proxyList = [
+    "46.218.155.194:3128",
+    "1.32.41.37:8080",
+    "114.5.35.98:38554",
+    "175.103.46.161:3888",
+    "203.210.84.59:80",
+    "113.53.60.255:8080",
+];
+
+$response = $api->getNextIp($proxyList);
+```
+
+You'll receive next ip:
+
+```
+"46.218.155.194:3128"
+```
+
+#### Stickers Position List
+
+This method return stickers position list of guns. Positions taken from CSGOFloat Api.
+
+```
+$response = $api->getStickersPosition();
+```
+
+You'll receive stickers position list:
+
+```
+[
+    "AK-47 |" => [
+        4 => "Top"
+        3 => "Almost top"
+        2 => "Normal"
+        1 => "Bad"
+    ],
+    ...
+]
+```
+
 Proxy
 -----
-In release `v2.2` added a second optional `$proxy` parameter where you can pass cURL parameters as in the example:
+In release `v2.2` added a third optional `$proxy` parameter where you can pass cURL parameters as in the example:
 
 ```
 $proxy = [
@@ -641,4 +694,54 @@ $proxy = [
 ];
 
 $response = $api->getMarketListings(730, $options, $proxy);
+```
+
+Detailed response
+----------------
+In release `v2.9` added an optional `detailed` key for `$options` parameter.
+
+```
+$options = [
+    'start'            => 0,
+    'count'            => 100,
+    'market_hash_name' => "AK-47 | The Empress (Field-Tested)",
+    'detailed'         => true
+];
+
+$response = $api->getItemListings(730, $options);
+```
+
+You'll receive detailed information about response:
+
+```
+[
+    "request_headers" => [
+        "http_code" => "GET /market/listings/730/AK-47%20%7C%20The%20Empress%20%28Field-Tested%29/render?query=&start=0&count=100&currency=1&country=EN&language=english&filter= HTTP/1.",
+        "Host" => "steamcommunity.com",
+        "Accept" => "*/*"
+    ]
+    "headers" => [
+        "http_code" => "HTTP/1.1 200 OK",
+        "Server" => "nginx",
+        "Content-Type" => "application/json; charset=utf-8",
+        "X-Frame-Options" => "SAMEORIGIN",
+        "Cache-Control" => "public,max-age=90",
+        "Expires" => "Mon, 30 Aug 2021 22:34:24 GMT",
+        "Last-Modified" => "Mon, 30 Aug 2021 22:31:30 GMT",
+        "Date" => "Mon, 30 Aug 2021 22:32:54 GMT",
+        "Transfer-Encoding" => "chunked",
+        "Connection" => "Transfer-Encoding"
+    ]
+    "response" => [
+        "start" => 0,
+        "pagesize" => "100",
+        "total_count" => 273,
+        "items" => array:100 []
+    ],
+    "error" => "",
+    "remote_ip" => "108.86.128.186",
+    "code" => 200,
+    "url" => "https://steamcommunity.com/market/listings/730/AK-47%20%7C%20The%20Empress%20%28Field-Tested%29/render?query=&start=0&count=100&currency=1&country=EN&language=english&filter=",
+    "total_time" => "767"
+]
 ```

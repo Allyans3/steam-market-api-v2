@@ -20,6 +20,26 @@ class ProxyTester implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        return json_decode($response, true);
+        if (!is_array($response)) {
+            $data = json_decode($response, true);
+
+            if (!$data)
+                return false;
+
+            return $data;
+        } else {
+            $returnData = $response;
+
+            $data = json_decode($response['response'], true);
+
+            if (!$data) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = $data;
+
+            return $returnData;
+        }
     }
 }

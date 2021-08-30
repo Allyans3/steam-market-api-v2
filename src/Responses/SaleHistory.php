@@ -25,10 +25,7 @@ class SaleHistory implements ResponseInterface
     private function decodeResponse($response)
     {
         if (!is_array($response)) {
-            $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
-            $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
-
-            $data = json_decode($dataString, true);
+            $data = self::parseHistory($response);
 
             if (!$data || empty($data))
                 return false;
@@ -37,10 +34,7 @@ class SaleHistory implements ResponseInterface
         } else {
             $returnData = $response;
 
-            $dataString = substr($response['response'], strpos($response['response'], self::DELIMITER_START) + strlen(self::DELIMITER_START));
-            $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
-
-            $data = json_decode($dataString, true);
+            $data = self::parseHistory($response['response']);
 
             if (!$data || empty($data)) {
                 $returnData['response'] = false;
@@ -51,6 +45,14 @@ class SaleHistory implements ResponseInterface
 
             return $returnData;
         }
+    }
+
+    private function parseHistory($response)
+    {
+        $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
+        $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
+
+        return json_decode($dataString, true);
     }
 
     private function completeData($data): array

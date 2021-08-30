@@ -5,16 +5,13 @@ namespace SteamApi\Responses;
 use Curl\MultiCurl;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
-use SteamApi\SteamApi;
 
 class UserInventoryV2 implements ResponseInterface
 {
-    private $steamApi;
     private $data;
 
     public function __construct($response)
     {
-        $this->steamApi = new SteamApi();
         $this->data = $this->decodeResponse($response);
     }
 
@@ -25,14 +22,33 @@ class UserInventoryV2 implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        $multi_curl = new MultiCurl();
-        $multi_curl->setConcurrency(200);
+        if (!is_array($response)) {
+            $data = json_decode($response, true);
 
-        $data = json_decode($response, true);
+            if (is_null($data) || array_key_exists('error', $data) || !array_key_exists('rgInventory', $data))
+                return false;
 
-        if (is_null($data) || array_key_exists('error', $data) || !array_key_exists('rgInventory', $data)) {
-            return false;
+            return self::parseInventory($data);
+        } else {
+            $returnData = $response;
+
+            $data = json_decode($response['response'], true);
+
+            if (is_null($data) || array_key_exists('error', $data) || !array_key_exists('rgInventory', $data)) {
+                $returnData['response'] = false;
+                return $returnData;
+            }
+
+            $returnData['response'] = self::parseInventory($data);
+
+            return $returnData;
         }
+    }
+
+    private function parseInventory($data)
+    {
+        $multi_curl = new MultiCurl();
+        $multi_curl->setConcurrency(100);
 
         $returnData = [];
 
