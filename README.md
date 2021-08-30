@@ -329,7 +329,7 @@ You'll get the `item_nameid` number:
 175917356
 ```
 
-### User Inventory
+#### User Inventory
 
 This method return user inventory by SteamID64.
 
@@ -378,7 +378,7 @@ You'll receive inventory items:
 ]
 ```
 
-### User Inventory V2
+#### User Inventory V2
 
 This method return FULL user inventory by SteamID64.
 
