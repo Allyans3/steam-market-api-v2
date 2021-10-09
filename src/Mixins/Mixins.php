@@ -192,4 +192,28 @@ class Mixins
 
         return $matches[1];
     }
+
+    public static function arrayDiffAssocRecursive($array1, $array2)
+    {
+        foreach($array1 as $key => $value)
+        {
+            if(is_array($value)) {
+                if(!isset($array2[$key])) {
+                    $difference[$key] = $value;
+                }
+                else if(!is_array($array2[$key]))
+                {
+                    $difference[$key] = $value;
+                } else {
+                    $new_diff = self::arrayDiffAssocRecursive($value, $array2[$key]);
+
+                    if($new_diff != false)
+                        $difference[$key] = $new_diff;
+                }
+            } elseif(!isset($array2[$key]) || $array2[$key] != $value) {
+                $difference[$key] = $value;
+            }
+        }
+        return $difference ?? false;
+    }
 }

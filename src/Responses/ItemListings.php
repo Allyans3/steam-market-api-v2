@@ -22,7 +22,22 @@ class ItemListings implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        if (!is_array($response)) {
+        if (array_key_exists('multi_list', $response)) {
+            $items = [];
+
+            foreach ($response['multi_list'] as $list) {
+                $parsedItems = $this->parseItems($list);
+
+                $items = array_merge($items, $parsedItems['items']);
+            }
+
+            if (!$items)
+                return false;
+
+            $tempArr = array_unique(array_column($items, 'listingId'));
+
+            return array_intersect_key($items, $tempArr);
+        } else if (!is_array($response)) {
             $data = json_decode($response, true);
 
             if (!$data)
