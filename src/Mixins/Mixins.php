@@ -23,7 +23,8 @@ class Mixins
         return [
             'start'       => $data['start'],
             'pagesize'    => $data['pagesize'],
-            'total_count' => $data['total_count']
+            'total_count' => $data['total_count'],
+            'items'       => []
         ];
     }
 
