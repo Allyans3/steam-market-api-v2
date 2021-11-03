@@ -22,7 +22,7 @@ class ItemListings implements ResponseInterface
 
     private function decodeResponse($response)
     {
-        if (array_key_exists('multi_list', $response)) {
+        if (is_array($response) && array_key_exists('multi_list', $response)) {
             $items = [];
 
             foreach ($response['multi_list'] as $list) {
