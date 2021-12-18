@@ -115,7 +115,9 @@ class SteamApi
     {
         $type = 'ItemNameId';
 
-        return $this->request($type, $appId, $options)->call($proxy)->response();
+        $detailed = $options['detailed'] ?? false;
+
+        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
     }
 
     public function getItemOrdersHistogram(array $options = [], array $proxy = [])
