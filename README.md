@@ -283,45 +283,45 @@ You'll get this response:
 
 ```
 [
-    "highest_buy_order" => 4033
-    "lowest_sell_order" => 4343
-    "buy_order_summary" => 5123
-    "sell_order_summary" => 163
+    "highest_buy_order" => 2711
+    "lowest_sell_order" => 2887
+    "buy_order_summary" => 6626
+    "sell_order_summary" => 184
     "buy_order_graph" => [
         0 => [
-            "price" => 40.33
-            "volume" => 1
-            "description" => "1 buy orders at $40.33 or higher"
+            "price" => 27.11
+            "volume" => 3
+            "description" => "3 buy orders at $27.11 or higher"
         ],
         ...
     ]
     "sell_order_graph" => [
         0 => [
-            "price" => 43.43
-            "volume" => 3
-            "description" => "3 sell orders at $43.43 or lower"
+            "price" => 28.87
+            "volume" => 1
+            "description" => "1 sell orders at $28.87 or lower"
         ],
         ...
     ]
     "buy_order_table" => [
         0 => array:3 [▼
-            "price" => 33372.62
-            "price_text" => "33372,62 pуб."
-            "count" => 1
+            "price" => 27.11
+            "price_text" => "$27.11"
+            "count" => 3
         ],
         ...
     ]
     "sell_order_table" => [
         0 => array:3 [▼
-            "price" => 38571.35
-            "price_text" => "38571,35 pуб."
+            "price" => 28.87
+            "price_text" => "$28.87"
             "count" => 1
         ],
         ...
     ]
-    "graph_max_y" => 500
-    "graph_min_x" => 33.88
-    "graph_max_x" => 80.96
+    "graph_max_y" => 700
+    "graph_min_x" => 23.66
+    "graph_max_x" => 41.98
     "price_prefix" => "$"
     "price_suffix" => ""
 ]
