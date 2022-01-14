@@ -304,7 +304,7 @@ You'll get this response:
         ...
     ]
     "buy_order_table" => [
-        0 => array:3 [▼
+        0 => [
             "price" => 27.11
             "price_text" => "$27.11"
             "count" => 3
@@ -312,7 +312,7 @@ You'll get this response:
         ...
     ]
     "sell_order_table" => [
-        0 => array:3 [▼
+        0 => [
             "price" => 28.87
             "price_text" => "$28.87"
             "count" => 1
