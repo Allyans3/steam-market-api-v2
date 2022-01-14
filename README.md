@@ -752,7 +752,9 @@ You'll receive detailed information about response:
         "start" => 0,
         "pagesize" => "100",
         "total_count" => 273,
-        "items" => array:100 []
+        "items" => [
+            ...
+        ]
     ],
     "error" => "",
     "remote_ip" => "108.86.128.186",
