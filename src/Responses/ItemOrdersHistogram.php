@@ -103,17 +103,22 @@ class ItemOrdersHistogram implements ResponseInterface
         return $prices;
     }
 
+    private function toFloat($price)
+    {
+        return +bcdiv($price, 100, 2);
+    }
+
     private function completeData($data): array
     {
         return [
-            'highest_buy_order' => +$data['highest_buy_order'],
-            'lowest_sell_order' => +$data['lowest_sell_order'],
-            'buy_order_summary' => $this->parseOrderSummary($data['buy_order_summary']),
-            'sell_order_summary' => $this->parseOrderSummary($data['sell_order_summary']),
-            'buy_order_graph' =>  $this->setFields($data['buy_order_graph']),
-            'sell_order_graph' => $this->setFields($data['sell_order_graph']),
-            'buy_order_table' => $this->parseOrderTable($data['buy_order_table']),
-            'sell_order_table' => $this->parseOrderTable($data['sell_order_table']),
+            'highest_buy_order' => self::toFloat($data['highest_buy_order']),
+            'lowest_sell_order' => self::toFloat($data['lowest_sell_order']),
+            'buy_order_summary' => self::parseOrderSummary($data['buy_order_summary']),
+            'sell_order_summary' => self::parseOrderSummary($data['sell_order_summary']),
+            'buy_order_graph' =>  self::setFields($data['buy_order_graph']),
+            'sell_order_graph' => self::setFields($data['sell_order_graph']),
+            'buy_order_table' => self::parseOrderTable($data['buy_order_table']),
+            'sell_order_table' => self::parseOrderTable($data['sell_order_table']),
             'graph_max_y' => $data['graph_max_y'],
             'graph_min_x' => $data['graph_min_x'],
             'graph_max_x' => $data['graph_max_x'],

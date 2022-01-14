@@ -268,6 +268,8 @@ You'll get this response:
 
 #### Item Orders Histogram
 
+❗❗❗ In release `v3.1` changed values to float for `highest_buy_order` and `lowest_sell_order`.
+
 ```
 $options = [
     'country' => 'US',
@@ -283,8 +285,8 @@ You'll get this response:
 
 ```
 [
-    "highest_buy_order" => 2711
-    "lowest_sell_order" => 2887
+    "highest_buy_order" => 27.11
+    "lowest_sell_order" => 28.87
     "buy_order_summary" => 6626
     "sell_order_summary" => 184
     "buy_order_graph" => [
