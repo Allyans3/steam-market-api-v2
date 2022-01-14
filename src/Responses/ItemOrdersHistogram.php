@@ -1,10 +1,11 @@
 <?php
 
-
 namespace SteamApi\Responses;
 
-
+use DiDom\Document;
+use DiDom\Exceptions\InvalidSelectorException;
 use SteamApi\Interfaces\ResponseInterface;
+use SteamApi\Mixins\Mixins;
 
 class ItemOrdersHistogram implements ResponseInterface
 {
@@ -75,22 +76,44 @@ class ItemOrdersHistogram implements ResponseInterface
 
         $data = json_decode($dataString);
 
-        if (!$data || empty($data)) {
-            return "Not found";
-        }
+        if (!$data || empty($data))
+            return 0;
 
         return $data;
+    }
+
+    private function parseOrderTable($data): array
+    {
+        $prices = [];
+
+        if ($data) {
+            $document = new Document($data);
+            $table = $document->find('table')[0];
+
+            foreach ($table->find('tr') as $row) {
+                if ($row->has('td'))
+                    $prices[] = [
+                        'price' => Mixins::toFloat($row->find('td')[0]->text()),
+                        'price_text' => $row->find('td')[0]->text(),
+                        'count' => +$row->find('td')[1]->text()
+                    ];
+            }
+        }
+
+        return $prices;
     }
 
     private function completeData($data): array
     {
         return [
-            'highest_buy_order' => (int) $data['highest_buy_order'],
-            'lowest_sell_order' => (int) $data['lowest_sell_order'],
+            'highest_buy_order' => +$data['highest_buy_order'],
+            'lowest_sell_order' => +$data['lowest_sell_order'],
             'buy_order_summary' => $this->parseOrderSummary($data['buy_order_summary']),
             'sell_order_summary' => $this->parseOrderSummary($data['sell_order_summary']),
             'buy_order_graph' =>  $this->setFields($data['buy_order_graph']),
             'sell_order_graph' => $this->setFields($data['sell_order_graph']),
+            'buy_order_table' => $this->parseOrderTable($data['buy_order_table']),
+            'sell_order_table' => $this->parseOrderTable($data['sell_order_table']),
             'graph_max_y' => $data['graph_max_y'],
             'graph_min_x' => $data['graph_min_x'],
             'graph_max_x' => $data['graph_max_x'],

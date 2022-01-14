@@ -303,6 +303,22 @@ You'll get this response:
         ],
         ...
     ]
+    "buy_order_table" => [
+        0 => array:3 [▼
+            "price" => 33372.62
+            "price_text" => "33372,62 pуб."
+            "count" => 1
+        ],
+        ...
+    ]
+    "sell_order_table" => [
+        0 => array:3 [▼
+            "price" => 38571.35
+            "price_text" => "38571,35 pуб."
+            "count" => 1
+        ],
+        ...
+    ]
     "graph_max_y" => 500
     "graph_min_x" => 33.88
     "graph_max_x" => 80.96
