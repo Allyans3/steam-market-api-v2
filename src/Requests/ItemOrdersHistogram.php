@@ -26,9 +26,9 @@ class ItemOrdersHistogram extends Request implements RequestInterface
         return sprintf(self::URL, $this->country, $this->language, $this->currency, $this->item_nameid);
     }
 
-    public function call($options = [], $proxy = [])
+    public function call($proxy = [], $detailed = false)
     {
-        return $this->steamHttpRequest($proxy);
+        return $this->steamHttpRequest($proxy, $detailed);
     }
 
     public function getRequestMethod(): string
