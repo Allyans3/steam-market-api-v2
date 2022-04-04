@@ -40,7 +40,7 @@ class ItemListings implements ResponseInterface
         } else if (!is_array($response)) {
             $data = json_decode($response, true);
 
-            if (!$data)
+            if (!$data && !is_array($data))
                 return false;
 
             return $this->parseItems($data);
