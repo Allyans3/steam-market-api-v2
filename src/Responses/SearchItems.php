@@ -57,13 +57,19 @@ class SearchItems implements ResponseInterface
     private function completeData($data): array
     {
         return [
-            'name'          => $data['hash_name'],
-            'image'         => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
-            'price'         => Mixins::toFloat($data['sell_price_text']),
-            'price_text'    => $data['sell_price_text'],
-            'sell_listings' => $data['sell_listings'],
-            'type'          => $data['asset_description']['type'],
-            'condition'     => Mixins::getCondition($data['hash_name'])
+            'class_id'          => $data['asset_description']['classid'],
+            'instance_id'       => $data['asset_description']['instanceid'],
+            'name'              => $data['hash_name'],
+            'condition'         => Mixins::getCondition($data['hash_name']),
+            'name_color'        => $data['asset_description']['name_color'],
+            'background_color'  => $data['asset_description']['background_color'],
+            'image'             => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
+            'type'              => $data['asset_description']['type'],
+            'tradable'          => $data['asset_description']['tradable'],
+            'commodity'         => $data['asset_description']['commodity'],
+            'price'             => Mixins::toFloat($data['sell_price_text']),
+            'price_text'        => $data['sell_price_text'],
+            'sell_listings'     => $data['sell_listings'],
         ];
     }
 }

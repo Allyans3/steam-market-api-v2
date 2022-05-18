@@ -189,6 +189,50 @@ You'll get 3 technical fields and array of items:
 ]
 ```
 
+❗❗❗ In release `v3.2` added an optional `filters` key and more items in response arrays:
+
+```
+$options = [
+    'start' => 0,
+    'count' => 100,
+    'query' => '',
+    'exact' => true,
+    'filters' => [
+        'category_730_Type[]' => 'tag_Type_CustomPlayer' //For finding Agent type
+    ]
+];
+
+$response = $api->searchItems(730, $options);
+```
+
+Response:
+
+```
+[ 
+    "start" => 0
+    "pagesize" => 100
+    "total_count" => 63
+    "items" => [
+        0 => [
+            "class_id"         => "4578725471"
+            "instance_id"      => "519977179"
+            "name"             => "Cmdr. Frank 'Wet Sox' Baroud | SEAL Frogman"
+            "condition"        => ""
+            "name_color"       => "D2D2D2"
+            "background_color" => ""
+            "image"            => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXA6Q1NL4kmrAlOA0_FVPCi2t_fUkRxNztUoreaLw52 ▶"
+            "type"             => "Master Agent"
+            "tradable"         => 1
+            "commodity"        => 0
+            "price"            => 12.21
+            "price_text"       => "$12.21"
+            "sell_listings"    => 92
+        ],
+        ...
+    ]
+]
+```
+
 #### Item Listings
 
 ```
