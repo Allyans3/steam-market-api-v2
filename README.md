@@ -27,7 +27,7 @@ Menu
     - [Inspect Item V2](#inspect-item-v2)
   - [Technical methods](#technical-methods)
     - [Currency List](#currency-list)
-    - [Condition List](#condition-list)
+    - [Exterior List](#exterior-list)
     - [User Agents List](#user-agents-list)
     - [Next IP](#next-ip)
     - [Stickers Position List](#stickers-position-list)
@@ -95,14 +95,17 @@ You'll get 3 technical fields and array of items:
     "total_count" => 14941
     "items" => [
         0 => [
-            "name"          => "AK-47 | The Empress (Field-Tested)"
-            "image"         => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV09m7hJKOhOTLPr7Vn35cppMh2L2VrN-h2geyqhc-MD3xJYecIANrMwvZ8wK8wr3nhJC6vJ2dy3B9-n51Yx1fd-M"           
+            "class_id"      => "1738152281"
+            "instance_id"   => "188530170"
+            "name"          => "StatTrak™ AWP | Redline (Minimal Wear)"
+            "image"         => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJB496klb-HnvD8J_XSkDkB68Ani-qQpNmkigC1-EM4azj7IIadc1NtZVvX-QLsl7-7gce4ot2XngYgmyTY ◀"
+            "image_large"   => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJB496klb-HnvD8J4Tdl3lW7YtyjLuR9omjiVfl-kZtMW2iJ4bBelc2ZVjY-wTtxe3ohsXu6sydzSNnpGB8shVvZCcj ◀"
             "currency"      => "USD"
-            "price"         => 37.37
-            "price_text"    => "$37.37"
-            "sell_listings" => 246
-            "type"          => "Covert Rifle"
-            "condition"     => "Field-Tested"
+            "price"         => 146.28
+            "price_text"    => "$146.28"
+            "sell_listings" => 29
+            "type"          => "StatTrak™ Classified Sniper Rifle"
+            "exterior"      => "Minimal Wear"
         },
         ...
     ]
@@ -217,7 +220,7 @@ Response:
             "class_id"         => "4578725471"
             "instance_id"      => "519977179"
             "name"             => "Cmdr. Frank 'Wet Sox' Baroud | SEAL Frogman"
-            "condition"        => ""
+            "exterior"         => ""
             "name_color"       => "D2D2D2"
             "background_color" => ""
             "image"            => "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXA6Q1NL4kmrAlOA0_FVPCi2t_fUkRxNztUoreaLw52 ▶"
@@ -651,13 +654,13 @@ You'll receive currency list:
     ...
 ```
 
-#### Condition List
+#### Exterior List
 
 ```
-$response = $api->getConditionList();
+$response = $api->getExteriorList();
 ```
 
-You'll receive condition list:
+You'll receive exterior list:
 
 ```
 [

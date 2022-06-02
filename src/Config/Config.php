@@ -55,7 +55,7 @@ class Config
         47 => 'USD',
     ];
 
-    const CONDITIONS = [
+    const EXTERIOR_LIST = [
         "(Factory New)" => "Factory New",
         "(Minimal Wear)" => "Minimal Wear",
         "(Field-Tested)" => "Field-Tested",

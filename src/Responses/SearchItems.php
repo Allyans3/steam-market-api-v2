@@ -60,7 +60,7 @@ class SearchItems implements ResponseInterface
             'class_id'          => $data['asset_description']['classid'],
             'instance_id'       => $data['asset_description']['instanceid'],
             'name'              => $data['hash_name'],
-            'condition'         => Mixins::getCondition($data['hash_name']),
+            'exterior'          => Mixins::getExterior($data['hash_name']),
             'name_color'        => $data['asset_description']['name_color'],
             'background_color'  => $data['asset_description']['background_color'],
             'image'             => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],

@@ -7,11 +7,11 @@ use SteamApi\Config\Config;
 
 class Mixins
 {
-    public static function getCondition($market_name): string
+    public static function getExterior($market_name): string
     {
-        foreach (Config::CONDITIONS as $key => $value) {
+        foreach (Config::EXTERIOR_LIST as $key => $value) {
             if (strpos($market_name, $key)) {
-                return Config::CONDITIONS[$key];
+                return Config::EXTERIOR_LIST[$key];
             }
         }
 

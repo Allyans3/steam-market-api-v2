@@ -15,9 +15,9 @@ class SteamApi
         return Config::CURRENCY;
     }
 
-    public function getConditionList(): array
+    public function getExteriorList(): array
     {
-        return Config::CONDITIONS;
+        return Config::EXTERIOR_LIST;
     }
 
     public function getStickersPosition(): array

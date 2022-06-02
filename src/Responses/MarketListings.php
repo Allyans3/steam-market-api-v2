@@ -57,15 +57,21 @@ class MarketListings implements ResponseInterface
 
     private function completeData($data): array
     {
+        $currency = array_key_exists('currency', $data['asset_description']) ?
+            Config::CURRENCY[$data['asset_description']['currency']] : null;
+
         return [
+            'class_id'      => $data['asset_description']['classid'],
+            'instance_id'   => $data['asset_description']['instanceid'],
             'name'          => $data['hash_name'],
             'image'         => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url'],
-            'currency'      => Config::CURRENCY[$data['asset_description']['currency']],
+            'image_large'   => "https://steamcommunity-a.akamaihd.net/economy/image/" . $data['asset_description']['icon_url_large'],
+            'currency'      => $currency,
             'price'         => Mixins::toFloat($data['sell_price_text']),
             'price_text'    => $data['sell_price_text'],
             'sell_listings' => $data['sell_listings'],
             'type'          => $data['asset_description']['type'],
-            'condition'     => Mixins::getCondition($data['hash_name'])
+            'exterior'      => Mixins::getExterior($data['hash_name'])
         ];
     }
 }
