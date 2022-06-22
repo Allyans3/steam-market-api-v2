@@ -29,7 +29,7 @@ class ItemOrdersHistogram implements ResponseInterface
         if (!is_array($response)) {
             $data = json_decode($response, true);
 
-            if (!$data)
+            if (!$data || !array_key_exists('success', $data) || $data['success'] !== 1)
                 return false;
 
             return $this->completeData($data);
@@ -38,7 +38,7 @@ class ItemOrdersHistogram implements ResponseInterface
 
             $data = json_decode($response['response'], true);
 
-            if (!$data) {
+            if (!$data || !array_key_exists('success', $data) || $data['success'] !== 1) {
                 $returnData['response'] = false;
                 return $returnData;
             }
