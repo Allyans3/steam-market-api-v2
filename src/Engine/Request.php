@@ -2,6 +2,7 @@
 
 namespace SteamApi\Engine;
 
+use Carbon\Carbon;
 use Curl\Curl;
 use Curl\MultiCurl;
 use Psy\Exception\RuntimeException;
@@ -39,10 +40,9 @@ abstract class Request
         return $this->response($detailed ? $this->exec() : curl_exec($this->ch));
     }
 
-    public function steamMultiHttpRequest($proxyList)
+    public function steamMultiHttpRequest($proxyList, $detailed, $smartMulti)
     {
         $multiCurl = new MultiCurl();
-
         $responses['multi_list'] = [];
 
         foreach ($proxyList as $proxy) {
@@ -60,29 +60,41 @@ abstract class Request
             $multiCurl->addCurl($newCurl);
         }
 
-        $multiCurl->success(function ($instance) use (&$responses) {
-            $responses['multi_list'][] = json_decode(json_encode($instance->response), true);
-        });
+        $timeBefore = Carbon::now();
 
-//        $timeBefore = Carbon::now();
-//
-//        $multiCurl->success(function ($instance) use (&$responses, $timeBefore){
-//            $respInfo = json_decode(json_encode($instance->response), true);
-//
-//            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
-//
-//            $responses['multi_list'][] = [
+        $multiCurl->success(function ($instance) use (&$responses, $multiCurl, $timeBefore, $detailed, $smartMulti) {
+            $respInfo = json_decode(json_encode($instance->response), true);
+
+            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
+
+            $responses['multi_list'][] = $respInfo;
+
+//            $responses['multi_list'][] = !$detailed ? $respInfo : [
 //                'request_headers' => self::getRequestHeaders($instance),
 //                'headers' => self::getHeadersFromCurlResponse($instance->rawResponseHeaders),
 //                'response' => $respInfo,
-//                'remote_ip' => null,
-//                'code' => $instance->httpStatusCode,
+//                'remote_ip' => $instance->getOpt(CURLOPT_PROXY),
+//                'code' => $instance->errorCode ?: $instance->httpStatusCode,
 //                'url' => $instance->url,
 //                'total_time' => $delay,
+//            ];
+
+            if ($smartMulti)
+                $multiCurl->stop();
+        });
+
+//        $multiCurl->error(function ($instance) use(&$responses, $multiCurl) {
+//            $responses['errors'][] = [
+//                'ip' => $instance->getOpt(CURLOPT_PROXY),
+//                'message' => $instance->errorMessage,
+//                'code' => $instance->httpStatusCode,
+//                'errorCode' => $instance->errorCode,
 //            ];
 //        });
 
         $multiCurl->start();
+
+//        $responses['time'] = Carbon::now()->diffInMilliseconds($timeBefore);
 
         return $this->response($responses);
     }

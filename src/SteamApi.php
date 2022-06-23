@@ -107,8 +107,9 @@ class SteamApi
 
         $detailed = $options['detailed'] ?? false;
         $multi = $options['multi'] ?? false;
+        $smartMulti = $options['smart_multi'] ?? false;
 
-        return $this->request($type, $appId, $options)->call($proxy, $detailed, $multi)->response();
+        return $this->request($type, $appId, $options)->call($proxy, $detailed, $multi, $smartMulti)->response();
     }
 
     public function getItemNameId(int $appId, array $options = [], array $proxy = [])

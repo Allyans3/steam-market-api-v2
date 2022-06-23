@@ -33,10 +33,10 @@ class ItemListings extends Request implements RequestInterface
                         $this->currency, $this->country, $this->language, $this->filter);
     }
 
-    public function call($proxy = [], $detailed = false, $multi = false)
+    public function call($proxy = [], $detailed = false, $multi = false, $smartMulti = false)
     {
         if ($multi)
-            return $this->steamMultiHttpRequest($proxy);
+            return $this->steamMultiHttpRequest($proxy, $detailed, $smartMulti);
         else
             return $this->steamHttpRequest($proxy, $detailed);
     }
