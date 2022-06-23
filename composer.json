@@ -16,7 +16,7 @@
         "ext-zlib": "*",
         "psy/psysh": "^0.10.5",
         "imangazaliev/didom": "^1.16",
-        "php-curl-class/php-curl-class": "9.6.0",
+        "php-curl-class/php-curl-class": "dev-master",
         "ext-intl": "*",
         "nesbot/carbon": "^2.46"
     },
