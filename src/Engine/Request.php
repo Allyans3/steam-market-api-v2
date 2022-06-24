@@ -60,32 +60,32 @@ abstract class Request
             $multiCurl->addCurl($newCurl);
         }
 
-        $multiCurl->success(function ($instance) use (&$responses) {
-            $responses['multi_list'][] = json_decode(json_encode($instance->response), true);
-        });
-
-//        $timeBefore = Carbon::now();
-//
-//        $multiCurl->success(function ($instance) use (&$responses, $multiCurl, $timeBefore, $detailed, $smartMulti) {
-//            $respInfo = json_decode(json_encode($instance->response), true);
-//
-//            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
-//
-//            $responses['multi_list'][] = $respInfo;
-//
-////            $responses['multi_list'][] = !$detailed ? $respInfo : [
-////                'request_headers' => self::getRequestHeaders($instance),
-////                'headers' => self::getHeadersFromCurlResponse($instance->rawResponseHeaders),
-////                'response' => $respInfo,
-////                'remote_ip' => $instance->getOpt(CURLOPT_PROXY),
-////                'code' => $instance->errorCode ?: $instance->httpStatusCode,
-////                'url' => $instance->url,
-////                'total_time' => $delay,
-////            ];
-//
-//            if ($smartMulti)
-//                $multiCurl->stop();
+//        $multiCurl->success(function ($instance) use (&$responses) {
+//            $responses['multi_list'][] = json_decode(json_encode($instance->response), true);
 //        });
+
+        $timeBefore = Carbon::now();
+
+        $multiCurl->success(function ($instance) use (&$responses, $multiCurl, $timeBefore, $detailed, $smartMulti) {
+            $respInfo = json_decode(json_encode($instance->response), true);
+
+            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
+
+            $responses['multi_list'][] = $respInfo;
+
+//            $responses['multi_list'][] = !$detailed ? $respInfo : [
+//                'request_headers' => self::getRequestHeaders($instance),
+//                'headers' => self::getHeadersFromCurlResponse($instance->rawResponseHeaders),
+//                'response' => $respInfo,
+//                'remote_ip' => $instance->getOpt(CURLOPT_PROXY),
+//                'code' => $instance->errorCode ?: $instance->httpStatusCode,
+//                'url' => $instance->url,
+//                'total_time' => $delay,
+//            ];
+
+            if ($smartMulti)
+                $multiCurl->stop();
+        });
 
 //        $multiCurl->error(function ($instance) use(&$responses, $multiCurl) {
 //            $responses['errors'][] = [
