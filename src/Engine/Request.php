@@ -69,7 +69,7 @@ abstract class Request
         $multiCurl->success(function ($instance) use (&$responses, $multiCurl, $timeBefore, $detailed, $smartMulti) {
             $respInfo = json_decode(json_encode($instance->response), true);
 
-            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
+//            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
 
             $responses['multi_list'][] = $respInfo;
 
@@ -100,6 +100,7 @@ abstract class Request
 
 //        $responses['time'] = Carbon::now()->diffInMilliseconds($timeBefore);
 
+//        dd($responses);
         return $this->response($responses);
     }
 
