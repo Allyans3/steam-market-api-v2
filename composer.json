@@ -14,10 +14,10 @@
         "ext-curl": "*",
         "ext-bcmath": "*",
         "ext-zlib": "*",
+        "ext-intl": "*",
         "psy/psysh": "^0.10.5",
         "imangazaliev/didom": "^1.16",
-        "php-curl-class/php-curl-class": "dev-master",
-        "ext-intl": "*",
+        "php-curl-class/php-curl-class": "8.10.0",
         "nesbot/carbon": "^2.46"
     },
     "autoload": {

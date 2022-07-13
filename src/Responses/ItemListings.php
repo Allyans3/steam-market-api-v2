@@ -15,6 +15,11 @@ class ItemListings implements ResponseInterface
         $this->data = $this->decodeResponse($response);
     }
 
+    public function __destruct()
+    {
+        unset($this->data);
+    }
+
     public function response()
     {
         return $this->data;
@@ -70,25 +75,27 @@ class ItemListings implements ResponseInterface
         foreach ($rawNode as $node) {
             $item = $this->parseNode($node);
 
-            foreach ($data['listinginfo'] as $key => $value) {
-                if ($key == $item['listingId']) {
+            foreach ($data['listinginfo'] as $listingId => $value) {
+                if ($listingId == $item['listingId']) {
+                    if ($value['price']) {
+                        $item['price_with_fee'] = ($value['converted_price_per_unit'] + $value['converted_fee_per_unit']) / 100;
+                        $item['price_with_publisher_fee_only'] = ($value['converted_price_per_unit'] + $value['converted_publisher_fee']) / 100;
+                        $item['price_without_fee'] = $value['converted_price_per_unit'] / 100;
+                    }
                     $item['inspectLink'] = Mixins::generateInspectLink($value);
-                    break;
                 }
             }
 
             $returnData['items'][] = $item;
         }
 
+        unset($document);
+
         return $returnData;
     }
 
     private function parseNode($node): array
     {
-        $price_with_fee = trim($node->find('.market_listing_price_with_fee')[0]->text());
-        $price_with_publisher_fee_only = trim($node->find('.market_listing_price_with_publisher_fee_only')[0]->text());
-        $price_without_fee = trim($node->find('.market_listing_price_without_fee')[0]->text());
-
         $image = $node->find('img')[0]->attr('src');
         $imageLarge = str_replace('/62fx62f', '', $image);
 
@@ -98,14 +105,14 @@ class ItemListings implements ResponseInterface
             'image' => $image,
             'imageLarge' => $imageLarge,
 
-            'price_with_fee' => Mixins::toFloat($price_with_fee),
-            'price_with_fee_str' => $price_with_fee,
+            'price_with_fee' => 0,
+            'price_with_fee_str' => trim($node->find('.market_listing_price_with_fee')[0]->text()),
 
-            'price_with_publisher_fee_only' => Mixins::toFloat($price_with_publisher_fee_only),
-            'price_with_publisher_fee_only_str' => $price_with_publisher_fee_only,
+            'price_with_publisher_fee_only' => 0,
+            'price_with_publisher_fee_only_str' => trim($node->find('.market_listing_price_with_publisher_fee_only')[0]->text()),
 
-            'price_without_fee' => Mixins::toFloat($price_without_fee),
-            'price_without_fee_str' => $price_without_fee
+            'price_without_fee' => 0,
+            'price_without_fee_str' => trim($node->find('.market_listing_price_without_fee')[0]->text())
         ];
     }
 }

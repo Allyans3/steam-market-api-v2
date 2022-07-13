@@ -15,7 +15,7 @@ class ItemListings extends Request implements RequestInterface
     private $start = 0;
     private $count = 100;
     private $currency = 1;
-    private $country = 'EN';
+    private $country = 'US';
     private $language = 'english';
     private $filter = '';
     private $market_hash_name = '';
