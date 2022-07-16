@@ -77,10 +77,10 @@ class ItemListings implements ResponseInterface
 
             foreach ($data['listinginfo'] as $listingId => $value) {
                 if ($listingId == $item['listingId']) {
-                    if ($value['price'] !== 0) {
-                        $item['price_with_fee'] = ($value['converted_price_per_unit'] + $value['converted_fee_per_unit']) / 100;
-                        $item['price_with_publisher_fee_only'] = ($value['converted_price_per_unit'] + $value['converted_publisher_fee']) / 100;
-                        $item['price_without_fee'] = $value['converted_price_per_unit'] / 100;
+                    if ($value['price'] > 0) {
+                        $item['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
+                        $item['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
+                        $item['price_without_fee'] = $value['converted_price'] / 100;
                     }
                     $item['inspectLink'] = Mixins::generateInspectLink($value);
                 }
