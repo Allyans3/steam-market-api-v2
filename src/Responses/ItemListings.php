@@ -80,11 +80,8 @@ class ItemListings implements ResponseInterface
             $item = $this->parseNode($node);
 
             foreach ($data['listinginfo'] as $listingId => $value) {
-                if (!array_key_exists('converted_price', $value))
-                    throw new Exception(json_encode($value));
-
                 if ($listingId == $item['listingId']) {
-                    if ($value['price'] > 0) {
+                    if ($value['price'] > 0 && $value['fee'] > 0) {
                         $item['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
                         $item['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
                         $item['price_without_fee'] = $value['converted_price'] / 100;
