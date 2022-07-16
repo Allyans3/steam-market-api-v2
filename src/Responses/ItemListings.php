@@ -3,6 +3,7 @@
 namespace SteamApi\Responses;
 
 use DiDom\Document;
+use Exception;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 
@@ -65,6 +66,9 @@ class ItemListings implements ResponseInterface
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function parseItems($data): array
     {
         $returnData = Mixins::fillBaseData($data);
@@ -76,10 +80,9 @@ class ItemListings implements ResponseInterface
             $item = $this->parseNode($node);
 
             foreach ($data['listinginfo'] as $listingId => $value) {
-                if (!array_key_exists('converted_price', $value)) {
-                    $returnData['listinginfo'][] = $value;
-                    return $returnData;
-                }
+                if (!array_key_exists('converted_price', $value))
+                    throw new Exception(json_encode($value));
+
                 if ($listingId == $item['listingId']) {
                     if ($value['price'] > 0) {
                         $item['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
