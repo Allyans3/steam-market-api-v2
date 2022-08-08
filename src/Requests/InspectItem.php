@@ -2,7 +2,7 @@
 
 namespace SteamApi\Requests;
 
-use Psy\Exception\RuntimeException;
+use RuntimeException;
 use SteamApi\Engine\Request;
 use SteamApi\Interfaces\RequestInterface;
 

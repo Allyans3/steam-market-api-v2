@@ -2,7 +2,7 @@
 
 namespace SteamApi;
 
-use Psy\Exception\RuntimeException;
+use RuntimeException;
 use SteamApi\Config\Config;
 use SteamApi\Mixins\Mixins;
 

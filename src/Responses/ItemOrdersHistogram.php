@@ -3,7 +3,6 @@
 namespace SteamApi\Responses;
 
 use DiDom\Document;
-use DiDom\Exceptions\InvalidSelectorException;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
 

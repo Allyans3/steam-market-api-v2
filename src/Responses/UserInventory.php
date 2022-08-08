@@ -5,7 +5,6 @@ namespace SteamApi\Responses;
 use Curl\MultiCurl;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Mixins\Mixins;
-use SteamApi\SteamApi;
 
 class UserInventory implements ResponseInterface
 {

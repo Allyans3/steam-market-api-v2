@@ -2,10 +2,9 @@
 
 namespace SteamApi\Engine;
 
-use Carbon\Carbon;
 use Curl\Curl;
 use Curl\MultiCurl;
-use Psy\Exception\RuntimeException;
+use RuntimeException;
 
 abstract class Request
 {
