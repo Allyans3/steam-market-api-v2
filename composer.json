@@ -16,7 +16,7 @@
         "ext-zlib": "*",
         "ext-intl": "*",
         "imangazaliev/didom": "^1.18",
-        "php-curl-class/php-curl-class": "8.10.0",
+        "php-curl-class/php-curl-class": "9.6.1",
         "nesbot/carbon": "^2.61.0",
         "larapack/dd": "1.1"
     },
