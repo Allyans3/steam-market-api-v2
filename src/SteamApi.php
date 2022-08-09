@@ -20,11 +20,6 @@ class SteamApi
         return Config::EXTERIOR_LIST;
     }
 
-    public function getStickersPosition(): array
-    {
-        return Config::STICKERS_POS;
-    }
-
     public function getUserAgents(string $browser = 'Chrome')
     {
         return Mixins::getUserAgents($browser);

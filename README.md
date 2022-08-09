@@ -30,7 +30,6 @@ Menu
     - [Exterior List](#exterior-list)
     - [User Agents List](#user-agents-list)
     - [Next IP](#next-ip)
-    - [Stickers Position List](#stickers-position-list)
 - [Proxy](#proxy)
 - [Detailed response](#detailed-response)
 
@@ -720,28 +719,6 @@ You'll receive next ip:
 
 ```
 "46.218.155.194:3128"
-```
-
-#### Stickers Position List
-
-This method return stickers position list of guns. Positions taken from CSGOFloat Api.
-
-```
-$response = $api->getStickersPosition();
-```
-
-You'll receive stickers position list:
-
-```
-[
-    "AK-47 |" => [
-        4 => "Top"
-        3 => "Almost top"
-        2 => "Normal"
-        1 => "Bad"
-    ],
-    ...
-]
 ```
 
 Proxy
