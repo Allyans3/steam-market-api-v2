@@ -30,10 +30,16 @@ class ItemListings implements ResponseInterface
     {
         if (is_array($response) && array_key_exists('multi_list', $response)) {
             $items = [];
+            $baseData = [];
 
             foreach ($response['multi_list'] as $list) {
                 $parsedItems = $this->parseItems($list);
 
+                $baseData = [
+                    'start' => $parsedItems['start'],
+                    'pagesize' => $parsedItems['pagesize'],
+                    'total_count' => $parsedItems['total_count'],
+                ];
                 $items = array_merge($items, $parsedItems['items']);
             }
 
@@ -42,7 +48,9 @@ class ItemListings implements ResponseInterface
 
             $tempArr = array_unique(array_column($items, 'listingId'));
 
-            return array_intersect_key($items, $tempArr);
+            $baseData['items'] = array_intersect_key($items, $tempArr);
+
+            return $baseData;
         } else if (!is_array($response)) {
             $data = json_decode($response, true);
 
