@@ -97,6 +97,10 @@ abstract class Request
 
         $multiCurl->start();
 
+        $multiCurl->close();
+
+        unset($multiCurl);
+
 //        $responses['time'] = Carbon::now()->diffInMilliseconds($timeBefore);
         return $this->response($responses);
     }

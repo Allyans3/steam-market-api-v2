@@ -20,6 +20,11 @@ class UserInventory implements ResponseInterface
         return $this->data;
     }
 
+    public function __destruct()
+    {
+        unset($this->data);
+    }
+
     private function decodeResponse($response)
     {
         if (!is_array($response)) {
