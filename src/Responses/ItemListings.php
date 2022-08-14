@@ -50,6 +50,8 @@ class ItemListings implements ResponseInterface
 
             $baseData['items'] = array_intersect_key($items, $tempArr);
 
+            unset($items);
+
             return $baseData;
         } else if (!is_array($response)) {
             $data = json_decode($response, true);
