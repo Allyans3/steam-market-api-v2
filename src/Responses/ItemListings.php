@@ -91,11 +91,14 @@ class ItemListings implements ResponseInterface
 
             foreach ($data['listinginfo'] as $listingId => $value) {
                 if ($listingId == $item['listingId']) {
+                    $item['assetId'] = $value['asset']['id'];
+
                     if ($value['price'] > 0 && $value['fee'] > 0) {
                         $item['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
                         $item['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
                         $item['price_without_fee'] = $value['converted_price'] / 100;
                     }
+
                     $item['inspectLink'] = Mixins::generateInspectLink($value);
                 }
             }
@@ -115,6 +118,8 @@ class ItemListings implements ResponseInterface
 
         return [
             'listingId' => substr($node->attr('id'), 8),
+            'assetId' => "",
+
             'name' => $node->find('.market_listing_item_name')[0]->text(),
             'image' => $image,
             'imageLarge' => $imageLarge,
