@@ -40,4 +40,9 @@ class NewlyListed extends Request implements RequestInterface
         $this->language = isset($options['language']) ? $options['language'] : $this->language;
         $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

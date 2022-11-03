@@ -9,7 +9,10 @@ use SteamApi\Interfaces\RequestInterface;
 class ItemOrdersHistogram extends Request implements RequestInterface
 {
     const URL = "https://steamcommunity.com/market/itemordershistogram?country=%s&language=%s&currency=%s&item_nameid=%s&two_factor=0";
+    const REFERER = "https://steamcommunity.com/market/listings/%s/%s";
 
+    private $appId;
+    private $market_hash_name = '';
     private $country = 'US';
     private $language = 'english';
     private $currency = 1;
@@ -43,8 +46,27 @@ class ItemOrdersHistogram extends Request implements RequestInterface
         else
             throw new RuntimeException("Option 'item_nameid' must be filled");
 
+        if (isset($options['app_id']))
+            $this->app_id = $options['app_id'];
+        else
+            throw new RuntimeException("Option 'app_id' must be filled");
+
+        if (isset($options['market_hash_name']))
+            $this->market_hash_name = rawurlencode($options['market_hash_name']);
+        else
+            throw new RuntimeException("Option 'market_hash_name' must be filled");
+
         $this->country = isset($options['country']) ? $options['country'] : $this->country;
         $this->language = isset($options['language']) ? $options['language'] : $this->language;
         $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
+    }
+
+    public function getHeaders(): array
+    {
+        return [
+            'Host: steamcommunity.com',
+            'Origin: https://steamcommunity.com/',
+            'Referer: ' . sprintf(self::REFERER, $this->appId, $this->market_hash_name)
+        ];
     }
 }

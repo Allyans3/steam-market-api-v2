@@ -44,4 +44,9 @@ class MarketListings extends Request implements RequestInterface
         $this->sort_column = isset($options['sort_column']) ? $options['sort_column'] : $this->sort_column;
         $this->sort_dir = isset($options['sort_dir']) ? $options['sort_dir'] : $this->sort_dir;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

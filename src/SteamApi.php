@@ -107,6 +107,13 @@ class SteamApi
         return $this->request($type, $appId, $options)->call($proxy, $detailed, $multi, $smartMulti)->response();
     }
 
+    public function getItemListingsV2(int $appId, array $options = [], array $proxy = [])
+    {
+        $type = 'ItemListingsV2';
+
+        return $this->request($type, $appId, $options)->call($proxy)->response();
+    }
+
     public function getItemNameId(int $appId, array $options = [], array $proxy = [])
     {
         $type = 'ItemNameId';

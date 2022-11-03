@@ -51,4 +51,9 @@ class UserInventory extends Request implements RequestInterface
         $this->count = isset($options['count']) ? $options['count'] : $this->count;
         $this->startAssetId = isset($options['startAssetId']) ? $options['startAssetId'] : $this->startAssetId;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

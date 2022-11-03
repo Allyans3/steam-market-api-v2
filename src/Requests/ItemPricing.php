@@ -45,4 +45,9 @@ class ItemPricing extends Request implements RequestInterface
 
         $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

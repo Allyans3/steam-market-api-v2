@@ -40,4 +40,9 @@ class InspectItemV2 extends Request implements RequestInterface
         else
             throw new RuntimeException("Option 'inspect_link' must be filled");
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

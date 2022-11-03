@@ -25,4 +25,9 @@ class ProxyTester extends Request implements RequestInterface
     {
         return $this->method;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

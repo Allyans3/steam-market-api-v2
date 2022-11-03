@@ -43,4 +43,9 @@ class InspectItem extends Request implements RequestInterface
 
         $this->minimal = isset($options['minimal']) ? $options['minimal'] : $this->minimal;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

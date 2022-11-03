@@ -8,7 +8,8 @@ use SteamApi\Interfaces\RequestInterface;
 
 class ItemListings extends Request implements RequestInterface
 {
-    const URL = "https://steamcommunity.com/market/listings/%s/%s/render?query=%s&start=%s&count=%s&currency=%s&country=%s&language=%s&filter=%s";
+    const URL = "https://steamcommunity.com/market/listings/%s/%s/render/?query=%s&start=%s&count=%s&country=%s&language=%s&currency=%s&filter=%s";
+    const REFERER = "https://steamcommunity.com/market/listings/%s/%s";
 
     private $appId;
     private $query = '';
@@ -30,7 +31,16 @@ class ItemListings extends Request implements RequestInterface
     public function getUrl(): string
     {
         return sprintf(self::URL, $this->appId, $this->market_hash_name, $this->query, $this->start, $this->count,
-                        $this->currency, $this->country, $this->language, $this->filter);
+                        $this->country, $this->language, $this->currency, $this->filter);
+    }
+
+    public function getHeaders(): array
+    {
+        return [
+            'Host: steamcommunity.com',
+            'Origin: https://steamcommunity.com/',
+            'Referer: ' . sprintf(self::REFERER, $this->appId, $this->market_hash_name) . ($this->filter ? '?filter=' . $this->filter : '')
+        ];
     }
 
     public function call($proxy = [], $detailed = false, $multi = false, $smartMulti = false)

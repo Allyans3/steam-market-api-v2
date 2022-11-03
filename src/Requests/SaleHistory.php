@@ -42,4 +42,9 @@ class SaleHistory extends Request implements RequestInterface
         else
             throw new RuntimeException("Option 'market_hash_name' must be filled");
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

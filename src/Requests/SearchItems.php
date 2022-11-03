@@ -51,4 +51,9 @@ class SearchItems extends Request implements RequestInterface
 
         $this->filters = isset($options['filters']) ? http_build_query($options['filters']) : $this->filters;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

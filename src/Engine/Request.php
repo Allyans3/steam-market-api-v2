@@ -30,9 +30,10 @@ abstract class Request
 
         curl_setopt_array($this->ch, $this->curlOpts + $proxy + [
                 CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
-                CURLOPT_URL => $this->getUrl(),
+                CURLOPT_HTTPHEADER => $this->getHeaders(),
                 CURLOPT_HEADER => $detailed,
-                CURLINFO_HEADER_OUT => true
+                CURLINFO_HEADER_OUT => true,
+                CURLOPT_URL => $this->getUrl()
             ]
         );
 

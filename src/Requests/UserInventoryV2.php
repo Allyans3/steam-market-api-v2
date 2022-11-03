@@ -45,4 +45,9 @@ class UserInventoryV2 extends Request implements RequestInterface
 
         $this->contextId = isset($options['contextId']) ? $options['contextId'] : $this->contextId;
     }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }
