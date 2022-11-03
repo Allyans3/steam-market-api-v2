@@ -37,9 +37,9 @@ class ItemListings extends Request implements RequestInterface
     public function getHeaders(): array
     {
         return [
-            'Host: steamcommunity.com',
-            'Origin: https://steamcommunity.com/',
-            'Referer: ' . sprintf(self::REFERER, $this->appId, $this->market_hash_name) . ($this->filter ? '?filter=' . $this->filter : '')
+            'Host' => 'steamcommunity.com',
+            'Origin' => 'https://steamcommunity.com/',
+            'Referer' => sprintf(self::REFERER, $this->appId, $this->market_hash_name) . ($this->filter ? '?filter=' . $this->filter : '')
         ];
     }
 

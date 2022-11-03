@@ -33,11 +33,22 @@ abstract class Request
                 CURLOPT_HTTPHEADER => $this->getHeaders(),
                 CURLOPT_HEADER => $detailed,
                 CURLINFO_HEADER_OUT => true,
-                CURLOPT_URL => $this->getUrl()
+                CURLOPT_URL => self::mergeHeaders($this->getUrl())
             ]
         );
 
         return $this->response($detailed ? $this->exec() : curl_exec($this->ch));
+    }
+
+    private function mergeHeaders($headers): array
+    {
+        $mergedHeaders = [];
+
+        foreach ($headers as $key => $value) {
+            $mergedHeaders[] = $key . '; ' . $value;
+        }
+
+        return $mergedHeaders;
     }
 
     public function steamMultiHttpRequest($proxyList, $detailed, $smartMulti)
@@ -50,6 +61,7 @@ abstract class Request
 
             $newCurl->setUrl($this->getUrl());
 
+            $newCurl->setHeaders($this->getHeaders());
             $newCurl->setProxy($proxy['ip'], $proxy['port']);
             $newCurl->setProxyType($proxy['type']);
             $newCurl->setTimeout($proxy['timeout']);

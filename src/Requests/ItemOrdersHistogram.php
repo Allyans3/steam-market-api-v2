@@ -64,9 +64,9 @@ class ItemOrdersHistogram extends Request implements RequestInterface
     public function getHeaders(): array
     {
         return [
-            'Host: steamcommunity.com',
-            'Origin: https://steamcommunity.com/',
-            'Referer: ' . sprintf(self::REFERER, $this->appId, $this->market_hash_name)
+            'Host' => 'steamcommunity.com',
+            'Origin' => 'https://steamcommunity.com/',
+            'Referer' => sprintf(self::REFERER, $this->appId, $this->market_hash_name)
         ];
     }
 }
