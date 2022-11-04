@@ -45,7 +45,7 @@ abstract class Request
         $mergedHeaders = [];
 
         foreach ($headers as $key => $value) {
-            $mergedHeaders[] = $key . '; ' . $value;
+            $mergedHeaders[] = $key . ': ' . $value;
         }
 
         return $mergedHeaders;
