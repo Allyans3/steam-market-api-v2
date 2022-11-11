@@ -2,194 +2,94 @@
 
 namespace SteamApi;
 
-use RuntimeException;
-use SteamApi\Config\Config;
-use SteamApi\Mixins\Mixins;
+use SteamApi\Configs\Apps;
+use SteamApi\Requests\ItemListings;
 
 class SteamApi
 {
-    const CLASS_PREFIX = '\\SteamApi\\Requests\\';
+    private $detailed = false;
 
-    public function getCurrencyList(): array
+    private $multiRequest = false;
+
+    private $proxy = [];
+
+    private $select = [];
+    private $makeHidden = [];
+
+    private $curlOpts = [];
+
+
+    /**
+     * @param $proxies
+     * @return $this
+     */
+    public function withProxy($proxy): SteamApi
     {
-        return Config::CURRENCY;
+        $this->proxy = $proxy;
+        return $this;
     }
 
-    public function getExteriorList(): array
+    /**
+     * @return $this
+     */
+    public function detailed(): SteamApi
     {
-        return Config::EXTERIOR_LIST;
+        $this->detailed = true;
+        return $this;
     }
 
-    public function getUserAgents(string $browser = 'Chrome')
+    /**
+     * @return $this
+     */
+    public function multiRequest(): SteamApi
     {
-        return Mixins::getUserAgents($browser);
+        $this->multiRequest = true;
+        return $this;
     }
 
-    public function getNextIp(&$proxyList)
+    /**
+     * @param array $select
+     * @return $this
+     */
+    public function select(array $select = []): SteamApi
     {
-        return Mixins::getNextIp($proxyList);
+        $this->select = $select;
+        return $this;
     }
 
-    public function inspectItem(array $options, $proxy = [])
+    /**
+     * @param array $makeHidden
+     * @return $this
+     */
+    public function makeHidden(array $makeHidden = []): SteamApi
     {
-        $type = 'InspectItem';
-
-        $class = self::CLASS_PREFIX . $type;
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined request type');
-        }
-
-        $detailed = $options['detailed'] ?? false;
-
-        return (new $class($options))->call($proxy, $detailed)->response();
+        $this->makeHidden = $makeHidden;
+        return $this;
     }
 
-    public function inspectItemV2(array $options, $proxy = [])
+    /**
+     * @param array $curlOpts
+     * @return $this
+     */
+    public function withCustomCurlOpts(array $curlOpts): SteamApi
     {
-        $type = 'InspectItemV2';
-
-        $class = self::CLASS_PREFIX . $type;
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined request type');
-        }
-
-        $detailed = $options['detailed'] ?? false;
-
-        return (new $class($options))->call($proxy, $detailed)->response();
-    }
-
-    public function getItemPricing(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'ItemPricing';
-
-        $detailed = $options['detailed'] ?? false;
-
-        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
-    }
-
-    public function getMarketListings(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'MarketListings';
-
-        $detailed = $options['detailed'] ?? false;
-
-        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
-    }
-
-    public function getSaleHistory(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'SaleHistory';
-
-        $detailed = $options['detailed'] ?? false;
-
-        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
-    }
-
-    public function searchItems(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'SearchItems';
-
-        $detailed = $options['detailed'] ?? false;
-
-        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
-    }
-
-    public function getItemListings(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'ItemListings';
-
-        $detailed = $options['detailed'] ?? false;
-        $multi = $options['multi'] ?? false;
-        $smartMulti = $options['smart_multi'] ?? false;
-
-        return $this->request($type, $appId, $options)->call($proxy, $detailed, $multi, $smartMulti)->response();
-    }
-
-    public function getItemListingsV2(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'ItemListingsV2';
-
-        return $this->request($type, $appId, $options)->call($proxy)->response();
-    }
-
-    public function getItemNameId(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'ItemNameId';
-
-        $detailed = $options['detailed'] ?? false;
-
-        return $this->request($type, $appId, $options)->call($proxy, $detailed)->response();
-    }
-
-    public function getItemOrdersHistogram(array $options = [], array $proxy = [])
-    {
-        $type = 'ItemOrdersHistogram';
-
-        $detailed = $options['detailed'] ?? false;
-
-        $class = self::CLASS_PREFIX . $type;
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined request type');
-        }
-
-        return (new $class($options))->call($proxy, $detailed)->response();
-    }
-
-    public function getUserInventory(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'UserInventory';
-
-        return $this->request($type, $appId, $options)->call($proxy)->response();
-    }
-
-    public function getUserInventoryV2(int $appId, array $options = [], array $proxy = [])
-    {
-        $type = 'UserInventoryV2';
-
-        return $this->request($type, $appId, $options)->call($proxy)->response();
-    }
-
-    public function testProxy(array $proxy)
-    {
-        $type = 'ProxyTester';
-
-        $class = self::CLASS_PREFIX . $type;
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined request type');
-        }
-
-        return (new $class())->call($proxy)->response();
-    }
-
-    public function getNewlyListed(array $options = [], array $proxy = [])
-    {
-        $type = 'NewlyListed';
-
-        $class = self::CLASS_PREFIX . $type;
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined request type');
-        }
-
-        $detailed = $options['detailed'] ?? false;
-
-        return (new $class($options))->call($proxy, $detailed)->response();
+        $this->curlOpts = $curlOpts;
+        return $this;
     }
 
 
 
-    private function request(string $type, int $appId, array $options = [])
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getItemListings(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        $class = self::CLASS_PREFIX . $type;
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined request type');
-        }
-
-        return new $class($appId, $options);
+        return (new ItemListings($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
     }
 }

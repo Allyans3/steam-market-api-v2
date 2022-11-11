@@ -1,12 +1,12 @@
 <?php
 
-namespace SteamApi\Interfaces;
+namespace SteamApiOld\Interfaces;
 
 interface RequestInterface
 {
     public function getUrl();
 
-    public function getHeaders();
+    public function getHeaders() : array;
 
     public function call();
 

@@ -3,107 +3,130 @@
 namespace SteamApi\Responses;
 
 use DiDom\Document;
-use Exception;
+use DiDom\Exceptions\InvalidSelectorException;
+use SteamApi\Configs\Economic;
+use SteamApi\Services\ResponseService;
 use SteamApi\Interfaces\ResponseInterface;
-use SteamApi\Mixins\Mixins;
 
 class ItemListings implements ResponseInterface
 {
-    private $data;
+    private $response;
+    private $detailed;
+    private $multiRequest;
 
-    public function __construct($response)
+    private $select;
+    private $makeHidden;
+
+    /**
+     * @param $response
+     * @param bool $detailed
+     * @param bool $multiRequest
+     */
+    public function __construct($response, bool $detailed = false, bool $multiRequest = false)
     {
-        $this->data = $this->decodeResponse($response);
+        $this->response = $response;
+        $this->detailed = $detailed;
+        $this->multiRequest = $multiRequest;
     }
 
+    /**
+     * Destructor
+     */
     public function __destruct()
     {
-        unset($this->data);
+        unset($this->response);
+        unset($this->detailed);
+        unset($this->multiRequest);
+
+        unset($this->select);
+        unset($this->makeHidden);
     }
 
-    public function response()
+    /**
+     * @param array $select
+     * @param array $makeHidden
+     * @return array|false
+     * @throws InvalidSelectorException
+     */
+    public function response(array $select = [], array $makeHidden = [])
     {
-        return $this->data;
+        $this->select = $select;
+        $this->makeHidden = $makeHidden;
+
+        return $this->decodeResponse($this->response);
     }
 
-    private function decodeResponse($response)
+    /**
+     * @param $response
+     * @return array|false
+     * @throws InvalidSelectorException
+     */
+    public function decodeResponse($response)
     {
-        if (is_array($response) && array_key_exists('multi_list', $response)) {
-            $items = [];
-            $baseData = [];
-
-            foreach ($response['multi_list'] as $list) {
-                $parsedItems = $this->parseItems($list);
-
-                $baseData = [
-                    'start' => $parsedItems['start'],
-                    'pagesize' => $parsedItems['pagesize'],
-                    'total_count' => $parsedItems['total_count'],
-                ];
-                $items = array_merge($items, $parsedItems['items']);
-            }
-
-            if (!$items)
-                return false;
-
-            $tempArr = array_unique(array_column($items, 'listingId'));
-
-            $baseData['items'] = array_intersect_key($items, $tempArr);
-
-            unset($items);
-
-            return $baseData;
-        } else if (!is_array($response)) {
-            $data = json_decode($response, true);
-
-            if (!$data && !is_array($data))
-                return false;
-
-            return $this->parseItems($data);
+        if ($this->multiRequest) {
+            // TODO
+            return false;
         } else {
             $returnData = $response;
 
-            $data = json_decode($response['response'], true);
+            if ($this->detailed) {
+                $data = json_decode($returnData['response'], true);
 
-            if (!$data) {
-                $returnData['response'] = false;
+                if (!$data)
+                    $returnData['response'] = false;
+                else
+                    $returnData['response'] = self::parseListings($data);
+
                 return $returnData;
+            } else {
+                $data = json_decode($returnData, true);
+
+                if (!$data)
+                    return false;
+
+                return self::parseListings($data);
             }
-
-            $returnData['response'] = $this->parseItems($data);
-
-            return $returnData;
         }
     }
 
     /**
-     * @throws Exception
+     * @param $data
+     * @return array
+     * @throws InvalidSelectorException
      */
-    private function parseItems($data): array
+    private function parseListings($data): array
     {
-        $returnData = Mixins::fillBaseData($data);
+        $returnData = ResponseService::fillBaseData($data);
 
         $document = new Document($data['results_html']);
-        $rawNode = $document->find('.market_listing_row, market_recent_listing_row');
+        $listingsNode = $document->find('.market_listing_row, market_recent_listing_row');
 
-        foreach ($rawNode as $node) {
-            $item = $this->parseNode($node);
+        foreach ($listingsNode as $listing) {
+            $listingData = self::parseListingHTML($listing);
 
             foreach ($data['listinginfo'] as $listingId => $value) {
-                if ($listingId == $item['listingId']) {
-                    $item['assetId'] = $value['asset']['id'];
+                if ($listingId == $listingData['listing_id']) {
+                    $listingData['asset'] = ResponseService::getAssetData($data['assets'], $value['asset']);
 
                     if ($value['price'] > 0 && $value['fee'] > 0) {
-                        $item['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
-                        $item['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
-                        $item['price_without_fee'] = $value['converted_price'] / 100;
-                    }
+                        $currencyId = $value['currencyid'] - 2000;
 
-                    $item['inspectLink'] = Mixins::generateInspectLink($value);
+                        $listingData['original_price_data'] = [
+                            'currency_id' => $currencyId,
+                            'currency' => Economic::CURRENCY_LIST[$currencyId],
+                            'price_with_fee' => ($value['price'] + $value['fee']) / 100,
+                            'price_with_publisher_fee_only' => ($value['price'] + $value['publisher_fee']) / 100,
+                            'price_without_fee' => $value['price'] / 100
+                        ];
+
+                        $listingData['price_data']['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
+                        $listingData['price_data']['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
+                        $listingData['price_data']['price_without_fee'] = $value['converted_price'] / 100;
+                    }
                 }
             }
 
-            $returnData['items'][] = $item;
+            $returnData['listings'][] = ResponseService::filterData($listingData, $this->select, $this->makeHidden);
         }
 
         unset($document);
@@ -111,27 +134,28 @@ class ItemListings implements ResponseInterface
         return $returnData;
     }
 
-    private function parseNode($node): array
+    /**
+     * @param $listing
+     * @return array
+     */
+    private function parseListingHTML($listing): array
     {
-        $image = $node->find('img')[0]->attr('src');
-        $imageLarge = str_replace('/62fx62f', '', $image);
-
         return [
-            'listingId' => substr($node->attr('id'), 8),
-            'assetId' => "",
+            'listing_id' => substr($listing->attr('id'), 8),
+            'asset' => [],
 
-            'name' => $node->find('.market_listing_item_name')[0]->text(),
-            'image' => $image,
-            'imageLarge' => $imageLarge,
+            'original_price_data' => [],
 
-            'price_with_fee' => 0,
-            'price_with_fee_str' => trim($node->find('.market_listing_price_with_fee')[0]->text()),
+            'price_data' => [
+                'price_with_fee' => 0,
+                'price_with_fee_str' => trim($listing->find('.market_listing_price_with_fee')[0]->text()),
 
-            'price_with_publisher_fee_only' => 0,
-            'price_with_publisher_fee_only_str' => trim($node->find('.market_listing_price_with_publisher_fee_only')[0]->text()),
+                'price_with_publisher_fee_only' => 0,
+                'price_with_publisher_fee_only_str' => trim($listing->find('.market_listing_price_with_publisher_fee_only')[0]->text()),
 
-            'price_without_fee' => 0,
-            'price_without_fee_str' => trim($node->find('.market_listing_price_without_fee')[0]->text())
+                'price_without_fee' => 0,
+                'price_without_fee_str' => trim($listing->find('.market_listing_price_without_fee')[0]->text()),
+            ],
         ];
     }
 }

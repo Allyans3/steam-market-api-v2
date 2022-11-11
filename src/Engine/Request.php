@@ -2,44 +2,126 @@
 
 namespace SteamApi\Engine;
 
-use Curl\Curl;
-use Curl\MultiCurl;
-use RuntimeException;
+use SteamApi\Configs\Engine;
+use SteamApi\Exception\InvalidClassException;
+use SteamApi\Services\EngineService;
 
 abstract class Request
 {
-    const RESPONSE_PREFIX = '\\SteamApi\\Responses\\';
+    private $curl;
 
-    private $ch;
-    private $curlOpts = [
+    private $defaultCurlOpts = [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_SSL_VERIFYHOST => false,
         CURLOPT_SSL_VERIFYPEER => false,
+        CURLINFO_HEADER_OUT => true,
     ];
 
-    public function initCurl()
+    /**
+     * @param array $proxy
+     * @param false $detailed
+     * @param false $multiRequest
+     * @param array $curlOpts
+     * @return mixed|void
+     * @throws InvalidClassException
+     */
+    public function makeRequest(array $proxy = [], bool $detailed = false, bool $multiRequest = false, array $curlOpts = [])
     {
-        return $this->ch = curl_init();
+        if ($multiRequest)
+            return self::makeMultiRequest($proxy, $detailed);
+
+        return self::makeSingleRequest($proxy, $detailed, $curlOpts);
     }
 
-    public function steamHttpRequest($proxy = [], $detailed = false)
+    /**
+     * @param array $proxy
+     * @param false $detailed
+     * @param array $curlOpts
+     * @return mixed
+     * @throws InvalidClassException
+     */
+    private function makeSingleRequest(array $proxy = [], bool $detailed = false, array $curlOpts = [])
     {
-        if (!isset($this->ch))
-            $this->initCurl();
+        if (!isset($this->curl))
+            $this->curl = curl_init();
 
-        curl_setopt_array($this->ch, $this->curlOpts + $proxy + [
+//        dd(EngineService::setProxyForSingle($proxy), $curlOpts);
+
+        curl_setopt_array($this->curl,
+            $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + [
                 CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
                 CURLOPT_HTTPHEADER => self::mergeHeaders($this->getHeaders()),
-                CURLOPT_HEADER => $detailed,
-                CURLINFO_HEADER_OUT => true,
-                CURLOPT_URL => $this->getUrl()
+                CURLOPT_URL => $this->getUrl(),
+                CURLOPT_HEADER => $detailed
             ]
         );
 
-        return $this->response($detailed ? $this->exec() : curl_exec($this->ch));
+        return $this->response($detailed ? self::exec() : curl_exec($this->curl), $detailed);
     }
 
+    /**
+     * @return array
+     */
+    public function exec(): array
+    {
+        $response = curl_exec($this->curl);
+
+        $requestHeaders = curl_getinfo($this->curl,CURLINFO_HEADER_OUT);
+        $headerSize = curl_getinfo($this->curl,CURLINFO_HEADER_SIZE);
+        $responseHeader = substr($response, 0, $headerSize);
+
+        $code = curl_getinfo($this->curl,CURLINFO_HTTP_CODE) ?: '';
+        $messageCode = array_key_exists($code, Engine::HTTP_CODES) ? Engine::HTTP_CODES[$code] : '';
+
+        return [
+            'request_headers' => self::headersToArray($requestHeaders),
+            'response_headers' => self::headersToArray($responseHeader),
+            'url' => curl_getinfo($this->curl,CURLINFO_EFFECTIVE_URL),
+            'code' => $code,
+            'message' => $messageCode,
+            'error' => curl_error($this->curl),
+            'response' => substr($response, $headerSize),
+            'remote_ip' => curl_getinfo($this->curl,CURLINFO_PRIMARY_IP),
+            'local_ip' => curl_getinfo($this->curl,CURLINFO_LOCAL_IP),
+            'total_time' => bcdiv(curl_getinfo($this->curl,CURLINFO_TOTAL_TIME_T), 1000)
+        ];
+    }
+
+    /**
+     * @param $str
+     * @return array
+     */
+    private function headersToArray(string $header): array
+    {
+        $headers = [];
+        $headersTmpArray = explode("\r\n", $header);
+
+        for ($i = 0 ; $i < count( $headersTmpArray ) ; ++$i) {
+            // we don't care about the two \r\n lines at the end of the headers
+            if (strlen( $headersTmpArray[$i] ) > 0) {
+
+                // the headers start with HTTP status codes, which do not contain a colon, so we can filter them out too
+                if (strpos( $headersTmpArray[$i] , ":")) {
+                    $headerName = substr( $headersTmpArray[$i] , 0 , strpos( $headersTmpArray[$i] , ":" ) );
+                    $headerValue = substr( $headersTmpArray[$i] , strpos( $headersTmpArray[$i] , ":" )+1 );
+                    $headers[$headerName] = trim($headerValue);
+                }
+            }
+        }
+
+        return $headers;
+    }
+
+    private function makeMultiRequest(array $proxy = [], bool $detailed = false)
+    {
+
+    }
+
+    /**
+     * @param $headers
+     * @return array
+     */
     private function mergeHeaders($headers): array
     {
         $mergedHeaders = [];
@@ -51,145 +133,24 @@ abstract class Request
         return $mergedHeaders;
     }
 
-    public function steamMultiHttpRequest($proxyList, $detailed, $smartMulti)
+    /**
+     * @throws InvalidClassException
+     */
+    public function response($data, bool $detailed = false, bool $multiRequest = false)
     {
-        $multiCurl = new MultiCurl();
-        $responses['multi_list'] = [];
+        $class = Engine::RESPONSE_PREFIX . strrev(explode('\\', strrev(get_called_class()), 2)[0]);
 
-        foreach ($proxyList as $proxy) {
-            $newCurl = new Curl();
+        if (!class_exists($class))
+            throw new InvalidClassException('Call to undefined Response Class');
 
-            $newCurl->setUrl($this->getUrl());
-
-            $newCurl->setHeaders($this->getHeaders());
-            $newCurl->setProxy($proxy['ip'], $proxy['port']);
-            $newCurl->setProxyType($proxy['type']);
-            $newCurl->setTimeout($proxy['timeout']);
-            $newCurl->setConnectTimeout($proxy['connect_timeout']);
-            $newCurl->setUserAgent($proxy['user_agent']);
-            $newCurl->setProxyTunnel();
-
-            $multiCurl->addCurl($newCurl);
-        }
-
-        $multiCurl->success(function ($instance) use (&$responses) {
-            $responses['multi_list'][] = json_decode(json_encode($instance->response), true);
-        });
-
-//        $timeBefore = Carbon::now();
-
-//        $multiCurl->success(function ($instance) use (&$responses, $multiCurl, $timeBefore, $detailed, $smartMulti) {
-//            $respInfo = json_decode(json_encode($instance->response), true);
-//
-////            $delay = Carbon::now()->diffInMilliseconds($timeBefore);
-//
-//            $responses['multi_list'][] = $respInfo;
-//
-////            $responses['multi_list'][] = !$detailed ? $respInfo : [
-////                'request_headers' => self::getRequestHeaders($instance),
-////                'headers' => self::getHeadersFromCurlResponse($instance->rawResponseHeaders),
-////                'response' => $respInfo,
-////                'remote_ip' => $instance->getOpt(CURLOPT_PROXY),
-////                'code' => $instance->errorCode ?: $instance->httpStatusCode,
-////                'url' => $instance->url,
-////                'total_time' => $delay,
-////            ];
-//
-//            if ($smartMulti)
-//                $multiCurl->stop();
-//        });
-
-//        $multiCurl->error(function ($instance) use(&$responses, $multiCurl) {
-//            $responses['errors'][] = [
-//                'ip' => $instance->getOpt(CURLOPT_PROXY),
-//                'message' => $instance->errorMessage,
-//                'code' => $instance->httpStatusCode,
-//                'errorCode' => $instance->errorCode,
-//            ];
-//        });
-
-        $multiCurl->start();
-
-        $multiCurl->close();
-
-        unset($multiCurl);
-
-//        $responses['time'] = Carbon::now()->diffInMilliseconds($timeBefore);
-        return $this->response($responses);
+        return new $class($data, $detailed, $multiRequest);
     }
 
-    public function exec()
-    {
-        $response = curl_exec($this->ch);
-        $error = curl_error($this->ch);
-
-        $request_headers = curl_getinfo($this->ch,CURLINFO_HEADER_OUT);
-        $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
-        $header = substr($response, 0, $header_size);
-
-        $result = [
-            'request_headers' => self::getHeadersFromCurlResponse($request_headers),
-            'headers' => self::getHeadersFromCurlResponse($header),
-            'response' => substr($response, $header_size),
-            'error' => '',
-            'remote_ip' => curl_getinfo($this->ch,CURLINFO_PRIMARY_IP),
-            'code' => '',
-            'url' => curl_getinfo($this->ch,CURLINFO_EFFECTIVE_URL),
-            'total_time' => bcdiv(curl_getinfo($this->ch,CURLINFO_TOTAL_TIME_T), 1000)
-        ];
-
-        if ($error !== "") {
-            $result['error'] = $error;
-            return $result;
-        }
-
-        $result['code'] = curl_getinfo($this->ch,CURLINFO_HTTP_CODE);
-
-        return $result;
-    }
-
-    private function getRequestHeaders($instance)
-    {
-        $requestHeaders = [];
-
-        foreach ($instance->requestHeaders as $key => $value) {
-            $requestHeaders[$key] = $value;
-        }
-
-        return $requestHeaders;
-    }
-
-    private function getHeadersFromCurlResponse($response): array
-    {
-        $headers = [];
-
-        if (!$response)
-            return $headers;
-
-        $header_text = substr($response, 0, strpos($response, "\r\n\r\n"));
-
-        foreach (explode("\r\n", $header_text) as $i => $line)
-            if ($i === 0)
-                $headers['http_code'] = $line;
-            else {
-                list ($key, $value) = explode(': ', $line);
-                $headers[$key] = trim($value);
-            }
-
-        return $headers;
-    }
-
-    public function response($data)
-    {
-        if ($this->ch)
-            curl_close($this->ch);
-
-        $class = self::RESPONSE_PREFIX . strrev(explode('\\', strrev(get_called_class()), 2)[0]);
-
-        if (!class_exists($class)) {
-            throw new RuntimeException('Call to undefined response type');
-        }
-
-        return new $class($data);
+    /**
+     * Destructor of Request Engine
+     */
+    function __destruct() {
+        if ($this->curl)
+            curl_close($this->curl);
     }
 }
