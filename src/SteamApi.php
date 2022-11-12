@@ -4,6 +4,8 @@ namespace SteamApi;
 
 use SteamApi\Configs\Apps;
 use SteamApi\Requests\ItemListings;
+use SteamApi\Requests\ItemOrdersHistogram;
+use SteamApi\Requests\SaleHistory;
 
 class SteamApi
 {
@@ -20,7 +22,7 @@ class SteamApi
 
 
     /**
-     * @param $proxies
+     * @param $proxy
      * @return $this
      */
     public function withProxy($proxy): SteamApi
@@ -89,6 +91,34 @@ class SteamApi
     public function getItemListings(int $appId = Apps::CSGO_ID, array $options = [])
     {
         return (new ItemListings($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getItemOrdersHistogram(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        return (new ItemOrdersHistogram($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getSaleHistory(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        return (new SaleHistory($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }

@@ -2,6 +2,8 @@
 
 namespace SteamApi\Services;
 
+use DiDom\Document;
+
 class ResponseService
 {
     /**
@@ -34,12 +36,31 @@ class ResponseService
             'market_hash_name' => $asset['market_hash_name'],
             'icon_url' => "https://steamcommunity-a.akamaihd.net/economy/image/" . $asset['icon_url'],
             'icon_url_large' => "https://steamcommunity-a.akamaihd.net/economy/image/" . $asset['icon_url_large'],
+            'stickers' => self::parseStickersFromDescription($asset['descriptions']),
             'amount' => $asset['amount'],
             'status' => $asset['status'],
             'tradable' => $asset['tradable'],
             'marketable' => $asset['marketable'],
             'inspect_link' => str_replace("%assetid%", $asset['id'], $asset['actions'][0]['link'])
         ];
+    }
+
+    public static function parseStickersFromDescription($description)
+    {
+        $stickers = '';
+
+        foreach ($description as $value) {
+            if (str_contains($value['value'], 'Sticker: ')) {
+                $document = new Document($value['value']);
+                $listingsNode = $document->find('#sticker_info')[0]->text();
+
+                $stickers = str_replace('Sticker: ', '', $listingsNode);
+
+                unset($document);
+            }
+        }
+
+        return $stickers;
     }
 
     public static function filterData($data, $select, $makeHidden): array

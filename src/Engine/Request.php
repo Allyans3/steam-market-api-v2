@@ -28,8 +28,8 @@ abstract class Request
      */
     public function makeRequest(array $proxy = [], bool $detailed = false, bool $multiRequest = false, array $curlOpts = [])
     {
-        if ($multiRequest)
-            return self::makeMultiRequest($proxy, $detailed);
+//        if ($multiRequest)
+//            return self::makeMultiRequest($proxy, $detailed);
 
         return self::makeSingleRequest($proxy, $detailed, $curlOpts);
     }
@@ -45,8 +45,6 @@ abstract class Request
     {
         if (!isset($this->curl))
             $this->curl = curl_init();
-
-//        dd(EngineService::setProxyForSingle($proxy), $curlOpts);
 
         curl_setopt_array($this->curl,
             $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + [
@@ -81,11 +79,31 @@ abstract class Request
             'code' => $code,
             'message' => $messageCode,
             'error' => curl_error($this->curl),
-            'response' => substr($response, $headerSize),
+            'cookies' => self::getCookie($response),
             'remote_ip' => curl_getinfo($this->curl,CURLINFO_PRIMARY_IP),
             'local_ip' => curl_getinfo($this->curl,CURLINFO_LOCAL_IP),
-            'total_time' => bcdiv(curl_getinfo($this->curl,CURLINFO_TOTAL_TIME_T), 1000)
+            'total_time' => bcdiv(curl_getinfo($this->curl,CURLINFO_TOTAL_TIME_T), 1000),
+            'response' => substr($response, $headerSize)
         ];
+    }
+
+    /**
+     * @param $response
+     * @return array
+     */
+    private function getCookie($response): array
+    {
+        preg_match_all('/^Set-Cookie:\s*([^;]*)/mi',
+            $response, $match_found);
+
+        $cookies = [];
+
+        foreach ($match_found[1] as $item) {
+            parse_str($item, $cookie);
+            $cookies = array_merge($cookies, $cookie);
+        }
+
+        return $cookies;
     }
 
     /**
@@ -113,10 +131,10 @@ abstract class Request
         return $headers;
     }
 
-    private function makeMultiRequest(array $proxy = [], bool $detailed = false)
-    {
-
-    }
+//    private function makeMultiRequest(array $proxy = [], bool $detailed = false)
+//    {
+//
+//    }
 
     /**
      * @param $headers
