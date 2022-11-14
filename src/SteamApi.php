@@ -4,7 +4,9 @@ namespace SteamApi;
 
 use SteamApi\Configs\Apps;
 use SteamApi\Requests\ItemListings;
+use SteamApi\Requests\ItemNameId;
 use SteamApi\Requests\ItemOrdersHistogram;
+use SteamApi\Requests\ItemPricing;
 use SteamApi\Requests\SaleHistory;
 
 class SteamApi
@@ -119,6 +121,34 @@ class SteamApi
     public function getSaleHistory(int $appId = Apps::CSGO_ID, array $options = [])
     {
         return (new SaleHistory($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getItemNameId(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        return (new ItemNameId($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response();
+    }
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getItemPricing(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        return (new ItemPricing($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }

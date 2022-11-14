@@ -2,15 +2,12 @@
 
 namespace SteamApi\Responses;
 
-use Carbon\Carbon;
 use SteamApi\Interfaces\ResponseInterface;
+use SteamApi\Services\MixedService;
 use SteamApi\Services\ResponseService;
 
-class SaleHistory implements ResponseInterface
+class ItemPricing implements ResponseInterface
 {
-    const DELIMITER_START = 'var line1=';
-    const DELIMITER_END = ';';
-
     private $response;
     private $detailed;
     private $multiRequest;
@@ -69,7 +66,7 @@ class SaleHistory implements ResponseInterface
             $returnData = $response;
 
             if ($this->detailed) {
-                $data = self::parseHistory($returnData['response']);
+                $data = json_decode($returnData['response'], true);
 
                 if (!$data)
                     $returnData['response'] = false;
@@ -78,7 +75,7 @@ class SaleHistory implements ResponseInterface
 
                 return $returnData;
             } else {
-                $data = self::parseHistory($returnData);
+                $data = json_decode($returnData, true);
 
                 if (!$data)
                     return false;
@@ -89,35 +86,19 @@ class SaleHistory implements ResponseInterface
     }
 
     /**
-     * @param $response
-     * @return mixed
-     */
-    private function parseHistory($response)
-    {
-        $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
-        $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
-
-        return json_decode($dataString, true);
-    }
-
-    /**
      * @param $data
      * @return array
      */
     private function completeData($data): array
     {
-        return array_map(function ($item) {
-            $datePieces = explode(' ', $item[0]);
-            $date = date('Y-m-d', strtotime($datePieces[1] . ' ' . $datePieces[0] . ' ' . $datePieces[2]));
-            $timestamp = Carbon::parse($date, 'Etc/GMT+0')->timestamp;
-
-            $timeData = [
-                'time' => $timestamp,
-                'price' => $item[1],
-                'volume' => (int) $item[2]
-            ];
-
-            return ResponseService::filterData($timeData, $this->select, $this->makeHidden);
-        }, $data);
+        return ResponseService::filterData(
+            [
+                'volume' => array_key_exists('volume', $data) ? (int)str_replace(',', '', $data['volume']) : 0,
+                'lowest_price' => array_key_exists('lowest_price', $data) ? MixedService::toFloat($data['lowest_price']) : 0,
+                'lowest_price_str' => array_key_exists('lowest_price', $data) ? $data['lowest_price'] : 0,
+                'median_price' => array_key_exists('median_price', $data) ? MixedService::toFloat($data['median_price']) : 0,
+                'median_price_str' => array_key_exists('lowest_price', $data) ? $data['lowest_price'] : 0,
+            ],
+            $this->select, $this->makeHidden);
     }
 }

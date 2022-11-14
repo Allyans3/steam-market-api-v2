@@ -26,7 +26,10 @@ class SaleHistory extends Request implements RequestInterface
         $this->setOptions($options);
     }
 
-    public function getUrl()
+    /**
+     * @return string
+     */
+    public function getUrl(): string
     {
         return sprintf(self::URL, $this->appId, $this->marketHashName);
     }
