@@ -4,7 +4,6 @@ namespace SteamApi\Requests;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
-use SteamApi\Exception\InvalidOptionsException;
 use SteamApi\Interfaces\RequestInterface;
 
 class InspectItem extends Request implements RequestInterface
