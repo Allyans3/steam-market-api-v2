@@ -3,6 +3,8 @@
 namespace SteamApi;
 
 use SteamApi\Configs\Apps;
+use SteamApi\Requests\InspectItem;
+use SteamApi\Requests\InspectItemV2;
 use SteamApi\Requests\ItemListings;
 use SteamApi\Requests\ItemNameId;
 use SteamApi\Requests\ItemOrdersHistogram;
@@ -149,6 +151,30 @@ class SteamApi
     public function getItemPricing(int $appId = Apps::CSGO_ID, array $options = [])
     {
         return (new ItemPricing($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param string $inspectLink
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function inspectItem(string $inspectLink)
+    {
+        return (new InspectItem($inspectLink))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param string $inspectLink
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function inspectItemV2(string $inspectLink)
+    {
+        return (new InspectItemV2($inspectLink))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
