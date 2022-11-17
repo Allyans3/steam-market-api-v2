@@ -2,27 +2,27 @@
 
 namespace SteamApi\Requests;
 
-use SteamApi\Engine\Request;
+use Carbon\Carbon;
 use SteamApi\Exception\InvalidClassException;
-use SteamApi\Exception\InvalidOptionsException;
+use SteamApi\Engine\Request;
 use SteamApi\Interfaces\RequestInterface;
 
-class ItemNameId extends Request implements RequestInterface
+class NewlyListed extends Request implements RequestInterface
 {
-    const REFERER = 'https://steamcommunity.com/market/listings/%s/%s';
-    const URL = 'https://steamcommunity.com/market/listings/%s/%s';
+    const REFERER = "https://steamcommunity.com/market/";
+    const URL = "https://steamcommunity.com/market/recent?country=%s&language=%s&currency=%s&norender=1";
 
     private $method = 'GET';
 
-    private $appId;
-    private $marketHashName = '';
+    private $country = 'US';
+    private $language = 'english';
+    private $currency = 1;
 
     /**
-     * @throws InvalidOptionsException
+     * @param array $options
      */
-    public function __construct($appId, $options = [])
+    public function __construct(array $options = [])
     {
-        $this->appId = $appId;
         $this->setOptions($options);
     }
 
@@ -31,18 +31,19 @@ class ItemNameId extends Request implements RequestInterface
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->appId, $this->marketHashName);
+        return sprintf(self::URL, $this->country, $this->language, $this->currency);
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getHeaders(): array
     {
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => sprintf(self::REFERER, $this->appId, $this->marketHashName)
+            'If-Modified-Since' => Carbon::now('UTC')->subSeconds(10)->toRfc7231String(),
+            'Referer' => self::REFERER
         ];
     }
 
@@ -69,13 +70,11 @@ class ItemNameId extends Request implements RequestInterface
 
     /**
      * @param array $options
-     * @throws InvalidOptionsException
      */
     private function setOptions(array $options)
     {
-        if (isset($options['market_hash_name']))
-            $this->marketHashName = rawurlencode($options['market_hash_name']);
-        else
-            throw new InvalidOptionsException("Option 'market_hash_name' must be filled");
+        $this->country = isset($options['country']) ? $options['country'] : $this->country;
+        $this->language = isset($options['language']) ? $options['language'] : $this->language;
+        $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
     }
 }

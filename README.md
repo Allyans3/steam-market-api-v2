@@ -10,7 +10,7 @@ Based on [JaxWilko/steam-market-api](https://github.com/JaxWilko/steam-market-ap
 
 # Documentation
 
-Documentation is available on the [GitHub Wiki](https://github.com/Allyans3/steam-market-api-v2/wiki/Old-documentation).
+Documentation is available on the [GitHub Wiki](https://github.com/Allyans3/steam-market-api-v2/wiki/Old-Documentation).
 
 # Support
 

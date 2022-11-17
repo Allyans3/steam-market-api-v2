@@ -7,8 +7,10 @@ use SteamApi\Requests\InspectItem;
 use SteamApi\Requests\InspectItemV2;
 use SteamApi\Requests\ItemListings;
 use SteamApi\Requests\ItemNameId;
+use SteamApi\Requests\ItemOrdersActivity;
 use SteamApi\Requests\ItemOrdersHistogram;
 use SteamApi\Requests\ItemPricing;
+use SteamApi\Requests\NewlyListed;
 use SteamApi\Requests\SaleHistory;
 use SteamApi\Requests\SearchItems;
 use SteamApi\Requests\UserInventory;
@@ -220,5 +222,31 @@ class SteamApi
         return (new UserInventory($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden, $this->extended, $steamId);
+    }
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getItemOrdersActivity(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        return (new ItemOrdersActivity($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int|null $appId
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function getNewlyListed(int $appId = null)
+    {
+        return (new NewlyListed())
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
     }
 }

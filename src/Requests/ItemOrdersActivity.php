@@ -2,25 +2,34 @@
 
 namespace SteamApi\Requests;
 
+use Carbon\Carbon;
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Exception\InvalidOptionsException;
 use SteamApi\Interfaces\RequestInterface;
 
-class ItemNameId extends Request implements RequestInterface
+class ItemOrdersActivity extends Request implements RequestInterface
 {
-    const REFERER = 'https://steamcommunity.com/market/listings/%s/%s';
-    const URL = 'https://steamcommunity.com/market/listings/%s/%s';
+    const REFERER = "https://steamcommunity.com/market/listings/%s/%s";
+    const URL = "https://steamcommunity.com/market/itemordersactivity?country=%s&language=%s&currency=%s&item_nameid=%s&two_factor=%s&norender=1";
 
     private $method = 'GET';
 
     private $appId;
     private $marketHashName = '';
 
+    private $country = 'US';
+    private $language = 'english';
+    private $currency = 1;
+    private $itemNameId = null;
+    private $twoFactor = 0;
+
     /**
+     * @param $appId
+     * @param array $options
      * @throws InvalidOptionsException
      */
-    public function __construct($appId, $options = [])
+    public function __construct($appId, array $options = [])
     {
         $this->appId = $appId;
         $this->setOptions($options);
@@ -31,17 +40,18 @@ class ItemNameId extends Request implements RequestInterface
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->appId, $this->marketHashName);
+        return sprintf(self::URL, $this->country, $this->language, $this->currency, $this->itemNameId, $this->twoFactor);
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getHeaders(): array
     {
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
+            'If-Modified-Since' => Carbon::now('UTC')->subSeconds(15)->toRfc7231String(),
             'Referer' => sprintf(self::REFERER, $this->appId, $this->marketHashName)
         ];
     }
@@ -77,5 +87,15 @@ class ItemNameId extends Request implements RequestInterface
             $this->marketHashName = rawurlencode($options['market_hash_name']);
         else
             throw new InvalidOptionsException("Option 'market_hash_name' must be filled");
+
+        if (isset($options['item_name_id']))
+            $this->itemNameId = $options['item_name_id'];
+        else
+            throw new InvalidOptionsException("Option 'item_name_id' must be filled");
+
+        $this->country = isset($options['country']) ? $options['country'] : $this->country;
+        $this->language = isset($options['language']) ? $options['language'] : $this->language;
+        $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
+        $this->twoFactor = isset($options['two_factor']) ? $options['two_factor'] : $this->twoFactor;
     }
 }

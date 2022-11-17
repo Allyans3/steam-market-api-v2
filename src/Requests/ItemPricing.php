@@ -2,7 +2,6 @@
 
 namespace SteamApi\Requests;
 
-use Carbon\Carbon;
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Exception\InvalidOptionsException;

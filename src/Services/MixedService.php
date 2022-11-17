@@ -19,6 +19,8 @@ class MixedService
                 $value = str_replace('.', '', $value);
                 $value = (float)str_replace(',', '.', $value);
             }
+//            else if ( preg_match("/(,\d{3})$/", $value, $thousand_delim) )
+//                $value = (int)str_replace(',', '', $value);
             else
                 $value = (int)$value;
         }
