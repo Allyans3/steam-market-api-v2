@@ -107,6 +107,9 @@ class ResponseService
      */
     public static function hideKeys(&$arr, $keys)
     {
+        if (!$keys)
+            return;
+
         foreach ($keys as $key => $value) {
             if (is_int($key) || is_int($value))
                 $keysKey = $value;

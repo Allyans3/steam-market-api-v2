@@ -35,11 +35,18 @@ class ItemNameId implements ResponseInterface
         unset($this->multiRequest);
     }
 
-    public function response(array $select = [], array $makeHidden = [])
+    /**
+     * @return false|mixed
+     */
+    public function response()
     {
         return $this->decodeResponse($this->response);
     }
 
+    /**
+     * @param $response
+     * @return false|mixed
+     */
     public function decodeResponse($response)
     {
         if ($this->multiRequest) {

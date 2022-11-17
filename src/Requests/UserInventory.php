@@ -4,26 +4,27 @@ namespace SteamApi\Requests;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
+use SteamApi\Exception\InvalidOptionsException;
 use SteamApi\Interfaces\RequestInterface;
 
-class SearchItems extends Request implements RequestInterface
+class UserInventory extends Request implements RequestInterface
 {
-    const URL = "https://steamcommunity.com/market/search/render?query=%s&appid=%s&start=%s&count=%s&search_descriptions=%s%s&norender=1";
+    const URL = "https://steamcommunity.com/inventory/%s/%s/%s?l=%s&count=%s&start_assetid=%s";
 
     private $method = 'GET';
 
     private $appId;
+    private $steamId;
+    private $contextId = 2;
 
-    private $query = '';
-    private $start = 0;
-    private $count = 10;
-    private $searchDescriptions = 0;
-    private $exact = false;
-    private $filters = '';
+    private $language = 'english';
+    private $count = 75;
+    private $startAssetId = '';
 
     /**
      * @param $appId
      * @param array $options
+     * @throws InvalidOptionsException
      */
     public function __construct($appId, array $options = [])
     {
@@ -31,13 +32,10 @@ class SearchItems extends Request implements RequestInterface
         $this->setOptions($options);
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->query, $this->appId, $this->start, $this->count,
-            $this->searchDescriptions, $this->filters);
+        return sprintf(self::URL, $this->steamId, $this->appId, $this->contextId, $this->language,
+            $this->count, $this->startAssetId);
     }
 
     /**
@@ -48,7 +46,7 @@ class SearchItems extends Request implements RequestInterface
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => 'https://steamcommunity.com/market/search'
+            'Referer' => "https://steamcommunity.com/profiles/{$this->steamId}/inventory/"
         ];
     }
 
@@ -75,18 +73,18 @@ class SearchItems extends Request implements RequestInterface
 
     /**
      * @param $options
+     * @throws InvalidOptionsException
      */
     private function setOptions($options)
     {
-        $this->start = isset($options['start']) ? $options['start'] : $this->start;
+        if (isset($options['steam_id']))
+            $this->steamId = $options['steam_id'];
+        else
+            throw new InvalidOptionsException("Option 'steam_id' must be filled");
+
+        $this->contextId = isset($options['context_id']) ? $options['context_id'] : $this->contextId;
+        $this->language = isset($options['language']) ? $options['language'] : $this->language;
         $this->count = isset($options['count']) ? $options['count'] : $this->count;
-        $this->exact = isset($options['exact']) ? $options['exact'] : $this->exact;
-        $this->searchDescriptions = isset($options['search_descriptions']) ? $options['search_descriptions'] : $this->searchDescriptions;
-
-        $this->query = isset($options['query']) ?
-            ($this->exact ? sprintf('"%s"', rawurlencode($options['query'])) : rawurlencode($options['query'])) :
-            $this->query;
-
-        $this->filters = isset($options['filters']) ? '&' . http_build_query($options['filters']) : $this->filters;
+        $this->startAssetId = isset($options['start_asset_id']) ? $options['start_asset_id'] : $this->startAssetId;
     }
 }

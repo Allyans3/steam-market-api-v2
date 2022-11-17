@@ -8,7 +8,7 @@ interface ResponseInterface
 
     public function __destruct();
 
-    public function response(array $select = [], array $makeHidden = []);
+    public function response();
 
     public function decodeResponse($response);
 }

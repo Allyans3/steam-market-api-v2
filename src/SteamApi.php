@@ -11,6 +11,7 @@ use SteamApi\Requests\ItemOrdersHistogram;
 use SteamApi\Requests\ItemPricing;
 use SteamApi\Requests\SaleHistory;
 use SteamApi\Requests\SearchItems;
+use SteamApi\Requests\UserInventory;
 
 class SteamApi
 {
@@ -22,6 +23,7 @@ class SteamApi
 
     private $select = [];
     private $makeHidden = [];
+    private $extended = false;
 
     private $curlOpts = [];
 
@@ -81,6 +83,17 @@ class SteamApi
     public function withCustomCurlOpts(array $curlOpts): SteamApi
     {
         $this->curlOpts = $curlOpts;
+        return $this;
+    }
+
+    /**
+     * Only for UserInventory
+     *
+     * @return $this
+     */
+    public function withInspectData()
+    {
+        $this->extended = true;
         return $this;
     }
 
@@ -191,5 +204,21 @@ class SteamApi
         return (new SearchItems($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getUserInventory(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        $steamId = array_key_exists('steam_id', $options) ? $options['steam_id'] : null;
+
+        return (new UserInventory($appId, $options))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden, $this->extended, $steamId);
     }
 }
