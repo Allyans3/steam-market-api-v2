@@ -1,29 +1,28 @@
 <?php
 
-namespace SteamApi\Requests;
+namespace SteamApi\Requests\Steam;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
+use SteamApi\Exception\InvalidOptionsException;
 use SteamApi\Interfaces\RequestInterface;
 
-class SearchItems extends Request implements RequestInterface
+class ItemPricing extends Request implements RequestInterface
 {
-    const URL = "https://steamcommunity.com/market/search/render?query=%s&appid=%s&start=%s&count=%s&search_descriptions=%s%s&norender=1";
+    const URL = 'https://steamcommunity.com/market/priceoverview/?country=%s&currency=%s&appid=%s&market_hash_name=%s';
 
     private $method = 'GET';
 
     private $appId;
+    private $marketHashName = '';
 
-    private $query = '';
-    private $start = 0;
-    private $count = 10;
-    private $searchDescriptions = 0;
-    private $exact = false;
-    private $filters = '';
+    private $country = 'US';
+    private $currency = 1;
 
     /**
      * @param $appId
      * @param array $options
+     * @throws InvalidOptionsException
      */
     public function __construct($appId, array $options = [])
     {
@@ -36,8 +35,7 @@ class SearchItems extends Request implements RequestInterface
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->query, $this->appId, $this->start, $this->count,
-            $this->searchDescriptions, $this->filters);
+        return sprintf(self::URL, $this->country, $this->currency, $this->appId, $this->marketHashName);
     }
 
     /**
@@ -48,7 +46,7 @@ class SearchItems extends Request implements RequestInterface
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => 'https://steamcommunity.com/market/search'
+//            'If-Modified-Since' => Carbon::now('UTC')->subSeconds(30)->toRfc7231String(),
         ];
     }
 
@@ -75,18 +73,16 @@ class SearchItems extends Request implements RequestInterface
 
     /**
      * @param $options
+     * @throws InvalidOptionsException
      */
     private function setOptions($options)
     {
-        $this->start = isset($options['start']) ? $options['start'] : $this->start;
-        $this->count = isset($options['count']) ? $options['count'] : $this->count;
-        $this->exact = isset($options['exact']) ? $options['exact'] : $this->exact;
-        $this->searchDescriptions = isset($options['search_descriptions']) ? $options['search_descriptions'] : $this->searchDescriptions;
+        if (isset($options['market_hash_name']))
+            $this->marketHashName = rawurlencode($options['market_hash_name']);
+        else
+            throw new InvalidOptionsException("Option 'market_hash_name' must be filled");
 
-        $this->query = isset($options['query']) ?
-            ($this->exact ? sprintf('"%s"', rawurlencode($options['query'])) : rawurlencode($options['query'])) :
-            $this->query;
-
-        $this->filters = isset($options['filters']) ? '&' . http_build_query($options['filters']) : $this->filters;
+        $this->country = isset($options['country']) ? $options['country'] : $this->country;
+        $this->currency = isset($options['currency']) ? $options['currency'] : $this->currency;
     }
 }

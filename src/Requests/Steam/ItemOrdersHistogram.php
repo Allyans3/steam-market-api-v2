@@ -1,6 +1,6 @@
 <?php
 
-namespace SteamApi\Requests;
+namespace SteamApi\Requests\Steam;
 
 use Carbon\Carbon;
 use SteamApi\Engine\Request;

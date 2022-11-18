@@ -1,6 +1,6 @@
 <?php
 
-namespace SteamApi\Requests;
+namespace SteamApi\Requests\Inspectors;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;

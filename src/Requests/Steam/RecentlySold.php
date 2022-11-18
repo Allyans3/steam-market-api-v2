@@ -1,41 +1,36 @@
 <?php
 
-namespace SteamApi\Requests;
+namespace SteamApi\Requests\Steam;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Interfaces\RequestInterface;
 
-class InspectItemV2 extends Request implements RequestInterface
+class RecentlySold extends Request implements RequestInterface
 {
-    const URL = 'https://floats.steaminventoryhelper.com/?url=%s';
+    const REFERER = "https://steamcommunity.com/market/";
+    const URL = "https://steamcommunity.com/market/recentcompleted?norender=1";
 
     private $method = 'GET';
-
-    private $inspectLink;
-
-    /**
-     * @param string $inspectLink
-     */
-    public function __construct(string $inspectLink)
-    {
-        $this->inspectLink = rawurlencode($inspectLink);
-    }
 
     /**
      * @return string
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->inspectLink);
+        return self::URL;
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getHeaders(): array
     {
-        return [];
+        return [
+            'Host' => 'steamcommunity.com',
+            'Origin' => 'https://steamcommunity.com/',
+            'Referer' => self::REFERER
+        ];
     }
 
     /**

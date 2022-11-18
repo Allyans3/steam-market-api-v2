@@ -3,17 +3,8 @@
 namespace SteamApi;
 
 use SteamApi\Configs\Apps;
-use SteamApi\Requests\InspectItem;
-use SteamApi\Requests\InspectItemV2;
-use SteamApi\Requests\ItemListings;
-use SteamApi\Requests\ItemNameId;
-use SteamApi\Requests\ItemOrdersActivity;
-use SteamApi\Requests\ItemOrdersHistogram;
-use SteamApi\Requests\ItemPricing;
-use SteamApi\Requests\NewlyListed;
-use SteamApi\Requests\SaleHistory;
-use SteamApi\Requests\SearchItems;
-use SteamApi\Requests\UserInventory;
+use SteamApi\Configs\Engine;
+use SteamApi\Exception\InvalidClassException;
 
 class SteamApi
 {
@@ -93,7 +84,7 @@ class SteamApi
      *
      * @return $this
      */
-    public function withInspectData()
+    public function withInspectData(): SteamApi
     {
         $this->extended = true;
         return $this;
@@ -110,7 +101,9 @@ class SteamApi
      */
     public function getItemListings(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new ItemListings($appId, $options))
+        $class = self::getClass('ItemListings', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -124,7 +117,9 @@ class SteamApi
      */
     public function getItemOrdersHistogram(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new ItemOrdersHistogram($appId, $options))
+        $class = self::getClass('ItemOrdersHistogram', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -138,7 +133,9 @@ class SteamApi
      */
     public function getSaleHistory(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new SaleHistory($appId, $options))
+        $class = self::getClass('SaleHistory', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -152,7 +149,9 @@ class SteamApi
      */
     public function getItemNameId(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new ItemNameId($appId, $options))
+        $class = self::getClass('ItemNameId', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response();
     }
@@ -166,7 +165,9 @@ class SteamApi
      */
     public function getItemPricing(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new ItemPricing($appId, $options))
+        $class = self::getClass('ItemPricing', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -178,7 +179,9 @@ class SteamApi
      */
     public function inspectItem(string $inspectLink)
     {
-        return (new InspectItem($inspectLink))
+        $class = self::getClass('InspectItem', 'Inspectors');
+
+        return (new $class($inspectLink))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -190,7 +193,9 @@ class SteamApi
      */
     public function inspectItemV2(string $inspectLink)
     {
-        return (new InspectItemV2($inspectLink))
+        $class = self::getClass('InspectItemV2', 'Inspectors');
+
+        return (new $class($inspectLink))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -203,7 +208,9 @@ class SteamApi
      */
     public function searchItems(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new SearchItems($appId, $options))
+        $class = self::getClass('SearchItems', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -219,7 +226,9 @@ class SteamApi
     {
         $steamId = array_key_exists('steam_id', $options) ? $options['steam_id'] : null;
 
-        return (new UserInventory($appId, $options))
+        $class = self::getClass('UserInventory', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden, $this->extended, $steamId);
     }
@@ -233,7 +242,9 @@ class SteamApi
      */
     public function getItemOrdersActivity(int $appId = Apps::CSGO_ID, array $options = [])
     {
-        return (new ItemOrdersActivity($appId, $options))
+        $class = self::getClass('ItemOrdersActivity', 'Steam');
+
+        return (new $class($appId, $options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }
@@ -245,8 +256,55 @@ class SteamApi
      */
     public function getNewlyListed(int $appId = null)
     {
-        return (new NewlyListed())
+        $class = self::getClass('NewlyListed', 'Steam');
+
+        return (new $class())
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int|null $appId
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function getAppFilters(int $appId = Apps::CSGO_ID)
+    {
+        $class = self::getClass('AppFilters', 'Steam');
+
+        return (new $class($appId))
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param int|null $appId
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function getRecentlySold()
+    {
+        $class = self::getClass('RecentlySold', 'Steam');
+
+        return (new $class())
+            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->response($this->select, $this->makeHidden);
+    }
+
+
+    /**
+     * @param string $name
+     * @param string $dir
+     * @return mixed
+     * @throws InvalidClassException
+     */
+    private function getClass(string $name, string $dir)
+    {
+        $class = Engine::REQUEST_PREFIX . $dir . '\\' . $name;
+
+        if (!class_exists($class))
+            throw new InvalidClassException('Call to undefined Request Class');
+
+        return $class;
     }
 }
