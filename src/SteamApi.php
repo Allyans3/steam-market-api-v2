@@ -22,10 +22,19 @@ class SteamApi
 
 
     /**
-     * @param $proxy
+     * @return SteamApi
+     */
+    public static function query(): SteamApi
+    {
+        return new self();
+    }
+
+
+    /**
+     * @param array $proxy
      * @return $this
      */
-    public function withProxy($proxy): SteamApi
+    public function withProxy(array $proxy): SteamApi
     {
         $this->proxy = $proxy;
         return $this;
@@ -53,7 +62,7 @@ class SteamApi
      * @param array $select
      * @return $this
      */
-    public function select(array $select = []): SteamApi
+    public function select(array $select): SteamApi
     {
         $this->select = $select;
         return $this;
@@ -63,7 +72,7 @@ class SteamApi
      * @param array $makeHidden
      * @return $this
      */
-    public function makeHidden(array $makeHidden = []): SteamApi
+    public function makeHidden(array $makeHidden): SteamApi
     {
         $this->makeHidden = $makeHidden;
         return $this;
@@ -250,15 +259,15 @@ class SteamApi
     }
 
     /**
-     * @param int|null $appId
+     * @param array $options
      * @return mixed
-     * @throws Exception\InvalidClassException
+     * @throws InvalidClassException
      */
-    public function getNewlyListed(int $appId = null)
+    public function getNewlyListed(array $options = [])
     {
         $class = self::getClass('NewlyListed', 'Steam');
 
-        return (new $class())
+        return (new $class($options))
             ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
             ->response($this->select, $this->makeHidden);
     }

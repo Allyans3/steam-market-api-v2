@@ -3,6 +3,7 @@
 namespace SteamApi\Services;
 
 use DiDom\Document;
+use DiDom\Exceptions\InvalidSelectorException;
 
 class ResponseService
 {
@@ -24,6 +25,7 @@ class ResponseService
      * @param $assets
      * @param $listingAssetData
      * @return array
+     * @throws InvalidSelectorException
      */
     public static function getAssetData($assets, $listingAssetData): array
     {
@@ -34,8 +36,8 @@ class ResponseService
             'class_id' => $asset['classid'],
             'instance_id' => $asset['instanceid'],
             'market_hash_name' => $asset['market_hash_name'],
-            'icon_url' => "https://steamcommunity-a.akamaihd.net/economy/image/" . $asset['icon_url'],
-            'icon_url_large' => "https://steamcommunity-a.akamaihd.net/economy/image/" . $asset['icon_url_large'],
+            'icon_url' => $asset['icon_url'],
+            'icon_url_large' => $asset['icon_url_large'],
             'stickers' => self::parseStickersFromDescription($asset['descriptions']),
             'amount' => $asset['amount'],
             'status' => $asset['status'],
@@ -45,6 +47,11 @@ class ResponseService
         ];
     }
 
+    /**
+     * @param $description
+     * @return array|string|string[]
+     * @throws InvalidSelectorException
+     */
     public static function parseStickersFromDescription($description)
     {
         $stickers = '';
@@ -63,6 +70,12 @@ class ResponseService
         return $stickers;
     }
 
+    /**
+     * @param $data
+     * @param $select
+     * @param $makeHidden
+     * @return array
+     */
     public static function filterData($data, $select, $makeHidden): array
     {
         $returnData = self::selectKeys($data, $select);
