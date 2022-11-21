@@ -98,12 +98,12 @@ class ResponseService
         $saved = [];
 
         foreach ($keys as $key => $value) {
-            $isList = false;
-
             if (is_int($key) || is_int($value))
                 $keysKey = $value;
             else
                 $keysKey = $key;
+
+            $isList = false;
 
             if ((preg_match('/%.+%/', $keysKey, $matches))) {
                 $isList = true;
@@ -141,9 +141,20 @@ class ResponseService
             else
                 $keysKey = $key;
 
+            $isList = false;
+
+            if ((preg_match('/%.+%/', $keysKey, $matches))) {
+                $isList = true;
+                $keysKey = str_replace('%', '', $matches[0]);
+            }
+
             if (isset($arr[$keysKey])) {
                 if (is_array($value))
-                    self::hideKeys($arr[$keysKey], $keys[$keysKey]);
+                    if ($isList)
+                        foreach ($arr[$keysKey] as $listKey => $listValue)
+                            self::hideKeys($arr[$keysKey][$listKey], $value);
+                    else
+                        self::hideKeys($arr[$keysKey], $keys[$keysKey]);
                 else
                     unset($arr[$keysKey]);
             }
