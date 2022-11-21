@@ -129,12 +129,12 @@ class ItemListings implements ResponseInterface
                 }
             }
 
-            $returnData['listings'][] = ResponseService::filterData($listingData, $this->select, $this->makeHidden);
+            $returnData['listings'][] = $listingData;
         }
 
         unset($document);
 
-        return $returnData;
+        return ResponseService::filterData($returnData, $this->select, $this->makeHidden);
     }
 
     /**

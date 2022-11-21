@@ -3,6 +3,7 @@
 namespace SteamApi\Responses;
 
 use SteamApi\Interfaces\ResponseInterface;
+use SteamApi\Services\ResponseService;
 
 class NewlyListed implements ResponseInterface
 {
@@ -51,6 +52,10 @@ class NewlyListed implements ResponseInterface
         return $this->decodeResponse($this->response);
     }
 
+    /**
+     * @param $response
+     * @return array|false
+     */
     public function decodeResponse($response)
     {
         if ($this->multiRequest) {
@@ -79,8 +84,12 @@ class NewlyListed implements ResponseInterface
         }
     }
 
-    private function completeData($data)
+    /**
+     * @param $data
+     * @return array
+     */
+    private function completeData($data): array
     {
-        return $data;
+        return ResponseService::filterData($data, $this->select, $this->makeHidden);
     }
 }

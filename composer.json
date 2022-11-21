@@ -1,6 +1,6 @@
 {
     "name": "allyans3/steam-market-api-v2",
-    "description": "Steam market API v2",
+    "description": "Steam Market API v2",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
@@ -15,8 +15,7 @@
         "nesbot/carbon": "^2.61.0",
         "ext-curl": "*",
         "ext-json": "*",
-        "ext-bcmath": "*",
-        "ext-dom": "*"
+        "ext-bcmath": "*"
     },
     "autoload": {
         "psr-4": {

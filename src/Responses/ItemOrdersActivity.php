@@ -5,6 +5,7 @@ namespace SteamApi\Responses;
 use DiDom\Exceptions\InvalidSelectorException;
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Services\MixedService;
+use SteamApi\Services\ResponseService;
 
 class ItemOrdersActivity implements ResponseInterface
 {
@@ -101,6 +102,6 @@ class ItemOrdersActivity implements ResponseInterface
             $item['price'] = MixedService::toFloat($item['price']);
         }
 
-        return $returnData;
+        return ResponseService::filterData($returnData, $this->select, $this->makeHidden);
     }
 }

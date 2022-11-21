@@ -70,7 +70,7 @@ class InspectItem implements ResponseInterface
                 if (!$data)
                     $returnData['response'] = false;
                 else
-                    $returnData['response'] = ResponseService::filterData($data, $this->select, $this->makeHidden);
+                    $returnData['response'] = self::completeData($data);
 
                 return $returnData;
             } else {
@@ -79,8 +79,17 @@ class InspectItem implements ResponseInterface
                 if (!$data)
                     return false;
 
-                return ResponseService::filterData($data, $this->select, $this->makeHidden);
+                return self::completeData($data);
             }
         }
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    private function completeData($data): array
+    {
+        return ResponseService::filterData($data, $this->select, $this->makeHidden);
     }
 }
