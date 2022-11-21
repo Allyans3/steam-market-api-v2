@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/Allyans3/steam-market-api-v2" target="_blank"><img src="https://raw.githubusercontent.com/Allyans3/steam-market-api-v2/ver4/images/steam-market-api-logo.jpg" width="700" alt="Steam-market-api-v2"></a></p>
+<p align="center"><a href="https://github.com/Allyans3/steam-market-api-v2" target="_blank"><img style="border-radius: 50px" src="https://raw.githubusercontent.com/Allyans3/steam-market-api-v2/ver4/images/steam-market-api-logo.jpg" width="650" alt="Steam-market-api-v2"></a></p>
 
 <p align="center">
 <a href="https://packagist.org/packages/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/v/Allyans3/steam-market-api-v2?style=flat-square" alt="Latest Stable Version"></a>
