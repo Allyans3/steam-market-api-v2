@@ -110,6 +110,7 @@ class ItemListings implements ResponseInterface
 
                     if ($value['price'] > 0 && $value['fee'] > 0) {
                         $currencyId = $value['currencyid'] - 2000;
+                        $convertedCurrencyId = $value['converted_currencyid'] - 2000;
 
                         $listingData['original_price_data'] = [
                             'currency_id' => $currencyId,
@@ -119,6 +120,8 @@ class ItemListings implements ResponseInterface
                             'price_without_fee' => $value['price'] / 100
                         ];
 
+                        $listingData['price_data']['currency_id'] = $convertedCurrencyId;
+                        $listingData['price_data']['currency'] = Economic::CURRENCY_LIST[$convertedCurrencyId];
                         $listingData['price_data']['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
                         $listingData['price_data']['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
                         $listingData['price_data']['price_without_fee'] = $value['converted_price'] / 100;
@@ -147,6 +150,9 @@ class ItemListings implements ResponseInterface
             'original_price_data' => [],
 
             'price_data' => [
+                'currency_id' => 0,
+                'currency' => '',
+
                 'price_with_fee' => 0,
                 'price_with_fee_str' => trim($listing->find('.market_listing_price_with_fee')[0]->text()),
 

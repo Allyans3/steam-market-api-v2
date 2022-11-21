@@ -98,16 +98,28 @@ class ResponseService
         $saved = [];
 
         foreach ($keys as $key => $value) {
+            $isList = false;
+
             if (is_int($key) || is_int($value))
                 $keysKey = $value;
             else
                 $keysKey = $key;
 
+            if ((preg_match('/%.+%/', $keysKey, $matches))) {
+                $isList = true;
+                $keysKey = str_replace('%', '', $matches[0]);
+            }
+
             if (isset($arr[$keysKey])) {
                 $saved[$keysKey] = $arr[$keysKey];
 
-                if (is_array($value))
-                    $saved[$keysKey] = self::selectKeys($saved[$keysKey], $keys[$keysKey]);
+                if (is_array($value)) {
+                    if ($isList)
+                        foreach ($arr[$keysKey] as $listKey => $listValue)
+                            $saved[$keysKey][$listKey] = self::selectKeys($saved[$keysKey][$listKey], $value);
+                    else
+                        $saved[$keysKey] = self::selectKeys($saved[$keysKey], $keys[$keysKey]);
+                }
             }
         }
 
