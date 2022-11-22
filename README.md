@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/Allyans3/steam-market-api-v2" target="_blank"><img src="https://raw.githubusercontent.com/Allyans3/steam-market-api-v2/ver4/images/steam-market-api-logo.png" width="650" alt="Steam-market-api-v2"></a></p>
+<p align="center"><a href="https://github.com/Allyans3/steam-market-api-v2" target="_blank"><img src="https://raw.githubusercontent.com/Allyans3/steam-market-api-v2/ver4/images/steam-market-api-logo.png" width="600" alt="Steam-market-api-v2"></a></p>
 
 <p align="center">
 <a href="https://packagist.org/packages/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/v/Allyans3/steam-market-api-v2?style=flat-square" alt="Latest Stable Version"></a>
@@ -14,10 +14,10 @@ This package provides a simple interaction with the Steam Market. You can easily
 
 Based on [JaxWilko/steam-market-api](https://github.com/JaxWilko/steam-market-api)
 
-# Documentation
+## Documentation
 
 Documentation is available on the [GitHub Wiki](https://github.com/Allyans3/steam-market-api-v2/wiki/Old-Documentation).
 
-# Support
+## Support
 
 Report bugs on the [issue tracker](https://github.com/Allyans3/steam-market-api-v2/issues)
