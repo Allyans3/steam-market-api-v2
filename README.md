@@ -6,7 +6,9 @@
 <a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/l/Allyans3/steam-market-api-v2?style=flat-square" alt="License"></a>
 </p>
 
+> **Note:** The newest version `v4.0.0` not compatible with `v3.2.3` and lower. The new version was completely rewritten due to the inability to add new functionality, methods, etc. To migrate, you need to carefully rewrite your code. Sorry for the inconvenience.  
 
+## About Steam Market API V2
 
 This package provides a simple interaction with the Steam Market. You can easily get listings, prices, inventory and inspect items. You can do it with your own proxies and get detailed response for deeper analysis of request. 
 
