@@ -21,3 +21,7 @@ Documentation is available on the [GitHub Wiki](https://github.com/Allyans3/stea
 ## Support
 
 Report bugs on the [issue tracker](https://github.com/Allyans3/steam-market-api-v2/issues)
+
+## License
+
+Steam Market API V2 is open-sourced Composer package licensed under the [MIT license](https://opensource.org/licenses/MIT).
