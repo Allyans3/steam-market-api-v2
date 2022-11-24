@@ -19,7 +19,7 @@ class SearchItems extends Request implements RequestInterface
     private $count = 10;
     private $searchDescriptions = 0;
     private $exact = false;
-    private $filters = '';
+    private $filter = '';
 
     /**
      * @param $appId
@@ -37,7 +37,7 @@ class SearchItems extends Request implements RequestInterface
     public function getUrl(): string
     {
         return sprintf(self::URL, $this->query, $this->appId, $this->start, $this->count,
-            $this->searchDescriptions, $this->filters);
+            $this->searchDescriptions, $this->filter);
     }
 
     /**
@@ -87,6 +87,6 @@ class SearchItems extends Request implements RequestInterface
             ($this->exact ? sprintf('"%s"', rawurlencode($options['query'])) : rawurlencode($options['query'])) :
             $this->query;
 
-        $this->filters = isset($options['filters']) ? '&' . http_build_query($options['filters']) : $this->filters;
+        $this->filter = isset($options['filter']) ? '&' . http_build_query($options['filter']) : $this->filter;
     }
 }

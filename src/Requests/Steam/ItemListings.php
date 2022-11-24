@@ -20,9 +20,9 @@ class ItemListings extends Request implements RequestInterface
     private $query = '';
     private $start = 0;
     private $count = 10;
-    private $currency = 1;
     private $country = 'US';
     private $language = 'english';
+    private $currency = 1;
     private $filter = '';
 
     /**

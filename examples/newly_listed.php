@@ -6,4 +6,11 @@ use SteamApi\SteamApi;
 
 $api = new SteamApi();
 
-dd($api->detailed()->getNewlyListed());
+$options = [
+//    'country' => 'US',                        //optional
+//    'language' => 'english',                  //optional
+//    'currency' => 1                           //optional
+];
+
+
+dd($api->detailed()->getNewlyListed($options));

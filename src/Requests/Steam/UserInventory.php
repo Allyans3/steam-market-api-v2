@@ -19,7 +19,7 @@ class UserInventory extends Request implements RequestInterface
 
     private $language = 'english';
     private $count = 75;
-    private $startAssetId = '';
+    private $startAssetId = null;
 
     /**
      * @param $appId

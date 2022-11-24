@@ -11,4 +11,4 @@ $options = [
     'market_hash_name' => "AK-47 | Slate (Field-Tested)"
 ];
 
-dd($api->detailed()->getSaleHistory(Apps::CSGO_ID, $options));
+dd($api->detailed()->getItemNameId(Apps::CSGO_ID, $options));

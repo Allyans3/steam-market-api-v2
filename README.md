@@ -20,7 +20,7 @@ Documentation is available on the [GitHub Wiki](https://github.com/Allyans3/stea
 
 ## Support
 
-Report bugs on the [issue tracker](https://github.com/Allyans3/steam-market-api-v2/issues)
+Report bugs on the [issue tracker](https://github.com/Allyans3/steam-market-api-v2/issues).
 
 ## License
 
