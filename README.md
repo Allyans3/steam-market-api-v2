@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://packagist.org/packages/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/v/Allyans3/steam-market-api-v2?style=flat-square&logo=Composer" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/dt/Allyans3/steam-market-api-v2?style=flat-square&logo=Composer" alt="Total Downloads"></a>
-<a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://shields-io-visitor-counter.herokuapp.com/badge?page=Allyans3.steam-market-api-v2&color=1D70B8&logo=GitHub&logoColor=FFFFFF&style=flat-square&label=visitors count" alt="Visitors count"></a>
+<a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAllyans3%2Fsteam-market-api-v2&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=visitors&edge_flat=true" alt="Visitors count"></a>
 <a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/l/Allyans3/steam-market-api-v2?style=flat-square" alt="License"></a>
 </p>
 
