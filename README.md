@@ -3,8 +3,8 @@
 <p align="center">
 <a href="https://packagist.org/packages/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/v/Allyans3/steam-market-api-v2?style=flat-square&logo=Composer" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/dt/Allyans3/steam-market-api-v2?style=flat-square&logo=Composer" alt="Total Downloads"></a>
-<a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAllyans3%2Fsteam-market-api-v2&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=visitors&edge_flat=true" alt="Visitors count"></a>
-<a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/l/Allyans3/steam-market-api-v2?style=flat-square" alt="License"></a>
+<a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAllyans3%2Fsteam-market-api-v2&count_bg=%2344CC10&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=visitors&edge_flat=true" alt="Visitors count"></a>
+<a href="https://github.com/Allyans3/steam-market-api-v2"><img src="https://img.shields.io/packagist/l/Allyans3/steam-market-api-v2?style=flat-square&color=3555555" alt="License"></a>
 </p>
 
 > **Note:** The newest version `v4.0.0` not compatible with `v3.2.3` and lower. The new version was completely rewritten due to the inability to add new functionality, methods, etc. To migrate, you need to carefully rewrite your code. Sorry for the inconvenience.  
