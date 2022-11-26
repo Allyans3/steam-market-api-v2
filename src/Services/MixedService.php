@@ -5,10 +5,10 @@ namespace SteamApi\Services;
 class MixedService
 {
     /**
-     * @param $str
+     * @param string $str
      * @return float|int
      */
-    public static function toFloat($str)
+    public static function toFloat(string $str)
     {
         if(preg_match("/([0-9\.,-]+)/", $str, $match)){
             $value = $match[0];
@@ -29,5 +29,34 @@ class MixedService
         }
 
         return $value;
+    }
+
+    /**
+     * @param array $roundRobinArr
+     * @return false|mixed
+     */
+    public static function getNextItem(array &$roundRobinArr)
+    {
+        $curr = current($roundRobinArr);
+
+        if ($curr === false)
+            $curr = reset($roundRobinArr);
+
+        next($roundRobinArr);
+        return $curr;
+    }
+
+    /**
+     * @param string $browser
+     * @return array|false|string[]
+     */
+    public static function getUserAgents(string $browser = 'Chrome')
+    {
+        $thisDir = dirname(__FILE__);
+        $parent_dir = realpath($thisDir . '/..');
+        $path = $parent_dir . '/UserAgents/' . $browser . '.txt';
+        $handle = @file_get_contents($path);
+
+        return $handle ? explode("\n", $handle) : [];
     }
 }

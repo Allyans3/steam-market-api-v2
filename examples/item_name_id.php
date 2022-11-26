@@ -12,3 +12,11 @@ $options = [
 ];
 
 dd($api->detailed()->getItemNameId(Apps::CSGO_ID, $options));
+
+
+
+
+
+// Example response:
+//
+//"response" => 176241017
