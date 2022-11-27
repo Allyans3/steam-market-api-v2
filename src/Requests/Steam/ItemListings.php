@@ -59,13 +59,14 @@ class ItemListings extends Request implements RequestInterface
      * @param array $proxy
      * @param false $detailed
      * @param false $multiRequest
+     * @param string $cookies
      * @param array $curlOpts
      * @return mixed|void
      * @throws InvalidClassException
      */
-    public function call(array $proxy = [], bool $detailed = false, bool $multiRequest = false, array $curlOpts = [])
+    public function call(array $proxy = [], string $cookies = '', bool $detailed = false, array $curlOpts = [], bool $multiRequest = false)
     {
-        return $this->makeRequest($proxy, $detailed, $multiRequest, $curlOpts);
+        return $this->makeRequest($proxy, $cookies, $detailed, $curlOpts, $multiRequest);
     }
 
     /**

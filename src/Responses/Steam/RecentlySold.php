@@ -1,12 +1,11 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
 use SteamApi\Interfaces\ResponseInterface;
-use SteamApi\Services\MixedService;
 use SteamApi\Services\ResponseService;
 
-class ItemPricing implements ResponseInterface
+class RecentlySold implements ResponseInterface
 {
     private $response;
     private $detailed;
@@ -91,14 +90,6 @@ class ItemPricing implements ResponseInterface
      */
     private function completeData($data): array
     {
-        return ResponseService::filterData(
-            [
-                'volume' => array_key_exists('volume', $data) ? (int)str_replace(',', '', $data['volume']) : 0,
-                'lowest_price' => array_key_exists('lowest_price', $data) ? MixedService::toFloat($data['lowest_price']) : 0,
-                'lowest_price_str' => array_key_exists('lowest_price', $data) ? $data['lowest_price'] : 0,
-                'median_price' => array_key_exists('median_price', $data) ? MixedService::toFloat($data['median_price']) : 0,
-                'median_price_str' => array_key_exists('lowest_price', $data) ? $data['lowest_price'] : 0,
-            ],
-            $this->select, $this->makeHidden);
+        return ResponseService::filterData($data, $this->select, $this->makeHidden);
     }
 }

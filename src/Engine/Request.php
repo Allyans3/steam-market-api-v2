@@ -20,28 +20,31 @@ abstract class Request
 
     /**
      * @param array $proxy
+     * @param string $cookies
      * @param false $detailed
      * @param false $multiRequest
      * @param array $curlOpts
      * @return mixed|void
      * @throws InvalidClassException
      */
-    public function makeRequest(array $proxy = [], bool $detailed = false, bool $multiRequest = false, array $curlOpts = [])
+    public function makeRequest(array $proxy = [], string $cookies = '', bool $detailed = false, array $curlOpts = [],
+                                bool $multiRequest = false)
     {
 //        if ($multiRequest)
 //            return self::makeMultiRequest($proxy, $detailed);
 
-        return self::makeSingleRequest($proxy, $detailed, $curlOpts);
+        return self::makeSingleRequest($proxy, $cookies, $detailed, $curlOpts);
     }
 
     /**
      * @param array $proxy
+     * @param string $cookies
      * @param false $detailed
      * @param array $curlOpts
      * @return mixed
      * @throws InvalidClassException
      */
-    private function makeSingleRequest(array $proxy = [], bool $detailed = false, array $curlOpts = [])
+    private function makeSingleRequest(array $proxy = [], string $cookies = '', bool $detailed = false, array $curlOpts = [])
     {
         if (!isset($this->curl))
             $this->curl = curl_init();
@@ -51,7 +54,8 @@ abstract class Request
                 CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
                 CURLOPT_HTTPHEADER => self::mergeHeaders($this->getHeaders()),
                 CURLOPT_URL => $this->getUrl(),
-                CURLOPT_HEADER => $detailed
+                CURLOPT_HEADER => $detailed,
+                CURLOPT_COOKIE => $cookies
             ]
         );
 
@@ -156,12 +160,36 @@ abstract class Request
      */
     public function response($data, bool $detailed = false, bool $multiRequest = false)
     {
-        $class = Engine::RESPONSE_PREFIX . strrev(explode('\\', strrev(get_called_class()), 2)[0]);
+//        $class = Engine::RESPONSE_PREFIX . strrev(explode('\\', strrev(get_called_class()), 2)[0]);
+
+        $class = self::getResponseClass();
 
         if (!class_exists($class))
             throw new InvalidClassException('Call to undefined Response Class');
 
         return new $class($data, $detailed, $multiRequest);
+    }
+
+    /**
+     * @return string
+     */
+    private function getResponseClass(): string
+    {
+        $reversedArr = explode('\\', strrev(get_called_class()));
+
+        $method = strrev($reversedArr[0]);
+        $folders = '';
+
+        unset($reversedArr[0]);
+
+        foreach ($reversedArr as $folder) {
+            if (strrev($folder) === "Requests")
+                break;
+
+            $folders = strrev($folder) . '\\' . $folders;
+        }
+
+        return Engine::RESPONSE_PREFIX . $folders . $method;
     }
 
     /**

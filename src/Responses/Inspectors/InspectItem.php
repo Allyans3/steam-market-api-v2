@@ -1,11 +1,11 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Inspectors;
 
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Services\ResponseService;
 
-class RecentlySold implements ResponseInterface
+class InspectItem implements ResponseInterface
 {
     private $response;
     private $detailed;

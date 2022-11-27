@@ -1,13 +1,11 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
-use DiDom\Exceptions\InvalidSelectorException;
 use SteamApi\Interfaces\ResponseInterface;
-use SteamApi\Services\MixedService;
 use SteamApi\Services\ResponseService;
 
-class ItemOrdersActivity implements ResponseInterface
+class AppFilters implements ResponseInterface
 {
     private $response;
     private $detailed;
@@ -45,7 +43,6 @@ class ItemOrdersActivity implements ResponseInterface
      * @param array $select
      * @param array $makeHidden
      * @return array|false
-     * @throws InvalidSelectorException
      */
     public function response(array $select = [], array $makeHidden = [])
     {
@@ -70,7 +67,7 @@ class ItemOrdersActivity implements ResponseInterface
             if ($this->detailed) {
                 $data = json_decode($returnData['response'], true);
 
-                if (!$data || !array_key_exists('success', $data) || $data['success'] !== 1)
+                if (!$data)
                     $returnData['response'] = false;
                 else
                     $returnData['response'] = self::completeData($data);
@@ -79,7 +76,7 @@ class ItemOrdersActivity implements ResponseInterface
             } else {
                 $data = json_decode($returnData, true);
 
-                if (!$data || !array_key_exists('success', $data) || $data['success'] !== 1)
+                if (!$data)
                     return false;
 
                 return self::completeData($data);
@@ -93,15 +90,6 @@ class ItemOrdersActivity implements ResponseInterface
      */
     private function completeData($data): array
     {
-        $returnData = $data;
-
-        $returnData['success'] = true;
-
-        foreach ($returnData['activity'] as &$item) {
-            $item['price_str'] = $item['price'];
-            $item['price'] = MixedService::toFloat($item['price']);
-        }
-
-        return ResponseService::filterData($returnData, $this->select, $this->makeHidden);
+        return ResponseService::filterData($data, $this->select, $this->makeHidden);
     }
 }

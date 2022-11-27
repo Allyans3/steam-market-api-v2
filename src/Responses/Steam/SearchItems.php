@@ -1,11 +1,11 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
 use SteamApi\Interfaces\ResponseInterface;
 use SteamApi\Services\ResponseService;
 
-class AppFilters implements ResponseInterface
+class SearchItems implements ResponseInterface
 {
     private $response;
     private $detailed;
@@ -52,10 +52,6 @@ class AppFilters implements ResponseInterface
         return $this->decodeResponse($this->response);
     }
 
-    /**
-     * @param $response
-     * @return array|false
-     */
     public function decodeResponse($response)
     {
         if ($this->multiRequest) {
@@ -70,7 +66,7 @@ class AppFilters implements ResponseInterface
                 if (!$data)
                     $returnData['response'] = false;
                 else
-                    $returnData['response'] = self::completeData($data);
+                    $returnData['response'] = ResponseService::filterData($data, $this->select, $this->makeHidden);;
 
                 return $returnData;
             } else {
@@ -79,17 +75,8 @@ class AppFilters implements ResponseInterface
                 if (!$data)
                     return false;
 
-                return self::completeData($data);
+                return ResponseService::filterData($data, $this->select, $this->makeHidden);
             }
         }
-    }
-
-    /**
-     * @param $data
-     * @return array
-     */
-    private function completeData($data): array
-    {
-        return ResponseService::filterData($data, $this->select, $this->makeHidden);
     }
 }

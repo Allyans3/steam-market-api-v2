@@ -1,6 +1,6 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
 use DiDom\Document;
 use DiDom\Exceptions\InvalidSelectorException;

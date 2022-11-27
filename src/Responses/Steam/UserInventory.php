@@ -1,6 +1,6 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
 use Curl\MultiCurl;
 use ErrorException;
@@ -15,7 +15,7 @@ class UserInventory implements ResponseInterface
 
     private $select;
     private $makeHidden;
-    private $extended;
+    private $withInspectData;
     private $steamId;
 
     /**
@@ -41,23 +41,23 @@ class UserInventory implements ResponseInterface
 
         unset($this->select);
         unset($this->makeHidden);
-        unset($this->extended);
+        unset($this->withInspectData);
         unset($this->steamId);
     }
 
     /**
      * @param array $select
      * @param array $makeHidden
-     * @param bool $extended
+     * @param bool $withInspectData
      * @param int|null $steamId
      * @return array|false
      * @throws ErrorException
      */
-    public function response(array $select = [], array $makeHidden = [], bool $extended = false, int $steamId = null)
+    public function response(array $select = [], array $makeHidden = [], bool $withInspectData = false, int $steamId = null)
     {
         $this->select = $select;
         $this->makeHidden = $makeHidden;
-        $this->extended = $extended;
+        $this->withInspectData = $withInspectData;
         $this->steamId = $steamId;
 
         return $this->decodeResponse($this->response);
@@ -105,7 +105,7 @@ class UserInventory implements ResponseInterface
     {
         $returnData = $data;
 
-        if ($this->extended)
+        if ($this->withInspectData)
             $returnData = self::parseInventory($data);
 
         return ResponseService::filterData($returnData, $this->select, $this->makeHidden);
@@ -122,7 +122,7 @@ class UserInventory implements ResponseInterface
         $multiCurl->setConcurrency(75);
         $multiCurl->setHeader('Origin', 'chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg');
 
-        $inspect_items = [];
+        $inspectItems = [];
 
         foreach ($inventory['descriptions'] as $description) {
             foreach ($inventory['assets'] as $asset) {
@@ -142,19 +142,19 @@ class UserInventory implements ResponseInterface
             }
         }
 
-        $multiCurl->success(function($instance) use(&$inspect_items) {
+        $multiCurl->success(function($instance) use(&$inspectItems) {
             $parts = parse_url($instance->url);
             parse_str($parts['query'], $query);
 
             $itemInfo = json_decode(json_encode($instance->response), true);
 
             if (array_key_exists('iteminfo', $itemInfo))
-                $inspect_items[] = $itemInfo['iteminfo'];
+                $inspectItems[] = $itemInfo['iteminfo'];
         });
 
         $multiCurl->start();
 
-        $inventory['inspect_items'] = $inspect_items;
+        $inventory['inspect_items'] = $inspectItems;
 
         return $inventory;
     }

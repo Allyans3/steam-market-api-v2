@@ -1,16 +1,14 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
-use Carbon\Carbon;
+use DiDom\Exceptions\InvalidSelectorException;
 use SteamApi\Interfaces\ResponseInterface;
+use SteamApi\Services\MixedService;
 use SteamApi\Services\ResponseService;
 
-class SaleHistory implements ResponseInterface
+class ItemOrdersActivity implements ResponseInterface
 {
-    const DELIMITER_START = 'var line1=';
-    const DELIMITER_END = ';';
-
     private $response;
     private $detailed;
     private $multiRequest;
@@ -47,6 +45,7 @@ class SaleHistory implements ResponseInterface
      * @param array $select
      * @param array $makeHidden
      * @return array|false
+     * @throws InvalidSelectorException
      */
     public function response(array $select = [], array $makeHidden = [])
     {
@@ -69,18 +68,18 @@ class SaleHistory implements ResponseInterface
             $returnData = $response;
 
             if ($this->detailed) {
-                $data = self::parseHistory($returnData['response']);
+                $data = json_decode($returnData['response'], true);
 
-                if (!$data)
+                if (!$data || !array_key_exists('success', $data) || $data['success'] !== 1)
                     $returnData['response'] = false;
                 else
                     $returnData['response'] = self::completeData($data);
 
                 return $returnData;
             } else {
-                $data = self::parseHistory($returnData);
+                $data = json_decode($returnData, true);
 
-                if (!$data)
+                if (!$data || !array_key_exists('success', $data) || $data['success'] !== 1)
                     return false;
 
                 return self::completeData($data);
@@ -89,35 +88,20 @@ class SaleHistory implements ResponseInterface
     }
 
     /**
-     * @param $response
-     * @return mixed
-     */
-    private function parseHistory($response)
-    {
-        $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
-        $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
-
-        return json_decode($dataString, true);
-    }
-
-    /**
      * @param $data
      * @return array
      */
     private function completeData($data): array
     {
-        return array_map(function ($item) {
-            $datePieces = explode(' ', $item[0]);
-            $date = date('Y-m-d', strtotime($datePieces[1] . ' ' . $datePieces[0] . ' ' . $datePieces[2]));
-            $timestamp = Carbon::parse($date, 'Etc/GMT+0')->timestamp;
+        $returnData = $data;
 
-            $timeData = [
-                'time' => $timestamp,
-                'price' => $item[1],
-                'volume' => (int) $item[2]
-            ];
+        $returnData['success'] = true;
 
-            return ResponseService::filterData($timeData, $this->select, $this->makeHidden);
-        }, $data);
+        foreach ($returnData['activity'] as &$item) {
+            $item['price_str'] = $item['price'];
+            $item['price'] = MixedService::toFloat($item['price']);
+        }
+
+        return ResponseService::filterData($returnData, $this->select, $this->makeHidden);
     }
 }

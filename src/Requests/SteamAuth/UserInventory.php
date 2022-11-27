@@ -1,26 +1,31 @@
 <?php
 
-namespace SteamApi\Requests\Steam;
+namespace SteamApi\Requests\SteamAuth;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Exception\InvalidOptionsException;
 use SteamApi\Interfaces\RequestInterface;
 
-class SaleHistory extends Request implements RequestInterface
+class UserInventory extends Request implements RequestInterface
 {
-    const REFERER = 'https://steamcommunity.com/market/listings/%s/%s';
-    const URL = 'https://steamcommunity.com/market/listings/%s/%s';
+    const REFERER = "https://steamcommunity.com/profiles/%s/inventory/";
+    const URL = "https://steamcommunity.com/profiles/%s/inventory/json/%s/%s?l=%s";
 
     private $method = 'GET';
 
     private $appId;
-    private $marketHashName = '';
+    private $steamId;
+    private $contextId = 2;
+
+    private $language = 'english';
 
     /**
+     * @param $appId
+     * @param array $options
      * @throws InvalidOptionsException
      */
-    public function __construct($appId, $options = [])
+    public function __construct($appId, array $options = [])
     {
         $this->appId = $appId;
         $this->setOptions($options);
@@ -31,18 +36,18 @@ class SaleHistory extends Request implements RequestInterface
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->appId, $this->marketHashName);
+        return sprintf(self::URL, $this->steamId, $this->appId, $this->contextId, $this->language);
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getHeaders(): array
     {
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => sprintf(self::REFERER, $this->appId, $this->marketHashName)
+            'Referer' => sprintf(self::REFERER, $this->steamId)
         ];
     }
 
@@ -74,9 +79,12 @@ class SaleHistory extends Request implements RequestInterface
      */
     private function setOptions($options)
     {
-        if (isset($options['market_hash_name']))
-            $this->marketHashName = rawurlencode($options['market_hash_name']);
+        if (isset($options['steam_id']))
+            $this->steamId = $options['steam_id'];
         else
-            throw new InvalidOptionsException("Option 'market_hash_name' must be filled");
+            throw new InvalidOptionsException("Option 'steam_id' must be filled");
+
+        $this->contextId = isset($options['context_id']) ? $options['context_id'] : $this->contextId;
+        $this->language = isset($options['language']) ? $options['language'] : $this->language;
     }
 }

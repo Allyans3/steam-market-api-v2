@@ -10,7 +10,7 @@ $api = new SteamApi();
 $options = [
     'steam_id' => 76561197986603983,
     'context_id' => 2,                           //optional
-    'count' => 5,                              //optional
+    'count' => 100,                              //optional
     'language' => 'english',                     //optional
     'start_asset_id' => null                     //optional
 ];

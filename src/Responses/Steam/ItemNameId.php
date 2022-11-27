@@ -1,18 +1,17 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\Steam;
 
 use SteamApi\Interfaces\ResponseInterface;
-use SteamApi\Services\ResponseService;
 
-class InspectItem implements ResponseInterface
+class ItemNameId implements ResponseInterface
 {
+    const DELIMITER_START = 'Market_LoadOrderSpread(';
+    const DELIMITER_END = ');';
+
     private $response;
     private $detailed;
     private $multiRequest;
-
-    private $select;
-    private $makeHidden;
 
     /**
      * @param $response
@@ -34,27 +33,19 @@ class InspectItem implements ResponseInterface
         unset($this->response);
         unset($this->detailed);
         unset($this->multiRequest);
-
-        unset($this->select);
-        unset($this->makeHidden);
     }
 
     /**
-     * @param array $select
-     * @param array $makeHidden
-     * @return array|false
+     * @return false|mixed
      */
-    public function response(array $select = [], array $makeHidden = [])
+    public function response()
     {
-        $this->select = $select;
-        $this->makeHidden = $makeHidden;
-
         return $this->decodeResponse($this->response);
     }
 
     /**
      * @param $response
-     * @return array|false
+     * @return false|mixed
      */
     public function decodeResponse($response)
     {
@@ -65,31 +56,34 @@ class InspectItem implements ResponseInterface
             $returnData = $response;
 
             if ($this->detailed) {
-                $data = json_decode($returnData['response'], true);
+                $data = self::completeData($returnData['response']);
 
                 if (!$data)
                     $returnData['response'] = false;
                 else
-                    $returnData['response'] = self::completeData($data);
+                    $returnData['response'] = $data;
 
                 return $returnData;
             } else {
-                $data = json_decode($returnData, true);
+                $data = self::completeData($returnData);
 
                 if (!$data)
                     return false;
 
-                return self::completeData($data);
+                return $data;
             }
         }
     }
 
     /**
-     * @param $data
-     * @return array
+     * @param $response
+     * @return mixed
      */
-    private function completeData($data): array
+    private function completeData($response)
     {
-        return ResponseService::filterData($data, $this->select, $this->makeHidden);
+        $dataString = substr($response, strpos($response, self::DELIMITER_START) + strlen(self::DELIMITER_START));
+        $dataString = substr($dataString, 0, strpos($dataString, self::DELIMITER_END));
+
+        return json_decode($dataString);
     }
 }

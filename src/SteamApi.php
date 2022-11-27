@@ -8,6 +8,7 @@ use SteamApi\Configs\Content;
 use SteamApi\Configs\Economic;
 use SteamApi\Configs\Engine;
 use SteamApi\Exception\InvalidClassException;
+use SteamApi\Services\CookieService;
 use SteamApi\Services\MixedService;
 
 class SteamApi
@@ -20,8 +21,9 @@ class SteamApi
 
     private $select = [];
     private $makeHidden = [];
-    private $extended = false;
+    private $withInspectData = false;
 
+    private $cookies = '';
     private $curlOpts = [];
 
 
@@ -83,6 +85,20 @@ class SteamApi
     }
 
     /**
+     * @param $cookie
+     * @return $this
+     */
+    public function withCookies($cookie): SteamApi
+    {
+        if (is_array($cookie))
+            $this->cookies = CookieService::arrayToStr($cookie);
+        else
+            $this->cookies = $cookie;
+
+        return $this;
+    }
+
+    /**
      * @param array $curlOpts
      * @return $this
      */
@@ -99,7 +115,7 @@ class SteamApi
      */
     public function withInspectData(): SteamApi
     {
-        $this->extended = true;
+        $this->withInspectData = true;
         return $this;
     }
 
@@ -154,8 +170,41 @@ class SteamApi
 
 
 
-    // ------------------------------------------- Steam & Inspects methods -------------------------------------------
+    // ------------------------------------------- Inspects methods -------------------------------------------
 
+
+    /**
+     * @param string $inspectLink
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function inspectItem(string $inspectLink)
+    {
+        $class = self::getClass('InspectItem', 'Inspectors');
+
+        return (new $class($inspectLink))
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param string $inspectLink
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     */
+    public function inspectItemV2(string $inspectLink)
+    {
+        $class = self::getClass('InspectItemV2', 'Inspectors');
+
+        return (new $class($inspectLink))
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
+            ->response($this->select, $this->makeHidden);
+    }
+
+
+
+
+    // ------------------------------------------- Steam methods -------------------------------------------
 
     /**
      * @param int $appId
@@ -169,7 +218,7 @@ class SteamApi
         $class = self::getClass('ItemListings', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -185,7 +234,7 @@ class SteamApi
         $class = self::getClass('ItemOrdersHistogram', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -201,7 +250,7 @@ class SteamApi
         $class = self::getClass('SaleHistory', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -217,7 +266,7 @@ class SteamApi
         $class = self::getClass('ItemNameId', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response();
     }
 
@@ -233,35 +282,7 @@ class SteamApi
         $class = self::getClass('ItemPricing', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
-            ->response($this->select, $this->makeHidden);
-    }
-
-    /**
-     * @param string $inspectLink
-     * @return mixed
-     * @throws Exception\InvalidClassException
-     */
-    public function inspectItem(string $inspectLink)
-    {
-        $class = self::getClass('InspectItem', 'Inspectors');
-
-        return (new $class($inspectLink))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
-            ->response($this->select, $this->makeHidden);
-    }
-
-    /**
-     * @param string $inspectLink
-     * @return mixed
-     * @throws Exception\InvalidClassException
-     */
-    public function inspectItemV2(string $inspectLink)
-    {
-        $class = self::getClass('InspectItemV2', 'Inspectors');
-
-        return (new $class($inspectLink))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -276,7 +297,7 @@ class SteamApi
         $class = self::getClass('SearchItems', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -294,8 +315,8 @@ class SteamApi
         $class = self::getClass('UserInventory', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
-            ->response($this->select, $this->makeHidden, $this->extended, $steamId);
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
+            ->response($this->select, $this->makeHidden, $this->withInspectData, $steamId);
     }
 
     /**
@@ -310,7 +331,7 @@ class SteamApi
         $class = self::getClass('ItemOrdersActivity', 'Steam');
 
         return (new $class($appId, $options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -324,7 +345,7 @@ class SteamApi
         $class = self::getClass('NewlyListed', 'Steam');
 
         return (new $class($options))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -338,7 +359,7 @@ class SteamApi
         $class = self::getClass('AppFilters', 'Steam');
 
         return (new $class($appId))
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
 
@@ -351,9 +372,51 @@ class SteamApi
         $class = self::getClass('RecentlySold', 'Steam');
 
         return (new $class())
-            ->call($this->proxy, $this->detailed, $this->multiRequest, $this->curlOpts)
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
     }
+
+
+
+
+
+    // ------------------------------------------- Steam Auth methods -------------------------------------------
+
+    /**
+     * @param int $appId
+     * @param array $options
+     * @return mixed
+     * @throws Exception\InvalidClassException
+     * @throws Exception\InvalidOptionsException
+     */
+    public function getUserInventoryAuth(int $appId = Apps::CSGO_ID, array $options = [])
+    {
+        $steamId = array_key_exists('steam_id', $options) ? $options['steam_id'] : null;
+
+        $class = self::getClass('UserInventory', 'SteamAuth');
+
+        return (new $class($appId, $options))
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
+            ->response($this->select, $this->makeHidden, $this->withInspectData, $steamId);
+    }
+
+    /**
+     * @return mixed
+     * @throws InvalidClassException
+     */
+    public function getNotificationCounts()
+    {
+        $class = self::getClass('NotificationCounts', 'SteamAuth');
+
+        return (new $class())
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts)
+            ->response();
+    }
+
+
+
+
+
 
 
     /**

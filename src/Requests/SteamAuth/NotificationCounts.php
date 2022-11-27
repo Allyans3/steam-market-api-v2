@@ -1,15 +1,14 @@
 <?php
 
-namespace SteamApi\Requests\Steam;
+namespace SteamApi\Requests\SteamAuth;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Interfaces\RequestInterface;
 
-class RecentlySold extends Request implements RequestInterface
+class NotificationCounts extends Request implements RequestInterface
 {
-    const REFERER = "https://steamcommunity.com/market/";
-    const URL = "https://steamcommunity.com/market/recentcompleted?norender=1";
+    const URL = "https://steamcommunity.com/actions/GetNotificationCounts";
 
     private $method = 'GET';
 
@@ -28,8 +27,7 @@ class RecentlySold extends Request implements RequestInterface
     {
         return [
             'Host' => 'steamcommunity.com',
-            'Origin' => 'https://steamcommunity.com/',
-            'Referer' => self::REFERER
+            'Origin' => 'https://steamcommunity.com/'
         ];
     }
 

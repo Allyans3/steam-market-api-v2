@@ -1,11 +1,10 @@
 <?php
 
-namespace SteamApi\Responses;
+namespace SteamApi\Responses\SteamAuth;
 
 use SteamApi\Interfaces\ResponseInterface;
-use SteamApi\Services\ResponseService;
 
-class NewlyListed implements ResponseInterface
+class NotificationCounts implements ResponseInterface
 {
     private $response;
     private $detailed;
@@ -54,42 +53,28 @@ class NewlyListed implements ResponseInterface
 
     /**
      * @param $response
-     * @return array|false
+     * @return false|mixed
      */
     public function decodeResponse($response)
     {
-        if ($this->multiRequest) {
-            // TODO
-            return false;
+        $returnData = $response;
+
+        if ($this->detailed) {
+            $data = json_decode($returnData['response'], true);
+
+            if (!$data)
+                $returnData['response'] = false;
+            else
+                $returnData['response'] = $data;
+
+            return $returnData;
         } else {
-            $returnData = $response;
+            $data = json_decode($returnData, true);
 
-            if ($this->detailed) {
-                $data = json_decode($returnData['response'], true);
+            if (!$data)
+                return false;
 
-                if (!$data)
-                    $returnData['response'] = false;
-                else
-                    $returnData['response'] = self::completeData($data);
-
-                return $returnData;
-            } else {
-                $data = json_decode($returnData, true);
-
-                if (!$data)
-                    return false;
-
-                return self::completeData($data);
-            }
+            return $data;
         }
-    }
-
-    /**
-     * @param $data
-     * @return array
-     */
-    private function completeData($data): array
-    {
-        return ResponseService::filterData($data, $this->select, $this->makeHidden);
     }
 }

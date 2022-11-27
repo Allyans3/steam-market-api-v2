@@ -9,6 +9,7 @@ use SteamApi\Interfaces\RequestInterface;
 
 class UserInventory extends Request implements RequestInterface
 {
+    const REFERER = "https://steamcommunity.com/profiles/%s/inventory/";
     const URL = "https://steamcommunity.com/inventory/%s/%s/%s?l=%s&count=%s&start_assetid=%s";
 
     private $method = 'GET';
@@ -46,7 +47,7 @@ class UserInventory extends Request implements RequestInterface
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => "https://steamcommunity.com/profiles/{$this->steamId}/inventory/"
+            'Referer' => sprintf(self::REFERER, $this->steamId)
         ];
     }
 
@@ -54,13 +55,14 @@ class UserInventory extends Request implements RequestInterface
      * @param array $proxy
      * @param false $detailed
      * @param false $multiRequest
+     * @param string $cookies
      * @param array $curlOpts
      * @return mixed|void
      * @throws InvalidClassException
      */
-    public function call(array $proxy = [], bool $detailed = false, bool $multiRequest = false, array $curlOpts = [])
+    public function call(array $proxy = [], string $cookies = '', bool $detailed = false, array $curlOpts = [], bool $multiRequest = false)
     {
-        return $this->makeRequest($proxy, $detailed, $multiRequest, $curlOpts);
+        return $this->makeRequest($proxy, $cookies, $detailed, $curlOpts, $multiRequest);
     }
 
     /**
