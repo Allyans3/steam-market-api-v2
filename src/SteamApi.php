@@ -109,7 +109,7 @@ class SteamApi
     }
 
     /**
-     * Only for UserInventory
+     * Only for UserInventory and UserInventoryAuth
      *
      * @return $this
      */
