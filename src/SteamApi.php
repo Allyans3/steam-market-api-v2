@@ -413,6 +413,33 @@ class SteamApi
             ->response();
     }
 
+    /**
+     * @param array $options
+     * @return mixed
+     * @throws InvalidClassException
+     */
+    public function getMyListings(array $options = [])
+    {
+        $class = self::getClass('MyListings', 'SteamAuth');
+
+        return (new $class($options))
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
+            ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param array $options
+     * @return mixed
+     * @throws InvalidClassException
+     */
+    public function getMyHistory(array $options = [])
+    {
+        $class = self::getClass('MyHistory', 'SteamAuth');
+
+        return (new $class($options))
+            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
+            ->response($this->select, $this->makeHidden);
+    }
 
 
 
