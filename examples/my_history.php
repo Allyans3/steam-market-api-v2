@@ -12,7 +12,8 @@ $options = [
     'count' => 30                                 //optional
 ];
 
-$cookies = 'browserid=********; steamMachineAuth**********=****************; steamLoginSecure=**************; sessionid=*********';
+// Cookies for steamcommunity.com
+$cookies = 'sessionid=*********; steamCountry=****************; steamLoginSecure=**************;';
 
 dd($api->detailed()->withCookies($cookies)->getMyHistory($options));
 

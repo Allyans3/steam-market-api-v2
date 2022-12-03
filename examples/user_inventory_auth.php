@@ -13,6 +13,7 @@ $options = [
     'language' => 'english',                     //optional
 ];
 
-$cookies = 'browserid=********; steamMachineAuth76561197986603983=****************; steamLoginSecure=**************; sessionid=*********';
+// Cookies for steamcommunity.com
+$cookies = 'sessionid=*********; steamCountry=****************; steamLoginSecure=**************;';
 
 dd($api->detailed()->withCookies($cookies)->getUserInventoryAuth(Apps::CSGO_ID, $options));
