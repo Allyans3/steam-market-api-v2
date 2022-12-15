@@ -14,7 +14,7 @@ class EngineService
             $curlData[CURLOPT_PROXY] = $proxy['domain_name'];
 
         if (array_key_exists('user', $proxy) && array_key_exists('pass', $proxy))
-            $curlData[CURLOPT_PROXYAUTH] = $proxy['user'].':'.$proxy['pass'];
+            $curlData[CURLOPT_PROXYUSERPWD] = $proxy['user'].':'.$proxy['pass'];
         if (array_key_exists('type', $proxy))
             $curlData[CURLOPT_PROXYTYPE] = $proxy['type'];
         if (array_key_exists('timeout', $proxy))
