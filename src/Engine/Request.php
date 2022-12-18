@@ -49,13 +49,16 @@ abstract class Request
         if (!isset($this->curl))
             $this->curl = curl_init();
 
+        $requestMethod = $this->getRequestMethod();
+
         curl_setopt_array($this->curl,
             $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + [
-                CURLOPT_CUSTOMREQUEST => $this->getRequestMethod(),
+                CURLOPT_CUSTOMREQUEST => $requestMethod,
                 CURLOPT_HTTPHEADER => self::mergeHeaders($this->getHeaders()),
                 CURLOPT_URL => $this->getUrl(),
                 CURLOPT_HEADER => $detailed,
-                CURLOPT_COOKIE => $cookies
+                CURLOPT_COOKIE => $cookies,
+                CURLOPT_POSTFIELDS => ($requestMethod === 'POST') ? http_build_query($this->getFormData()) : ""
             ]
         );
 
@@ -111,7 +114,7 @@ abstract class Request
     }
 
     /**
-     * @param $str
+     * @param string $header
      * @return array
      */
     private function headersToArray(string $header): array
@@ -160,8 +163,6 @@ abstract class Request
      */
     public function response($data, bool $detailed = false, bool $multiRequest = false)
     {
-//        $class = Engine::RESPONSE_PREFIX . strrev(explode('\\', strrev(get_called_class()), 2)[0]);
-
         $class = self::getResponseClass();
 
         if (!class_exists($class))

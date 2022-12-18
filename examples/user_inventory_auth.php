@@ -16,4 +16,8 @@ $options = [
 // Cookies for steamcommunity.com
 $cookies = 'sessionid=*********; steamCountry=****************; steamLoginSecure=**************;';
 
-dd($api->detailed()->withCookies($cookies)->getUserInventoryAuth(Apps::CSGO_ID, $options));
+
+dd($api->detailed()
+       ->withCustomCurlOpts([CURLOPT_COOKIEFILE => 'absolute_path_to_cookie_file']) // with cookie file
+       ->withCookies($cookies)                                                      // or with cookies from string or array
+       ->getUserInventoryAuth(Apps::CSGO_ID, $options));

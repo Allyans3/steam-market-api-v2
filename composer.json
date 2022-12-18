@@ -13,9 +13,7 @@
         "imangazaliev/didom": "^1.18",
         "php-curl-class/php-curl-class": "8.10.0",
         "nesbot/carbon": "^2.61.0",
-        "ext-curl": "*",
-        "ext-json": "*",
-        "ext-bcmath": "*"
+        "ramsey/uuid": "^4.2"
     },
     "autoload": {
         "psr-4": {
@@ -23,6 +21,7 @@
         }
     },
     "require-dev": {
-        "symfony/var-dumper": "^5.4"
+        "symfony/var-dumper": "^5.4",
+        "allyans3/protobuf-steam-auth": "^1.0"
     }
 }

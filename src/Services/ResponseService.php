@@ -92,7 +92,7 @@ class ResponseService
      */
     public static function selectKeys($arr, $keys): array
     {
-        if (!$keys)
+        if (!$keys || !is_array($keys))
             return $arr;
 
         $saved = [];
@@ -103,18 +103,25 @@ class ResponseService
             else
                 $keysKey = $key;
 
+            $isKeyList = false;
             $isList = false;
 
             if ((preg_match('/%.+%/', $keysKey, $matches))) {
-                $isList = true;
+                $isKeyList = true;
                 $keysKey = str_replace('%', '', $matches[0]);
             }
 
-            if (isset($arr[$keysKey])) {
+            if ($keysKey === "#list#")
+                $isList = true;
+
+            if ($isList) {
+                foreach ($arr as $listKey => $listValue)
+                    $saved[$listKey] = self::selectKeys($listValue, $value);
+            } elseif (isset($arr[$keysKey])) {
                 $saved[$keysKey] = $arr[$keysKey];
 
                 if (is_array($value)) {
-                    if ($isList)
+                    if ($isKeyList)
                         foreach ($arr[$keysKey] as $listKey => $listValue)
                             $saved[$keysKey][$listKey] = self::selectKeys($saved[$keysKey][$listKey], $value);
                     else
@@ -132,7 +139,7 @@ class ResponseService
      */
     public static function hideKeys(&$arr, $keys)
     {
-        if (!$keys)
+        if (!$keys || !is_array($keys))
             return;
 
         foreach ($keys as $key => $value) {
@@ -141,16 +148,23 @@ class ResponseService
             else
                 $keysKey = $key;
 
+            $isKeyList = false;
             $isList = false;
 
             if ((preg_match('/%.+%/', $keysKey, $matches))) {
-                $isList = true;
+                $isKeyList = true;
                 $keysKey = str_replace('%', '', $matches[0]);
             }
 
-            if (isset($arr[$keysKey])) {
+            if ($keysKey === "#list#")
+                $isList = true;
+
+            if ($isList) {
+                foreach ($arr as $listKey => $listValue)
+                    self::hideKeys($arr[$listKey], $value);
+            } if (isset($arr[$keysKey])) {
                 if (is_array($value))
-                    if ($isList)
+                    if ($isKeyList)
                         foreach ($arr[$keysKey] as $listKey => $listValue)
                             self::hideKeys($arr[$keysKey][$listKey], $value);
                     else
