@@ -17,5 +17,5 @@ $options = [
 
 dd($api->detailed()
        ->withCustomCurlOpts([CURLOPT_COOKIEFILE => 'absolute_path_to_cookie_file']) // with cookie file
-       ->withCookies($cookies)                                                      // or with cookies from string or array                                                 // or with cookies from string or array
+       ->withCookies($cookies)                                                      // or with cookies from string or array
        ->getMobileConfList($options));
