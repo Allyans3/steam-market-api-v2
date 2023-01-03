@@ -5,10 +5,10 @@ namespace SteamApi\Requests\TradeOffers;
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Exception\InvalidFormDataException;
-use SteamApi\Interfaces\RequestInterface;
+use SteamApi\Interfaces\PostRequestInterface;
 use SteamApi\Services\CookieService;
 
-class AcceptTradeOffer extends Request implements RequestInterface
+class AcceptTradeOffer extends Request implements PostRequestInterface
 {
     const REFERER = "https://steamcommunity.com/tradeoffer/%s";
     const URL = "https://steamcommunity.com/tradeoffer/%s/accept";

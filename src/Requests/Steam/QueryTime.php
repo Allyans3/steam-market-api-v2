@@ -1,35 +1,23 @@
 <?php
 
-namespace SteamApi\Requests\TradeOffers;
+namespace SteamApi\Requests\Steam;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
-use SteamApi\Interfaces\PostRequestInterface;
-use SteamApi\Services\CookieService;
+use SteamApi\Interfaces\RequestInterface;
 
-class CancelTradeOffer extends Request implements PostRequestInterface
+class QueryTime extends Request implements RequestInterface
 {
-    const URL = "https://steamcommunity.com/tradeoffer/%s/cancel";
+    const URL = "https://api.steampowered.com/ITwoFactorService/QueryTime/v1";
 
     private $method = 'POST';
-
-    private $tradeOfferId;
-    private $sessionId;
-
-    /**
-     * @param $tradeOfferId
-     */
-    public function __construct($tradeOfferId)
-    {
-        $this->tradeOfferId = $tradeOfferId;
-    }
 
     /**
      * @return string
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->tradeOfferId);
+        return self::URL;
     }
 
     /**
@@ -45,7 +33,7 @@ class CancelTradeOffer extends Request implements PostRequestInterface
      */
     public function getFormData(): array
     {
-        return self::formDataBuilder();
+        return [];
     }
 
     /**
@@ -59,8 +47,6 @@ class CancelTradeOffer extends Request implements PostRequestInterface
      */
     public function call(array $proxy = [], string $cookies = '', bool $detailed = false, array $curlOpts = [], bool $multiRequest = false)
     {
-        $this->sessionId = CookieService::parseSessionId($cookies, $curlOpts);
-
         return $this->makeRequest($proxy, $cookies, $detailed, $curlOpts, $multiRequest);
     }
 
@@ -70,15 +56,5 @@ class CancelTradeOffer extends Request implements PostRequestInterface
     public function getRequestMethod(): string
     {
         return $this->method;
-    }
-
-    /**
-     * @return array
-     */
-    private function formDataBuilder(): array
-    {
-        return [
-            'sessionid' => $this->sessionId,
-        ];
     }
 }

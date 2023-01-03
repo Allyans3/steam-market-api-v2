@@ -5,12 +5,12 @@ namespace SteamApi\Requests\TradeOffers;
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
 use SteamApi\Exception\InvalidTradeLinkException;
-use SteamApi\Interfaces\RequestInterface;
+use SteamApi\Interfaces\PostRequestInterface;
 use SteamApi\Services\CookieService;
 use SteamApi\Services\SteamService;
 use SteamApi\Services\TradeOffersRequestService;
 
-class CreateTradeOffer extends Request implements RequestInterface
+class CreateTradeOffer extends Request implements PostRequestInterface
 {
     const URL = "https://steamcommunity.com/tradeoffer/new/send";
 

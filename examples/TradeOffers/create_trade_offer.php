@@ -11,14 +11,14 @@ $cookies = 'sessionid=*********; steamCountry=****************; steamLoginSecure
 $tradeLink = 'https://steamcommunity.com/tradeoffer/new/?partner=152735263&token=g82gdgy2d';
 
 $formData = [
-    'partner_id' => 76531274732642783,         //optional
+    'partner_id' => '76531274732642783',         //optional
     'message' => 'message',                    //optional
     'my_items' => [
         [
             "app_id" => 730,
             "context_id" =>  "2",
             "amount" =>  1,
-            "asset_id" => "28738189184"
+            "asset_id" => '28738189184'
         ],
     ],
     'partner_items' => []

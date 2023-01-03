@@ -8,14 +8,21 @@ $api = new SteamApi();
 // Cookies for steamcommunity.com
 $cookies = 'sessionid=*********; steamCountry=****************; steamLoginSecure=**************;';
 
-$tradeOfferId = "5654234726";
-
-$formData = [
-    'partner_id' => "76531274732642783"
+$options = [
+    'confirmations' => [
+        [
+            'id' => '12345678910',
+            'key' => '4204671287461724681'
+        ],
+    ],
+    'device_id' => "android:********-****-****-****-************",
+    'steam_id' => '76561202255233023',
+    'identity_secret' => "exa3m1ple/seC5ret=",
+    'type' => 'allow'                                               //optional
 ];
 
 
 dd($api->detailed()
        ->withCustomCurlOpts([CURLOPT_COOKIEFILE => 'absolute_path_to_cookie_file']) // with cookie file
        ->withCookies($cookies)                                                      // or with cookies from string or array
-       ->acceptTradeOffer($tradeOfferId, $formData));
+       ->sendMobileMultiConfAjax($options));

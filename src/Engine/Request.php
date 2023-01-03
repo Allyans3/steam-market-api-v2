@@ -51,14 +51,18 @@ abstract class Request
 
         $requestMethod = $this->getRequestMethod();
 
+        $postOpts = [];
+
+        if ($requestMethod === 'POST')
+            $postOpts = [CURLOPT_POSTFIELDS => http_build_query($this->getFormData())];
+
         curl_setopt_array($this->curl,
-            $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + [
+            $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + $postOpts +[
                 CURLOPT_CUSTOMREQUEST => $requestMethod,
                 CURLOPT_HTTPHEADER => self::mergeHeaders($this->getHeaders()),
                 CURLOPT_URL => $this->getUrl(),
                 CURLOPT_HEADER => $detailed,
                 CURLOPT_COOKIE => $cookies,
-                CURLOPT_POSTFIELDS => ($requestMethod === 'POST') ? http_build_query($this->getFormData()) : ""
             ]
         );
 

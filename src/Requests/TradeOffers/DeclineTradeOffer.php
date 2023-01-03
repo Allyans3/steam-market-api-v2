@@ -4,10 +4,10 @@ namespace SteamApi\Requests\TradeOffers;
 
 use SteamApi\Engine\Request;
 use SteamApi\Exception\InvalidClassException;
-use SteamApi\Interfaces\RequestInterface;
+use SteamApi\Interfaces\PostRequestInterface;
 use SteamApi\Services\CookieService;
 
-class DeclineTradeOffer extends Request implements RequestInterface
+class DeclineTradeOffer extends Request implements PostRequestInterface
 {
     const URL = "https://steamcommunity.com/tradeoffer/%s/decline";
 
