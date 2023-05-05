@@ -57,10 +57,9 @@ abstract class Request
             $postOpts = [CURLOPT_POSTFIELDS => http_build_query($this->getFormData())];
         
         curl_setopt_array($this->curl,
-            $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + $postOpts +[
+            $this->defaultCurlOpts + EngineService::setProxyForSingle($proxy) + $curlOpts + $postOpts + [
                 CURLOPT_CUSTOMREQUEST => $requestMethod,
                 CURLOPT_HTTPHEADER => self::mergeHeaders($this->getHeaders()),
-                CURLOPT_URL => $this->getUrl(),
                 CURLOPT_URL => (array_key_exists('url', $proxy)) ?
                     $proxy['url'].urlencode($this->getUrl()) : $this->getUrl(),
                 CURLOPT_HEADER => $detailed,

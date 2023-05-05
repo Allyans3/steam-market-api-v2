@@ -36,15 +36,27 @@ class ResponseService
             'class_id' => $asset['classid'],
             'instance_id' => $asset['instanceid'],
             'market_hash_name' => $asset['market_hash_name'],
-            'icon_url' => $asset['icon_url'],
-            'icon_url_large' => $asset['icon_url_large'],
+            'icon_url' => array_key_exists('icon_url', $asset) ? $asset['icon_url'] : '',
+            'icon_url_large' => array_key_exists('icon_url_large', $asset) ? $asset['icon_url_large'] : '',
             'stickers' => self::parseStickersFromDescription($asset['descriptions']),
             'amount' => $asset['amount'],
             'status' => $asset['status'],
             'tradable' => $asset['tradable'],
             'marketable' => $asset['marketable'],
-            'inspect_link' => str_replace("%assetid%", $asset['id'], $asset['actions'][0]['link'])
+            'inspect_link' => self::getInspectLink($asset)
         ];
+    }
+
+    /**
+     * @param $asset
+     * @return array|string|string[]
+     */
+    private static function getInspectLink($asset)
+    {
+        if (array_key_exists('actions', $asset))
+            return str_replace("%assetid%", $asset['id'], $asset['actions'][0]['link']);
+
+        return '';
     }
 
     /**

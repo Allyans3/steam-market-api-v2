@@ -53,5 +53,7 @@ class Economic
         45 => 'USD',
         46 => 'USD',
         47 => 'USD',
+        9000 => 'RMB',
+        9001 => 'NXP'
     ];
 }
