@@ -62,7 +62,7 @@ abstract class Request
                 CURLOPT_HTTPHEADER => self::mergeHeaders($this->getHeaders()),
                 CURLOPT_URL => $this->getUrl(),
                 CURLOPT_URL => (array_key_exists('url', $proxy)) ?
-                    $proxy['url'].$this->getUrl() : $this->getUrl(),
+                    $proxy['url'].urlencode($this->getUrl()) : $this->getUrl(),
                 CURLOPT_HEADER => $detailed,
                 CURLOPT_COOKIE => $cookies,
             ]
