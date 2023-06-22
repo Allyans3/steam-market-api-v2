@@ -21,20 +21,6 @@ trait MobileConfirmationMethods
     }
 
     /**
-     * @param array $options
-     * @return mixed
-     * @throws InvalidClassException
-     */
-    public function getMobileConfListV2(array $options)
-    {
-        $class = self::getClass('ConfListV2', 'MobileConfirmations');
-
-        return (new $class($options))
-            ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
-            ->response($this->select, $this->makeHidden);
-    }
-
-    /**
      * @param $confirmationId
      * @param array $options
      * @return mixed
