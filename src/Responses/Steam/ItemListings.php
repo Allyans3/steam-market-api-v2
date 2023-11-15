@@ -98,70 +98,45 @@ class ItemListings implements ResponseInterface
     {
         $returnData = ResponseService::fillBaseData($data);
 
-        $document = new Document($data['results_html']);
-        $listingsNode = $document->find('.market_listing_row, market_recent_listing_row');
-
-        foreach ($listingsNode as $listing) {
-            $listingData = self::parseListingHTML($listing);
-
-            foreach ($data['listinginfo'] as $listingId => $value) {
-                if ($listingId == $listingData['listing_id']) {
-                    $listingData['asset'] = ResponseService::getAssetData($data['assets'], $value['asset']);
-
-                    if ($value['price'] > 0 && $value['fee'] > 0) {
-                        $currencyId = $value['currencyid'] - 2000;
-                        $convertedCurrencyId = $value['converted_currencyid'] - 2000;
-
-                        $listingData['original_price_data'] = [
-                            'currency_id' => $currencyId,
-                            'currency' => Economic::CURRENCY_LIST[$currencyId],
-                            'price_with_fee' => ($value['price'] + $value['fee']) / 100,
-                            'price_with_publisher_fee_only' => ($value['price'] + $value['publisher_fee']) / 100,
-                            'price_without_fee' => $value['price'] / 100
-                        ];
-
-                        $listingData['price_data']['currency_id'] = $convertedCurrencyId;
-                        $listingData['price_data']['currency'] = Economic::CURRENCY_LIST[$convertedCurrencyId];
-                        $listingData['price_data']['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
-                        $listingData['price_data']['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
-                        $listingData['price_data']['price_without_fee'] = $value['converted_price'] / 100;
-                    }
-                }
-            }
-
-            $returnData['listings'][] = $listingData;
+        foreach ($data['listinginfo'] as $listingId => $value) {
+            $returnData['listings'][] = self::completeListing($data, $listingId, $value);
         }
-
-        unset($document);
 
         return ResponseService::filterData($returnData, $this->select, $this->makeHidden);
     }
 
     /**
-     * @param $listing
+     * @param $data
+     * @param $listingId
+     * @param $value
      * @return array
+     * @throws InvalidSelectorException
      */
-    private function parseListingHTML($listing): array
+    private function completeListing($data, $listingId, $value): array
     {
-        return [
-            'listing_id' => substr($listing->attr('id'), 8),
-            'asset' => [],
+        $listingData = [];
 
-            'original_price_data' => [],
+        $listingData['listing_id'] = $listingId;
+        $listingData['asset'] = ResponseService::getAssetData($data['assets'], $value['asset']);
 
-            'price_data' => [
-                'currency_id' => 0,
-                'currency' => '',
+        if ($value['price'] > 0 && $value['fee'] > 0) {
+            $currencyId = $value['currencyid'] - 2000;
+            $convertedCurrencyId = $value['converted_currencyid'] - 2000;
 
-                'price_with_fee' => 0,
-                'price_with_fee_str' => trim($listing->find('.market_listing_price_with_fee')[0]->text()),
+            $listingData['original_price_data'] = [
+                'currency_id' => $currencyId,
+                'currency' => Economic::CURRENCY_LIST[$currencyId],
+                'price_with_fee' => ($value['price'] + $value['fee']) / 100,
+                'price_with_publisher_fee_only' => ($value['price'] + $value['publisher_fee']) / 100,
+                'price_without_fee' => $value['price'] / 100
+            ];
 
-                'price_with_publisher_fee_only' => 0,
-                'price_with_publisher_fee_only_str' => trim($listing->find('.market_listing_price_with_publisher_fee_only')[0]->text()),
-
-                'price_without_fee' => 0,
-                'price_without_fee_str' => trim($listing->find('.market_listing_price_without_fee')[0]->text()),
-            ],
-        ];
+            $listingData['price_data']['currency_id'] = $convertedCurrencyId;
+            $listingData['price_data']['currency'] = Economic::CURRENCY_LIST[$convertedCurrencyId];
+            $listingData['price_data']['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
+            $listingData['price_data']['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
+            $listingData['price_data']['price_without_fee'] = $value['converted_price'] / 100;
+        }
+        return $listingData;
     }
 }

@@ -58,11 +58,8 @@ dd($api->detailed()->getItemListings(Apps::CSGO_ID, $options));
 //                "currency_id" => 1
 //                "currency" => "USD"
 //                "price_with_fee" => 2.67
-//                "price_with_fee_str" => "$2.67"
 //                "price_with_publisher_fee_only" => 2.56
-//                "price_with_publisher_fee_only_str" => "$2.56"
 //                "price_without_fee" => 2.33
-//                "price_without_fee_str" => "$2.33"
 //            ]
 //        ]
 //        1 => array:4 [▶]
