@@ -119,6 +119,9 @@ class ItemListings implements ResponseInterface
         $listingData['listing_id'] = $listingId;
         $listingData['asset'] = ResponseService::getAssetData($data['assets'], $value['asset']);
 
+        $listingData['original_price_data'] = self::setEmptyPriceData();
+        $listingData['price_data'] = self::setEmptyPriceData();
+
         if ($value['price'] > 0 && $value['fee'] > 0) {
             $currencyId = $value['currencyid'] - 2000;
             $convertedCurrencyId = $value['converted_currencyid'] - 2000;
@@ -131,12 +134,29 @@ class ItemListings implements ResponseInterface
                 'price_without_fee' => $value['price'] / 100
             ];
 
-            $listingData['price_data']['currency_id'] = $convertedCurrencyId;
-            $listingData['price_data']['currency'] = Economic::CURRENCY_LIST[$convertedCurrencyId];
-            $listingData['price_data']['price_with_fee'] = ($value['converted_price'] + $value['converted_fee']) / 100;
-            $listingData['price_data']['price_with_publisher_fee_only'] = ($value['converted_price'] + $value['converted_publisher_fee']) / 100;
-            $listingData['price_data']['price_without_fee'] = $value['converted_price'] / 100;
+            $listingData['price_data'] = [
+                'currency_id' => $convertedCurrencyId,
+                'currency' => Economic::CURRENCY_LIST[$convertedCurrencyId],
+                'price_with_fee' => ($value['converted_price'] + $value['converted_fee']) / 100,
+                'price_with_publisher_fee_only' => ($value['converted_price'] + $value['converted_publisher_fee']) / 100,
+                'price_without_fee' => $value['converted_price'] / 100
+            ];
         }
+
         return $listingData;
+    }
+
+    /**
+     * @return array
+     */
+    private function setEmptyPriceData(): array
+    {
+        return [
+            'currency_id' => 0,
+            'currency' => "",
+            'price_with_fee' => 0,
+            'price_with_publisher_fee_only' => 0,
+            'price_without_fee' => 0
+        ];
     }
 }
