@@ -116,7 +116,7 @@ class ItemListings implements ResponseInterface
     {
         $listingData = [];
 
-        $listingData['listing_id'] = $listingId;
+        $listingData['listing_id'] = (string) $listingId;
         $listingData['asset'] = ResponseService::getAssetData($data['assets'], $value['asset']);
 
         $listingData['original_price_data'] = self::setEmptyPriceData();
