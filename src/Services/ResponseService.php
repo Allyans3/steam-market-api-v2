@@ -38,7 +38,7 @@ class ResponseService
             'market_hash_name' => $asset['market_hash_name'],
             'icon_url' => array_key_exists('icon_url', $asset) ? $asset['icon_url'] : '',
             'icon_url_large' => array_key_exists('icon_url_large', $asset) ? $asset['icon_url_large'] : '',
-            'stickers' => self::parseStickersFromDescription($asset['descriptions']),
+            'stickers' => self::parseStickersFromDescription($asset),
             'amount' => $asset['amount'],
             'status' => $asset['status'],
             'tradable' => $asset['tradable'],
@@ -60,15 +60,18 @@ class ResponseService
     }
 
     /**
-     * @param $description
+     * @param $asset
      * @return array|string|string[]
      * @throws InvalidSelectorException
      */
-    public static function parseStickersFromDescription($description)
+    public static function parseStickersFromDescription($asset)
     {
         $stickers = '';
 
-        foreach ($description as $value) {
+        if (!array_key_exists('descriptions', $asset))
+            return $stickers;
+
+        foreach ($asset['descriptions'] as $value) {
             if (str_contains($value['value'], 'Sticker: ')) {
                 $document = new Document($value['value']);
                 $listingsNode = $document->find('#sticker_info')[0]->text();
