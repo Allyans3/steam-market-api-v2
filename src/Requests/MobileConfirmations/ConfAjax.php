@@ -51,7 +51,7 @@ class ConfAjax extends Request implements RequestInterface
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => self::REFERER . '?' . self::generateConfQueryParams('conf')
+//            'Referer' => self::REFERER . '?' . self::generateConfQueryParams('conf')
         ];
     }
 
