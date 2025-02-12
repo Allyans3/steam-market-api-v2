@@ -51,7 +51,7 @@ class MultiConfAjax extends Request implements PostRequestInterface
         return [
             'Host' => 'steamcommunity.com',
             'Origin' => 'https://steamcommunity.com/',
-            'Referer' => self::REFERER . '?' . http_build_query(self::generateConfQueryParams('conf'))
+//            'Referer' => self::REFERER . '?' . http_build_query(self::generateConfQueryParams('conf'))
         ];
     }
 
