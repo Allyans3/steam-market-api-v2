@@ -8,7 +8,7 @@ use SteamApi\Interfaces\RequestInterface;
 
 class InspectItemV2 extends Request implements RequestInterface
 {
-    const URL = 'https://floats.steaminventoryhelper.com/?url=%s';
+    const URL = 'https://inspect.pricempire.com/?url=%s';
 
     private $method = 'GET';
 

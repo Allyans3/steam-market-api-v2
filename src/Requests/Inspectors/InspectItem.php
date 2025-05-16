@@ -8,7 +8,7 @@ use SteamApi\Interfaces\RequestInterface;
 
 class InspectItem extends Request implements RequestInterface
 {
-    const URL = 'https://api.csgofloat.com/?url=%s';
+    const URL = 'https://api.csfloat.com/?url=%s';
 
     private $method = 'GET';
 

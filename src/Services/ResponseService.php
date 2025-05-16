@@ -38,7 +38,9 @@ class ResponseService
             'market_hash_name' => $asset['market_hash_name'],
             'icon_url' => array_key_exists('icon_url', $asset) ? $asset['icon_url'] : '',
             'icon_url_large' => array_key_exists('icon_url_large', $asset) ? $asset['icon_url_large'] : '',
-            'stickers' => self::parseStickersFromDescription($asset),
+            'stickers' => self::parseAccessoryFromDescription($asset, 'sticker'),
+            'charm' => self::parseAccessoryFromDescription($asset, 'charm'),
+            'patches' => self::parseAccessoryFromDescription($asset, 'patch'),
             'amount' => $asset['amount'],
             'status' => $asset['status'],
             'tradable' => $asset['tradable'],
@@ -61,28 +63,46 @@ class ResponseService
 
     /**
      * @param $asset
-     * @return array|string|string[]
+     * @param $type
+     * @return string
      * @throws InvalidSelectorException
      */
-    public static function parseStickersFromDescription($asset)
+    public static function parseAccessoryFromDescription($asset, $type): string
     {
-        $stickers = '';
+        if (empty($asset['descriptions']) || !is_array($asset['descriptions']))
+            return '';
 
-        if (!array_key_exists('descriptions', $asset))
-            return $stickers;
+        $typesMap = [
+            'sticker' => [ 'id' => 'sticker_info', 'prefix' => 'Sticker: ' ],
+            'charm' => [ 'id' => 'keychain_info', 'prefix' => 'Charm: ' ],
+            'patch' => [ 'id' => 'sticker_info', 'prefix' => 'Patch: ' ]
+        ];
 
-        foreach ($asset['descriptions'] as $value) {
-            if (str_contains($value['value'], 'Sticker: ')) {
-                $document = new Document($value['value']);
-                $listingsNode = $document->find('#sticker_info')[0]->text();
+        if (!isset($typesMap[$type]))
+            return '';
 
-                $stickers = str_replace('Sticker: ', '', $listingsNode);
+        $conf = $typesMap[$type];
 
-                unset($document);
+        foreach ($asset['descriptions'] as $desc) {
+            if ($desc['name'] !== $conf['id'])
+                continue;
+
+            if (!str_contains($desc['value'], $conf['prefix']))
+                continue;
+
+            $doc = new Document($desc['value']);
+            $nodeList = $doc->find("#{$conf['id']}");
+
+            if (!empty($nodeList)) {
+                $text = $nodeList[0]->text();
+                unset($doc);
+                return str_replace($conf['prefix'], '', $text);
             }
+
+            unset($doc);
         }
 
-        return $stickers;
+        return '';
     }
 
     /**

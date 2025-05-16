@@ -15,7 +15,7 @@ $options = [
     'country' => 'US',                                     //optional
     'language' => 'english',                               //optional
     'currency' => 1,                                       //optional
-    'filter' => ""                                         //optional
+    'filter' => ""                                         //optional e.g. sticker, charm, patch
 ];
 
 dd($api->detailed()->getItemListings(Apps::CSGO_ID, $options));
@@ -41,6 +41,8 @@ dd($api->detailed()->getItemListings(Apps::CSGO_ID, $options));
 //                "icon_url" => "-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV08ykm4aOhOT9PLXQmlRc7cF4n-SP8dyhiwK1_xU4ajygIdSdJgVoMlzRrFTqlea5hpK66ZvNmnI3vHUk4WGdwUJBbIpZ4g"
 //                "icon_url_large" => "-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV08ykm4aOhOT9PLXQmlRc7cF4n-T--Y3nj1H6r0NoMG-iINDBe1NtZArYrlLokuru05Po6JWfynZl7yYmtn-JmUCxhQYMMLJKN_FGrA"
 //                "stickers" => ""
+//                "charm" => ""
+//                "patches" => ""
 //                "amount" => "1"
 //                "status" => 2
 //                "tradable" => 0
