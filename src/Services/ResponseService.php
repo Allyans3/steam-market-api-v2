@@ -39,7 +39,7 @@ class ResponseService
             'icon_url' => array_key_exists('icon_url', $asset) ? $asset['icon_url'] : '',
             'icon_url_large' => array_key_exists('icon_url_large', $asset) ? $asset['icon_url_large'] : '',
             'stickers' => self::parseAccessoryFromDescription($asset, 'sticker'),
-            'charm' => self::parseAccessoryFromDescription($asset, 'charm'),
+            'charms' => self::parseAccessoryFromDescription($asset, 'charm'),
             'patches' => self::parseAccessoryFromDescription($asset, 'patch'),
             'amount' => $asset['amount'],
             'status' => $asset['status'],
