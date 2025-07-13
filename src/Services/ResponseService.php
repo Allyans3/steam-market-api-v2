@@ -74,7 +74,7 @@ class ResponseService
 
         $typesMap = [
             'sticker' => [ 'id' => 'sticker_info', 'prefix' => 'Sticker: ' ],
-            'charm' => [ 'id' => 'keychain_info', 'prefix' => 'Charm: ' ],
+            'charm' => [ 'id' => 'keychain_info', 'prefix' => ['Souvenir Charm: ', 'Charm: '] ],
             'patch' => [ 'id' => 'sticker_info', 'prefix' => 'Patch: ' ]
         ];
 
@@ -87,7 +87,17 @@ class ResponseService
             if ($desc['name'] !== $conf['id'])
                 continue;
 
-            if (!str_contains($desc['value'], $conf['prefix']))
+            $prefixes = is_array($conf['prefix']) ? $conf['prefix'] : [$conf['prefix']];
+            $found = false;
+
+            foreach ($prefixes as $prefix) {
+                if (str_contains($desc['value'], $prefix)) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found)
                 continue;
 
             $doc = new Document($desc['value']);
@@ -96,7 +106,7 @@ class ResponseService
             if (!empty($nodeList)) {
                 $text = $nodeList[0]->text();
                 unset($doc);
-                return str_replace($conf['prefix'], '', $text);
+                return str_replace($prefixes, '', $text);
             }
 
             unset($doc);
