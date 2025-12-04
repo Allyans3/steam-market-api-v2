@@ -133,7 +133,7 @@ class UserInventory implements ResponseInterface
                     $inspectLink = str_replace("%assetid%", $asset['assetid'], $description['actions'][0]['link']);
                     $inspectLink = str_replace("%owner_steamid%", $this->steamId, $inspectLink);
 
-                    $multiCurl->addGet('https://api.csgofloat.com/', array(
+                    $multiCurl->addGet('https://api.csfloat.com/', array(
                         'url' => $inspectLink
                     ));
 

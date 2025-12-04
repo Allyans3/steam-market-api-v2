@@ -97,7 +97,7 @@ class ItemPricing implements ResponseInterface
                 'lowest_price' => array_key_exists('lowest_price', $data) ? MixedService::toFloat($data['lowest_price']) : 0,
                 'lowest_price_str' => array_key_exists('lowest_price', $data) ? $data['lowest_price'] : 0,
                 'median_price' => array_key_exists('median_price', $data) ? MixedService::toFloat($data['median_price']) : 0,
-                'median_price_str' => array_key_exists('lowest_price', $data) ? $data['lowest_price'] : 0,
+                'median_price_str' => array_key_exists('median_price', $data) ? $data['median_price'] : 0,
             ],
             $this->select, $this->makeHidden);
     }
