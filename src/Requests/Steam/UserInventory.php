@@ -20,8 +20,8 @@ class UserInventory extends Request implements RequestInterface
 
     private $language = 'english';
     private $count = 75;
-    private $preserveBBcode = 1;
-    private $rawAssetProperties = 1;
+    private $preserveBBcode = 0;
+    private $rawAssetProperties = 0;
     private $startAssetId = null;
 
     /**

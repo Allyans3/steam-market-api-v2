@@ -19,7 +19,7 @@ class UserInventory extends Request implements RequestInterface
     private $contextId = 2;
 
     private $language = 'english';
-    private $preserveBBcode = 1;
+    private $preserveBBcode = 0;
 
     /**
      * @param $appId
