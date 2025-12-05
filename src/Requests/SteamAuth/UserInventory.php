@@ -10,7 +10,7 @@ use SteamApi\Interfaces\RequestInterface;
 class UserInventory extends Request implements RequestInterface
 {
     const REFERER = "https://steamcommunity.com/profiles/%s/inventory/";
-    const URL = "https://steamcommunity.com/profiles/%s/inventory/json/%s/%s?l=%s";
+    const URL = "https://steamcommunity.com/profiles/%s/inventory/json/%s/%s?l=%s&preserve_bbcode=%s";
 
     private $method = 'GET';
 
@@ -19,6 +19,7 @@ class UserInventory extends Request implements RequestInterface
     private $contextId = 2;
 
     private $language = 'english';
+    private $preserveBBcode = 1;
 
     /**
      * @param $appId
@@ -36,7 +37,7 @@ class UserInventory extends Request implements RequestInterface
      */
     public function getUrl(): string
     {
-        return sprintf(self::URL, $this->steamId, $this->appId, $this->contextId, $this->language);
+        return sprintf(self::URL, $this->steamId, $this->appId, $this->contextId, $this->language, $this->preserveBBcode);
     }
 
     /**
@@ -86,5 +87,6 @@ class UserInventory extends Request implements RequestInterface
 
         $this->contextId = isset($options['context_id']) ? $options['context_id'] : $this->contextId;
         $this->language = isset($options['language']) ? $options['language'] : $this->language;
+        $this->preserveBBcode = isset($options['preserve_bbcode']) ? $options['preserve_bbcode'] : $this->preserveBBcode;
     }
 }

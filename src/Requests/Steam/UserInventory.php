@@ -10,7 +10,7 @@ use SteamApi\Interfaces\RequestInterface;
 class UserInventory extends Request implements RequestInterface
 {
     const REFERER = "https://steamcommunity.com/profiles/%s/inventory/";
-    const URL = "https://steamcommunity.com/inventory/%s/%s/%s?l=%s&count=%s&start_assetid=%s";
+    const URL = "https://steamcommunity.com/inventory/%s/%s/%s?l=%s&count=%s&preserve_bbcode=%s&raw_asset_properties=%s&start_assetid=%s";
 
     private $method = 'GET';
 
@@ -20,6 +20,8 @@ class UserInventory extends Request implements RequestInterface
 
     private $language = 'english';
     private $count = 75;
+    private $preserveBBcode = 1;
+    private $rawAssetProperties = 1;
     private $startAssetId = null;
 
     /**
@@ -36,7 +38,7 @@ class UserInventory extends Request implements RequestInterface
     public function getUrl(): string
     {
         return sprintf(self::URL, $this->steamId, $this->appId, $this->contextId, $this->language,
-            $this->count, $this->startAssetId);
+            $this->count, $this->preserveBBcode, $this->rawAssetProperties, $this->startAssetId);
     }
 
     /**
@@ -87,6 +89,8 @@ class UserInventory extends Request implements RequestInterface
         $this->contextId = isset($options['context_id']) ? $options['context_id'] : $this->contextId;
         $this->language = isset($options['language']) ? $options['language'] : $this->language;
         $this->count = isset($options['count']) ? $options['count'] : $this->count;
+        $this->preserveBBcode = isset($options['preserve_bbcode']) ? $options['preserve_bbcode'] : $this->preserveBBcode;
+        $this->rawAssetProperties = isset($options['raw_asset_properties']) ? $options['raw_asset_properties'] : $this->rawAssetProperties;
         $this->startAssetId = isset($options['start_asset_id']) ? $options['start_asset_id'] : $this->startAssetId;
     }
 }
