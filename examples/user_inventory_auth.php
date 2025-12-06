@@ -11,6 +11,7 @@ $options = [
     'steam_id' => 76561197986603983,
     'context_id' => 2,                           //optional
     'language' => 'english',                     //optional
+    'preserve_bbcode' => 0                       //optional
 ];
 
 // Cookies for steamcommunity.com

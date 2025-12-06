@@ -12,7 +12,9 @@ $options = [
     'context_id' => 2,                           //optional
     'count' => 100,                              //optional
     'language' => 'english',                     //optional
-    'start_asset_id' => null                     //optional
+    'preserve_bbcode' => 0,                      //optional
+    'raw_asset_properties' => 0,                 //optional
+    'start_asset_id' => null,                    //optional
 ];
 
 dd($api->detailed()->getUserInventory(Apps::CSGO_ID, $options));
