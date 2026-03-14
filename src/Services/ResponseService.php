@@ -31,6 +31,8 @@ class ResponseService
     {
         $asset = $assets[$listingAssetData['appid']][$listingAssetData['contextid']][$listingAssetData['id']];
 
+        $assetProperties = self::getAssetProperties($asset);
+
         return [
             'id' => $asset['id'],
             'class_id' => $asset['classid'],
@@ -38,6 +40,7 @@ class ResponseService
             'market_hash_name' => $asset['market_hash_name'],
             'icon_url' => array_key_exists('icon_url', $asset) ? $asset['icon_url'] : '',
             'icon_url_large' => array_key_exists('icon_url_large', $asset) ? $asset['icon_url_large'] : '',
+            'asset_properties' => $assetProperties,
             'stickers' => self::parseAccessoryFromDescription($asset, 'sticker'),
             'charms' => self::parseAccessoryFromDescription($asset, 'charm'),
             'patches' => self::parseAccessoryFromDescription($asset, 'patch'),
@@ -45,20 +48,40 @@ class ResponseService
             'status' => $asset['status'],
             'tradable' => $asset['tradable'],
             'marketable' => $asset['marketable'],
-            'inspect_link' => self::getInspectLink($asset)
+            'inspect_link' => self::getInspectLink($asset, $assetProperties)
         ];
     }
 
-    /**
-     * @param $asset
-     * @return array|string|string[]
-     */
-    private static function getInspectLink($asset)
+    private static function getAssetProperties(array $asset): array
     {
-        if (array_key_exists('actions', $asset))
-            return str_replace("%assetid%", $asset['id'], $asset['actions'][0]['link']);
+        $map = [
+            1 => ['key' => 'paint_seed',       'field' => 'int_value'],
+            2 => ['key' => 'float_value',       'field' => 'float_value'],
+            6 => ['key' => 'item_certificate',  'field' => 'string_value'],
+        ];
 
-        return '';
+        $properties = array_column($asset['asset_properties'] ?? [], null, 'propertyid');
+
+        $result = [];
+        foreach ($map as $id => ['key' => $key, 'field' => $field]) {
+            $result[$key] = $properties[$id][$field] ?? null;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array $assetProperties
+     * @param array $asset
+     * @return string
+     */
+    private static function getInspectLink(array $asset, array $assetProperties): string
+    {
+        if (empty($assetProperties['item_certificate']) || empty($asset['actions'][0]['link'])) {
+            return '';
+        }
+
+        return str_replace("%propid:6%", $assetProperties['item_certificate'], $asset['actions'][0]['link']);
     }
 
     /**
