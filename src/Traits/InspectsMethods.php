@@ -3,6 +3,7 @@
 namespace SteamApi\Traits;
 
 use SteamApi\Exception\InvalidClassException;
+use SteamApi\Services\CS2InspectorService;
 
 trait InspectsMethods
 {
@@ -32,5 +33,15 @@ trait InspectsMethods
         return (new $class($inspectLink))
             ->call($this->proxy, $this->cookies, $this->detailed, $this->curlOpts, $this->multiRequest)
             ->response($this->select, $this->makeHidden);
+    }
+
+    /**
+     * @param string $inspectLink
+     * @return array[]
+     * @throws \Exception
+     */
+    public function inspectLinkDecoder(string $inspectLink)
+    {
+        return CS2InspectorService::inspect($inspectLink);
     }
 }
