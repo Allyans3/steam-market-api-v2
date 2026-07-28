@@ -22,7 +22,7 @@ class Economic
         14 => 'THB',
         15 => 'VND',
         16 => 'KRW',
-        17 => 'TRY',
+        17 => 'USD', // was TRY
         18 => 'UAH',
         19 => 'MXN',
         20 => 'CAD',
@@ -38,22 +38,22 @@ class Economic
         30 => 'TWD',
         31 => 'SAR',
         32 => 'AED',
-        33 => 'USD',
-        34 => 'ARS',
+        33 => 'EUR', // was SEK
+        34 => 'USD', // was ARS
         35 => 'ILS',
-        36 => 'USD',
+        36 => 'USD', // was BYN
         37 => 'KZT',
         38 => 'KWD',
         39 => 'QAR',
         40 => 'CRC',
         41 => 'UYU',
-        42 => 'USD',
-        43 => 'USD',
-        44 => 'USD',
-        45 => 'USD',
-        46 => 'USD',
-        47 => 'USD',
-        9000 => 'RMB',
-        9001 => 'NXP'
+        42 => 'EUR', // was BGN
+        43 => 'EUR', // was HRK
+        44 => 'EUR', // was CZK
+        45 => 'EUR', // was DKK
+        46 => 'EUR', // was HUF
+        47 => 'EUR', // was RON
+        9000 => 'RMB', // undocumented
+        9001 => 'NXP'  // undocumented
     ];
 }

@@ -40,6 +40,7 @@ class CS2InspectorService
 
     /**
      * Main method. Accepts either a full steam:// link or just a hex string.
+     * @throws Exception
      */
     public static function inspect(string $input): array {
         $hex = self::extractHexPayload($input);
@@ -111,6 +112,9 @@ class CS2InspectorService
     // LOCAL PROTOBUF PARSER
     // ==========================================
 
+    /**
+     * @throws Exception
+     */
     private static function parseEconItem(string $buffer): array {
         $item = [
             'stickers' => [],
@@ -232,6 +236,9 @@ class CS2InspectorService
         return $data;
     }
 
+    /**
+     * @throws Exception
+     */
     private static function skipField(string $buffer, int &$offset, int $wireType): void {
         if ($wireType === 0) {
             self::readVarint($buffer, $offset);
